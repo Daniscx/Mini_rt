@@ -1,7 +1,7 @@
-.claude
 .vscode
 minirtObjects
 miniRT
+.DS_STORE
 
 src/aux_libft/libft.a
 src/aux_libft/*.o
@@ -21,4 +21,45 @@ minilibx-linux/test/*.core
 minilibx-linux/*.a
 minilibx-linux/*.so
 
-docs/fract-ol
+## Mlx Gitignore
+minilibx-linux/Makefile.gen
+minilibx-linux//test/mlx-test
+minilibx-linux/.vscode/*
+minilibx-linux/*~
+minilibx-linux/\#*\#
+minilibx-linux/.DS_STORE
+minilibx-linux/*.d
+minilibx-linux/*.o
+minilibx-linux/*.ko
+minilibx-linux/*.obj
+minilibx-linux/*.elf
+minilibx-linux/*.ilk
+minilibx-linux/*.map
+minilibx-linux/*.exp
+minilibx-linux/*.gch
+minilibx-linux/*.pch
+minilibx-linux/*.lib
+minilibx-linux/*.a
+minilibx-linux/*.la
+minilibx-linux/*.lo
+minilibx-linux/*.dll
+minilibx-linux/*.so
+minilibx-linux/*.so.*
+minilibx-linux/*.dylib
+minilibx-linux/*.exe
+minilibx-linux/*.out
+minilibx-linux/*.app
+minilibx-linux/*.i*86
+minilibx-linux/*.x86_64
+minilibx-linux/*.hex
+minilibx-linux/*.dSYM/
+minilibx-linux/*.su
+minilibx-linux/*.idb
+minilibx-linux/*.pdb
+minilibx-linux/*.mod*
+minilibx-linux/*.cmd
+minilibx-linux/.tmp_versions/
+minilibx-linux/modules.order
+minilibx-linux/Module.symvers
+minilibx-linux/Mkfile.old
+minilibx-linux/dkms.conf

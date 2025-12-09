@@ -1,7 +1,9 @@
 
 NAME	= libft.a
+
 CC		= cc
-CFLAGS	= -Wall -Werror -Wextra -g 
+CFLAGS	= -Wall -Werror -Wextra
+
 
 SRCS	= ft_isalpha.c ft_isdigit.c ft_isalnum.c ft_isascii.c \
 		ft_isprint.c ft_strlen.c ft_memset.c ft_bzero.c ft_memcpy.c \
@@ -18,6 +20,7 @@ OBJS	= $(SRCS:.c=.o)
 
 BSRCS	= ft_lstnew_bonus.c ft_lstadd_front_bonus.c ft_lstsize_bonus.c\
 		ft_lstlast_bonus.c ft_lstadd_back_bonus.c 
+
 BOBJS	= $(BSRCS:.c=.o)
 
 all : $(NAME)
