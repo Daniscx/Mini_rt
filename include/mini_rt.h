@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 21:31:11 by ravazque          #+#    #+#             */
-/*   Updated: 2025/12/09 21:31:12 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/09 22:11:59 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,31 +14,13 @@
 # define MINI_RT_H
 
 # include "../minilibx-linux/mlx.h"
-# include <X11/X.h>
-# include <X11/keysym.h>
-# include <math.h>
-# include <stdlib.h>
-# include <fcntl.h>
-# include <unistd.h>
-# include <stdbool.h>
-# include <stdarg.h>
-# include <stdio.h>
-
-# ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 100
-# endif
+#  include "../src/aux_libft/libft.h"
 
 # define WIDTH 800
 # define HEIGHT 600
 # define WIN_TITLE "miniRT"
 
 # define ESC_KEY 65307
-
-typedef struct s_list
-{
-	void			*content;
-	struct s_list	*next;
-}					t_list;
 
 typedef struct s_vec3
 {
@@ -121,73 +103,10 @@ parse_primitive_t	*parse_primiteve_contructor(char *file);
 void				*parse_primiteve_destructor(parse_primitive_t *parse);
 
 void				parser_file_name(char *file);
-bool				if_betwen_values(float element_to_check, float minmun_value,
-						float maximun_value);
-void				ambient_light_parser(char **actual_element,
-						t_list **list_to_add_element);
-void				light_parser(char **actual_element,
-						t_list **list_to_add_element);
-t_list				**general_parser(t_list **list__to_track,
-						void f(void *, void *));
-void				camera_parser(char **actual_element,
-						t_list **list_to_add_element);
-
-t_list				*ft_lstnew(void *content);
-int					ft_memcmp(const void *s1, const void *s2, size_t n);
-void				*ft_memchr(const void *s, int c, size_t n);
-void				*ft_memmove(void *dest, const void *src, size_t n);
-void				*ft_memcpy(void *dest, const void *src, size_t n);
-char				*ft_strchr(const char *s, int c);
-size_t				ft_strlcat(char *dst, const char *src, size_t size);
-size_t				ft_strlcpy(char *dst, const char *src, size_t size);
-size_t				ft_strlen(const char *str);
-int					ft_strncmp(const char *s1, const char *s2, size_t n);
-char				*ft_strnstr(const char *big, const char *little,
-						size_t len);
-char				*ft_strrchr(const char *s, int c);
-int					ft_tolower(int c);
-int					ft_toupper(int c);
-int					ft_atoi(const char *nptr);
-void				ft_bzero(void *s, size_t n);
-int					ft_isalnum(int c);
-int					ft_isalpha(int c);
-int					ft_isascii(int c);
-int					ft_isdigit(int c);
-int					ft_isprint(int c);
-void				ft_striteri(char *s, void (*f)(unsigned int, char *));
-void				ft_putchar_fd(char c, int fd);
-char				*ft_strtrim(char const *s1, char const *set);
-char				*ft_itoa(int n);
-void				ft_putendl_fd(char *s, int fd);
-char				**ft_split(char const *s, char c);
-char				*ft_strmapi(char const *s, char (*f)(unsigned int, char));
-void				*ft_memset(void *s, int c, size_t n);
-char				*ft_strdup(const char *s);
-char				*ft_strjoin(char const *s1, char const *s2);
-char				*ft_substr(char const *s, unsigned int start, size_t len);
-void				*ft_calloc(size_t nmemb, size_t size);
-void				ft_putnbr_fd(int n, int fd);
-void				ft_putstr_fd(char *s, int fd);
-void				ft_lstadd_front(t_list **lst, t_list *new);
-int					ft_lstsize(t_list *lst);
-t_list				*ft_lstlast(t_list *lst);
-void				ft_lstadd_back(t_list **lst, t_list *new);
-int					ft_printf(char const *str, ...);
-int					ft_putchar(int pf);
-int					ft_putstr(char *str);
-int					ft_putnb(int pf);
-int					ft_puthexnum(unsigned int pf);
-int					ft_puthexnumax(unsigned int pf);
-int					ft_putunmath(unsigned int pf);
-int					ft_putpointer(void *pf);
-int					ft_selector(va_list pf, char const *str);
-char				*get_next_line(int fd);
-char				*ft_sstrchr(char *s, int j);
-void				*ft_caalloc(size_t nmbr, size_t sz);
-char				*ft_sstrjoin(char *fv, char *s);
-int					ft_sstrlen(char *ret);
-long long			ft_atol(const char *nptr);
-void				free_double_pointer(char **dbpt);
-float				ft_float(char *number);
+bool				if_betwen_values(float element_to_check, float minmun_value, float maximun_value);
+void				ambient_light_parser(void *actual_elem, void *list_to_add);
+void				light_parser(void *actual_elem, void *list_to_add);
+void				camera_parser(void *actual_elem, void *list_to_add);
+t_list				**general_parser(t_list **list__to_track, void f(void *, void *));
 
 #endif

@@ -3,23 +3,28 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmaestro <dmaestro@student.42madrid.con    +#+  +:+       +#+        */
+/*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 16:13:33 by dmaestro          #+#    #+#             */
-/*   Updated: 2025/11/27 18:56:11 by dmaestro         ###   ########.fr       */
+/*   Updated: 2025/12/09 22:10:35 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIBFT_H
 # define LIBFT_H
+
 # include <fcntl.h>
 # include <stdarg.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
+# include <X11/X.h>
+# include <X11/keysym.h>
+# include <math.h>
+# include <stdbool.h>
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 100
+#  define BUFFER_SIZE 1024
 # endif
 
 typedef struct s_list
@@ -27,6 +32,7 @@ typedef struct s_list
 	void			*content;
 	struct s_list	*next;
 }					t_list;
+
 t_list				*ft_lstnew(void *content);
 int					ft_memcmp(const void *s1, const void *s2, size_t n);
 void				*ft_memchr(const void *s, int c, size_t n);
@@ -37,8 +43,7 @@ size_t				ft_strlcat(char *dst, const char *src, size_t size);
 size_t				ft_strlcpy(char *dst, const char *src, size_t size);
 size_t				ft_strlen(const char *str);
 int					ft_strncmp(const char *s1, const char *s2, size_t n);
-char				*ft_strnstr(const char *big, const char *little,
-						size_t len);
+char				*ft_strnstr(const char *big, const char *little, size_t len);
 char				*ft_strrchr(const char *s, int c);
 int					ft_tolower(int c);
 int					ft_toupper(int c);
@@ -85,6 +90,6 @@ char				*ft_sstrjoin(char *fv, char *s);
 int					ft_sstrlen(char *ret);
 long long			ft_atol(const char *nptr);
 void				free_double_pointer(char **dbpt);
-float ft_float(char *number);
+float				ft_float(char *number);
 
 #endif
