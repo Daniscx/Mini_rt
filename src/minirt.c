@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   minirt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 21:30:47 by ravazque          #+#    #+#             */
-/*   Updated: 2025/12/10 16:18:03 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/10 18:25:24 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/mini_rt.h"
+#include "../include/minirt.h"
 
 /*
 ** Maneja errores mostrando un mensaje y terminando el programa
@@ -51,7 +51,7 @@ int	main(int argc, char **argv)
 	t_minirt	rt;
 
 	if (argc != 2)
-		error_manager("Please do \"./miniRT <scenes/scene.rt>\"!");
+		error_manager("Please do \"./miniRT <scene.rt>\"!");
 	ft_bzero(&rt, sizeof(t_minirt));
 	rt.scene = scene_constructor(argv[1]);
 	if (!rt.scene)

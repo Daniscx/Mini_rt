@@ -80,7 +80,7 @@ miniRT/
 │   │   └── scene.c         # Constructor/destructor de escenas
 │   └── aux_libft/          # Librería de utilidades
 ├── include/
-│   └── mini_rt.h           # Definiciones y prototipos
+│   └── minirt.h           # Definiciones y prototipos
 ├── scenes/                 # Archivos de escena .rt
 ├── minilibx-linux/         # Librería gráfica MinilibX
 └── Makefile
@@ -183,7 +183,7 @@ El proyecto actualmente renderiza un gradiente de fondo. Los próximos pasos inc
 **
 ** FASE 2: CREAR STRUCTS DE OBJETOS
 ** ─────────────────────────────────
-** ✗ 2.1. Crear structs específicas en mini_rt.h:
+** ✗ 2.1. Crear structs específicas en minirt.h:
 **        - typedef struct s_ambient_light { float ratio; t_vec3 color; }
 **        - typedef struct s_light_point { t_vec3 pos; float brightness; t_vec3 color; }
 **        - typedef struct s_sphere { t_vec3 center; double diameter; t_vec3 color; }

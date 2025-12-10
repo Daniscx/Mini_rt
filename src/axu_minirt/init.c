@@ -6,11 +6,11 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 17:00:00 by ravazque          #+#    #+#             */
-/*   Updated: 2025/12/10 16:04:08 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/10 18:24:07 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/mini_rt.h"
+#include "../../include/minirt.h"
 
 /*
 ** Configura los hooks de eventos de X11 para la ventana

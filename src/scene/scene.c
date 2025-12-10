@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/mini_rt.h"
+#include "../../include/minirt.h"
 
 /*
 ** Constructor de la escena principal del raytracer

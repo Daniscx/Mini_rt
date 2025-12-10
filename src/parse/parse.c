@@ -6,11 +6,11 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/27 17:54:21 by dmaestro          #+#    #+#             */
-/*   Updated: 2025/12/10 16:03:52 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/10 18:24:07 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/mini_rt.h"
+#include "../../include/minirt.h"
 
 /*
 ** Valida que el archivo de entrada tenga extensión .rt y que exista.
