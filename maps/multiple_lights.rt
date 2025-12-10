@@ -1,8 +1,25 @@
+# Escena con múltiples luces de colores
+# Demuestra iluminación compleja con dos fuentes de luz
+
+# Ambient Light: muy tenue, casi oscuro
 A 0.1 50,50,50
+
+# Camera: posición elevada mirando ligeramente hacia abajo
 C 0,5,-20 0,-0.3,1 70
+
+# Múltiples luces de colores:
+# Luz 1: roja desde la izquierda
 L -10,10,-10 0.5 255,100,100
+# Luz 2: azul desde la derecha
 L 10,10,-10 0.5 100,100,255
+
+# Esferas:
+# Esfera central blanca (reflejará ambas luces)
 sp 0,0,5 6 200,200,200
+# Esfera amarilla a la izquierda
 sp -8,2,10 3 255,200,0
+# Esfera cyan a la derecha
 sp 8,2,10 3 0,255,200
+
+# Plano gris oscuro como suelo
 pl 0,-3,0 0,1,0 100,100,100

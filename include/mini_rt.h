@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 21:31:11 by ravazque          #+#    #+#             */
-/*   Updated: 2025/12/09 22:11:59 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/10 02:10:40 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,15 @@
 
 # define ESC_KEY 65307
 
+/*
+** Vector 3D para representar puntos, direcciones y colores
+** Campos:
+**   - x, y, z: componentes del vector
+** Usos:
+**   - Posiciones en el espacio 3D
+**   - Direcciones normalizadas (vectores unitarios)
+**   - Colores RGB (normalizados 0.0-1.0)
+*/
 typedef struct s_vec3
 {
 	double			x;
@@ -29,6 +38,18 @@ typedef struct s_vec3
 	double			z;
 }					t_vec3;
 
+/*
+** Imagen de MinilibX
+** Campos:
+**   - img_ptr: puntero a la imagen de MLX
+**   - pixels_ptr: puntero al array de píxeles (obtenido con mlx_get_data_addr)
+**   - bpp: bits por píxel
+**   - line_len: bytes por línea
+**   - endian: 0 = little endian, 1 = big endian
+** Uso:
+**   - Renderizar píxel por píxel directamente en memoria
+**   - Más rápido que mlx_pixel_put
+*/
 typedef struct s_img
 {
 	void			*img_ptr;
@@ -38,6 +59,20 @@ typedef struct s_img
 	int				endian;
 }					t_img;
 
+/*
+** Cámara del raytracer
+** Campos:
+**   - position: posición de la cámara en el espacio 3D
+**   - direction: vector de dirección normalizado (hacia dónde mira)
+**   - right: vector derecho (perpendicular a direction y up)
+**   - up: vector arriba (perpendicular a direction y right)
+**   - fov: field of view en grados [0, 180]
+**   - aspect_ratio: relación ancho/alto (WIDTH/HEIGHT)
+** Funcionamiento:
+**   - Los vectores direction, right y up forman una base ortonormal
+**   - Se usan para calcular rayos desde la cámara hacia cada píxel
+** TODO: Inicializar desde los datos parseados del archivo .rt
+*/
 typedef struct s_camera
 {
 	t_vec3			position;
@@ -48,6 +83,21 @@ typedef struct s_camera
 	double			aspect_ratio;
 }					t_camera;
 
+/*
+** Escena completa del raytracer
+** Campos:
+**   - object: lista de objetos (spheres, planes, cylinders)
+**   - light: lista de luces puntuales
+**   - al: ambient light (luz ambiental)
+**   - camera: datos de la cámara parseados
+** Estado actual:
+**   - Estructura poblada por el parser
+**   - Datos en formato de listas anidadas (float* dentro de t_list)
+** TODO: Convertir estos datos a structs específicas:
+**   - t_sphere, t_plane, t_cylinder
+**   - t_light_point
+**   - t_ambient_light
+*/
 typedef struct s_escene
 {
 	t_list			**object;
@@ -56,6 +106,21 @@ typedef struct s_escene
 	void			*camera;
 }					escene_t;
 
+/*
+** Estructura temporal del parser
+** Campos:
+**   - object: lista de objetos parseados (sp, pl, cy)
+**   - light: lista de luces parseadas (L)
+**   - al: ambient light parseada (A)
+**   - camera: cámara parseada (C)
+** Uso:
+**   - Estructura intermedia durante el parseo
+**   - Se transfiere a escene_t después de parsear
+**   - Se destruye después de transferir los datos
+** Formato de datos:
+**   - Cada campo es una lista de listas de floats
+**   - Ejemplo camera: [[x,y,z], [nx,ny,nz], fov]
+*/
 typedef struct s_parse_primitive
 {
 	t_list			**object;
@@ -64,6 +129,22 @@ typedef struct s_parse_primitive
 	t_list			**camera;
 }					parse_primitive_t;
 
+/*
+** Estructura principal del programa miniRT
+** Campos:
+**   - mlx: conexión con el servidor X (mlx_init)
+**   - win: ventana de MLX (mlx_new_window)
+**   - img: imagen donde se renderiza la escena
+**   - camera: cámara del raytracer (ya procesada)
+**   - scene: escena parseada del archivo .rt
+** Ciclo de vida:
+**   1. main: inicializa con ft_bzero
+**   2. escene_constructor: parsea el archivo .rt
+**   3. minirt_init: crea mlx, win, img y configura camera
+**   4. render_scene: renderiza la escena en img
+**   5. mlx_loop: loop de eventos
+**   6. minirt_cleanup: libera toda la memoria
+*/
 typedef struct s_minirt
 {
 	void			*mlx;

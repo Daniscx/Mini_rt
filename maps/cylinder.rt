@@ -1,6 +1,25 @@
+# Escena con cilindro, esfera y plano
+# Demuestra la intersección de múltiples tipos de objetos
+
+# Ambient Light: luz blanca con intensidad baja
 A 0.2 255,255,255
+
+# Camera: cámara ligeramente alejada
 C 0,0,-15 0,0,1 60
+
+# Light: luz cálida desde arriba a la derecha
 L 5,15,-5 0.6 255,255,200
+
+# Cylinder: cy [x,y,z] [nx,ny,nz] [diameter] [height] [R,G,B]
+# - x,y,z: centro del cilindro
+# - nx,ny,nz: vector del eje (dirección del cilindro)
+# - diameter: diámetro
+# - height: altura
+# - R,G,B: color RGB [0-255]
 cy 0,0,10 0,1,0 3 10 50,200,100
+
+# Sphere: esfera roja a la izquierda
 sp -6,0,8 4 255,100,100
+
+# Plane: plano gris como suelo
 pl 0,-6,0 0,1,0 150,150,150
