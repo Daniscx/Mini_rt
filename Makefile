@@ -12,7 +12,8 @@ LIBFT_LIB = $(LIBFT_PATH)libft.a
 
 CFILES = \
 		main.c\
-		parsing.c
+		escene/parser/parsing.c\
+		escene/parser/parsin_debug.c
 
 OBJECTS = $(CFILES:.c=.o)
 
