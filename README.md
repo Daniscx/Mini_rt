@@ -1,3 +1,4 @@
+
 # miniRT
 
 Ray tracer en C usando MinilibX - Proyecto 42 Madrid
