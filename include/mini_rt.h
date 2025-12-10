@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 21:31:11 by ravazque          #+#    #+#             */
-/*   Updated: 2025/12/10 02:10:40 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/10 02:27:40 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,13 +98,13 @@ typedef struct s_camera
 **   - t_light_point
 **   - t_ambient_light
 */
-typedef struct s_escene
+typedef struct s_scene
 {
 	t_list			**object;
 	t_list			**light;
 	void			*al;
 	void			*camera;
-}					escene_t;
+}					scene_t;
 
 /*
 ** Estructura temporal del parser
@@ -115,7 +115,7 @@ typedef struct s_escene
 **   - camera: cámara parseada (C)
 ** Uso:
 **   - Estructura intermedia durante el parseo
-**   - Se transfiere a escene_t después de parsear
+**   - Se transfiere a scene_t después de parsear
 **   - Se destruye después de transferir los datos
 ** Formato de datos:
 **   - Cada campo es una lista de listas de floats
@@ -139,7 +139,7 @@ typedef struct s_parse_primitive
 **   - scene: escena parseada del archivo .rt
 ** Ciclo de vida:
 **   1. main: inicializa con ft_bzero
-**   2. escene_constructor: parsea el archivo .rt
+**   2. scene_constructor: parsea el archivo .rt
 **   3. minirt_init: crea mlx, win, img y configura camera
 **   4. render_scene: renderiza la escena en img
 **   5. mlx_loop: loop de eventos
@@ -151,7 +151,7 @@ typedef struct s_minirt
 	void			*win;
 	t_img			img;
 	t_camera		camera;
-	escene_t		*scene;
+	scene_t		*scene;
 }					t_minirt;
 
 void				error_manager(char *error_message);
@@ -177,8 +177,8 @@ t_vec3				vec3_cross(t_vec3 a, t_vec3 b);
 t_vec3				vec3_normalize(t_vec3 v);
 double				vec3_length(t_vec3 v);
 
-escene_t			*escene_constructor(char *file);
-void				escene_destructor(escene_t *escene);
+scene_t			*scene_constructor(char *file);
+void				scene_destructor(scene_t *scene);
 
 parse_primitive_t	*parse_primiteve_contructor(char *file);
 void				*parse_primiteve_destructor(parse_primitive_t *parse);

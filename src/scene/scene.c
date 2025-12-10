@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   escene.c                                           :+:      :+:    :+:   */
+/*   scene.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -17,36 +17,36 @@
 ** Parámetros:
 **   - file: ruta al archivo .rt de la escena
 ** Retorna:
-**   - Puntero a escene_t con todos los datos parseados
+**   - Puntero a scene_t con todos los datos parseados
 **   - NULL si hay error
 ** Funcionamiento:
 **   1. Parsea el archivo .rt con parse_primiteve_contructor
-**   2. Crea estructura escene_t
-**   3. Transfiere los punteros de parsed a escene
+**   2. Crea estructura scene_t
+**   3. Transfiere los punteros de parsed a scene
 **   4. Libera la estructura temporal parsed (no su contenido)
-** NOTA: Los punteros (object, light, al, camera) pasan de parsed a escene
+** NOTA: Los punteros (object, light, al, camera) pasan de parsed a scene
 **       sin copiar datos, por lo que no se deben liberar dos veces
 */
-escene_t *escene_constructor(char *file)
+scene_t *scene_constructor(char *file)
 {
-	escene_t			*escene;
+	scene_t			*scene;
 	parse_primitive_t	*parsed;
 
 	parsed = parse_primiteve_contructor(file);
 	if (!parsed)
 		return (NULL);
-	escene = malloc(sizeof(escene_t));
-	if (!escene)
+	scene = malloc(sizeof(scene_t));
+	if (!scene)
 	{
 		parse_primiteve_destructor(parsed);
 		return (NULL);
 	}
-	escene->object = parsed->object;
-	escene->light = parsed->light;
-	escene->al = parsed->al;
-	escene->camera = parsed->camera;
+	scene->object = parsed->object;
+	scene->light = parsed->light;
+	scene->al = parsed->al;
+	scene->camera = parsed->camera;
 	free(parsed);
-	return (escene);
+	return (scene);
 }
 
 /*
@@ -75,33 +75,33 @@ static void	free_list_deep(t_list *list)
 }
 
 /*
-** Destructor de la estructura escene_t
+** Destructor de la estructura scene_t
 ** Libera toda la memoria allocada para la escena
 ** Parámetros:
-**   - escene: estructura de escena a destruir
+**   - scene: estructura de escena a destruir
 ** Comportamiento:
 **   - Libera las listas de objetos (spheres, planes, cylinders)
 **   - Libera las listas de luces
 **   - Libera ambient light
 **   - Libera datos de la cámara
-**   - Libera la estructura escene_t misma
+**   - Libera la estructura scene_t misma
 ** NOTA: Debe llamarse antes de terminar el programa para evitar memory leaks
 */
-void escene_destructor(escene_t *escene)
+void scene_destructor(scene_t *scene)
 {
-	if (!escene)
+	if (!scene)
 		return;
-	if (escene->object && *escene->object)
-		free_list_deep(*escene->object);
-	if (escene->object)
-		free(escene->object);
-	if (escene->light && *escene->light)
-		free_list_deep(*escene->light);
-	if (escene->light)
-		free(escene->light);
-	if (escene->al)
-		free(escene->al);
-	if (escene->camera)
-		free(escene->camera);
-	free(escene);
+	if (scene->object && *scene->object)
+		free_list_deep(*scene->object);
+	if (scene->object)
+		free(scene->object);
+	if (scene->light && *scene->light)
+		free_list_deep(*scene->light);
+	if (scene->light)
+		free(scene->light);
+	if (scene->al)
+		free(scene->al);
+	if (scene->camera)
+		free(scene->camera);
+	free(scene);
 }

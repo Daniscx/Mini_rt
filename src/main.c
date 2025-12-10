@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 21:30:47 by ravazque          #+#    #+#             */
-/*   Updated: 2025/12/09 21:30:48 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/10 02:27:40 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	error_manager(char *error_message)
 ** Flujo del programa:
 **   1. Valida argumentos (debe ser exactamente 2)
 **   2. Inicializa estructura t_minirt a cero
-**   3. Parsea el archivo .rt con escene_constructor
+**   3. Parsea el archivo .rt con scene_constructor
 **   4. Inicializa MLX, ventana e imagen
 **   5. Renderiza la escena
 **   6. Entra en el loop de eventos de MLX
@@ -55,7 +55,7 @@ int	main(int argc, char **argv)
 	if (argc != 2)
 		error_manager("Usage: ./miniRT <scene.rt>");
 	ft_bzero(&rt, sizeof(t_minirt));
-	rt.scene = escene_constructor(argv[1]);
+	rt.scene = scene_constructor(argv[1]);
 	if (!rt.scene)
 		error_manager("Failed to parse scene file");
 	minirt_init(&rt);

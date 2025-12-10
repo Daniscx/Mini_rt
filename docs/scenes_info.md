@@ -44,8 +44,8 @@ Cada línea representa un elemento:
 ## Uso
 
 ```bash
-./miniRT maps/test.rt
-./miniRT maps/simple.rt
-./miniRT maps/cylinder.rt
-./miniRT maps/multiple_lights.rt
+./miniRT scenes/test.rt
+./miniRT scenes/simple.rt
+./miniRT scenes/cylinder.rt
+./miniRT scenes/multiple_lights.rt
 ```

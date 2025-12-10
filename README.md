@@ -32,7 +32,7 @@ Ray tracer en C usando MinilibX - Proyecto 42 Madrid
 
 ```bash
 make
-./miniRT maps/test.rt
+./miniRT scenes/test.rt
 ```
 
 Para limpiar:
@@ -75,12 +75,12 @@ miniRT/
 │   │   └── render.c        # Renderizado de escena
 │   ├── parse/              # Parser archivos .rt
 │   │   └── parse.c         # Lectura y validación de escenas
-│   ├── escene/             # Gestión de escenas
-│   │   └── escene.c        # Constructor/destructor de escenas
+│   ├── scene/              # Gestión de escenas
+│   │   └── scene.c         # Constructor/destructor de escenas
 │   └── aux_libft/          # Librería de utilidades
 ├── include/
 │   └── mini_rt.h           # Definiciones y prototipos
-├── maps/                   # Archivos de escena .rt
+├── scenes/                 # Archivos de escena .rt
 ├── minilibx-linux/         # Librería gráfica MinilibX
 └── Makefile
 ```
@@ -195,7 +195,7 @@ El proyecto actualmente renderiza un gradiente de fondo. Los próximos pasos inc
 **        - Extraer floats de las listas anidadas
 **        - Crear structs específicas (t_sphere, t_plane, etc.)
 **        - Guardar en la escena de forma usable
-** ✗ 3.2. Modificar escene_t para usar structs en lugar de void*
+** ✗ 3.2. Modificar scene_t para usar structs en lugar de void*
 ** ✗ 3.3. Inicializar t_camera desde los datos parseados
 **
 ** FASE 4: IMPLEMENTAR RAYTRACING BÁSICO

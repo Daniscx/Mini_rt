@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 17:00:00 by ravazque          #+#    #+#             */
-/*   Updated: 2025/12/09 21:30:37 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/10 02:27:40 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,5 +105,5 @@ void	minirt_cleanup(t_minirt *rt)
 		free(rt->mlx);
 	}
 	if (rt->scene)
-		escene_destructor(rt->scene);
+		scene_destructor(rt->scene);
 }
