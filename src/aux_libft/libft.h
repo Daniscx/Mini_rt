@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 16:13:33 by dmaestro          #+#    #+#             */
-/*   Updated: 2025/12/09 22:10:35 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/10 15:53:09 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,6 @@ char				*ft_sstrjoin(char *fv, char *s);
 int					ft_sstrlen(char *ret);
 long long			ft_atol(const char *nptr);
 void				free_double_pointer(char **dbpt);
-float				ft_float(char *number);
+float				ft_atof(char *number);
 
 #endif

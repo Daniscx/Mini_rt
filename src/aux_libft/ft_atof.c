@@ -3,22 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atof.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmaestro <dmaestro@student.42madrid.con    +#+  +:+       +#+        */
+/*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/27 18:44:16 by dmaestro          #+#    #+#             */
-/*   Updated: 2025/12/03 16:42:30 by dmaestro         ###   ########.fr       */
+/*   Updated: 2025/12/10 15:56:43 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "math.h"
 
-float ft_float(char *number)
+float ft_atof(char *number)
 {
-    float result;
-    float decimal;
-    int i;
-    float sing;
+    float   result;
+    float   decimal;
+    int     i;
+    float   sing;
     
     i = 0;
     result = 0.000000;

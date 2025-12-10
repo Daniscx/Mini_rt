@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 21:30:47 by ravazque          #+#    #+#             */
-/*   Updated: 2025/12/10 02:27:40 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/10 16:18:03 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@
 ** Parámetros:
 **   - error_message: mensaje de error a mostrar
 ** Comportamiento:
-**   - Imprime "Error\n" en stderr
 **   - Imprime el mensaje de error en stderr
 **   - Sale del programa con exit(1)
 ** NOTA: Si error_message es NULL, sale sin mostrar mensaje
@@ -26,9 +25,8 @@ void	error_manager(char *error_message)
 {
 	if (!error_message)
 		exit(1);
-	write(2, "Error\n", 6);
-	write(2, error_message, ft_strlen(error_message));
-	write(2, "\n", 1);
+	ft_putstr_fd("\033[36mminiRT\033[0m: \033[1m\033[31mError\033[0m: ", STDERR_FILENO);
+	ft_putendl_fd(error_message, STDERR_FILENO);
 	exit(1);
 }
 
@@ -53,11 +51,11 @@ int	main(int argc, char **argv)
 	t_minirt	rt;
 
 	if (argc != 2)
-		error_manager("Usage: ./miniRT <scene.rt>");
+		error_manager("Please do \"./miniRT <scenes/scene.rt>\"!");
 	ft_bzero(&rt, sizeof(t_minirt));
 	rt.scene = scene_constructor(argv[1]);
 	if (!rt.scene)
-		error_manager("Failed to parse scene file");
+		error_manager("Failed to parse scene file.");
 	minirt_init(&rt);
 	render_scene(&rt);
 	mlx_loop(rt.mlx);

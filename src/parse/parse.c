@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/27 17:54:21 by dmaestro          #+#    #+#             */
-/*   Updated: 2025/12/09 22:06:58 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/10 16:03:52 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,10 @@ void	parser_file_name(char *file)
 	int	fd_tester;
 
 	if (ft_strncmp(file + ft_strlen(file) - 3, ".rt", 3) != 0)
-		error_manager("file extension isn't .rt please correct");
+		error_manager("file extension isn't .rt please correct!");
 	fd_tester = open(file, O_RDONLY);
 	if (fd_tester < 0)
-		error_manager("invalid file please check if it exits");
+		error_manager("invalid file please check if it exits!");
 	close(fd_tester);
 }
 

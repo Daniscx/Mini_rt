@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 17:00:00 by ravazque          #+#    #+#             */
-/*   Updated: 2025/12/10 02:27:40 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/10 16:04:08 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static void	malloc_error(t_minirt *rt)
 		mlx_destroy_display(rt->mlx);
 		free(rt->mlx);
 	}
-	error_manager("Error: Memory allocation failed");
+	error_manager("Memory allocation failed");
 }
 
 /*
