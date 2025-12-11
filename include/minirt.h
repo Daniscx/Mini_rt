@@ -177,7 +177,7 @@ t_vec3				vec3_cross(t_vec3 a, t_vec3 b);
 t_vec3				vec3_normalize(t_vec3 v);
 double				vec3_length(t_vec3 v);
 
-scene_t			*scene_constructor(char *file);
+scene_t				*scene_constructor(char *file);
 void				scene_destructor(scene_t *scene);
 
 parse_primitive_t	*parse_primiteve_contructor(char *file);
