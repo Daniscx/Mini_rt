@@ -1,3 +1,4 @@
+
 # Ejemplos de Conversión de Listas a Estructuras
 
 ## 📚 Entendiendo la Estructura de las Listas Parseadas
@@ -380,5 +381,3 @@ t_sphere        *convert_sphere(t_list **sphere_list);
 t_plane         *convert_plane(t_list **plane_list);
 t_cylinder      *convert_cylinder(t_list **cylinder_list);
 ```
-
-No olvides añadir `src/scene/convert.c` al Makefile!

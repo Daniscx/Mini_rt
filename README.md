@@ -82,7 +82,7 @@ miniRT/
 ├── include/
 │   └── minirt.h           # Definiciones y prototipos
 ├── scenes/                 # Archivos de escena .rt
-├── minilibx-linux/         # Librería gráfica MinilibX
+├── linux-minilibx/         # Librería gráfica MinilibX
 └── Makefile
 ```
 

@@ -10,7 +10,7 @@ INC_DIR     = include
 LIBFT_DIR   = src/aux_libft
 LIBFT_A     = $(LIBFT_DIR)/libft.a
 
-MLX_DIR     = minilibx-linux
+MLX_DIR     = linux-minilibx
 MLX_A       = $(MLX_DIR)/libmlx.a
 
 OBJ_ROOT        = minirtObjects

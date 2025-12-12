@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/27 17:54:21 by dmaestro          #+#    #+#             */
-/*   Updated: 2025/12/10 18:24:07 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/12 16:44:41 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,7 @@ bool	if_betwen_values(float element_to_check, float minmun_value,
 **   - Lista con los floats parseados
 **   - NULL si hay error de parseo o validación
 */
-static t_list	**list_of_float_checker(char **splited_element, float max,
-		float min, bool range)
+static t_list	**list_of_float_checker(char **splited_element, float max, float min, bool range)
 {
 	t_list	**result;
 	int		i;

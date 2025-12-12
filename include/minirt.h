@@ -13,7 +13,7 @@
 #ifndef MINIRT_H
 # define MINIRT_H
 
-# include "../minilibx-linux/mlx.h"
+# include "../linux-minilibx/mlx.h"
 #  include "../src/aux_libft/libft.h"
 
 # define WIDTH 800
@@ -260,7 +260,6 @@ bool				if_betwen_values(float element_to_check, float minmun_value, float maxim
 void				ambient_light_parser(void *actual_elem, void *list_to_add);
 void				light_parser(void *actual_elem, void *list_to_add);
 void				camera_parser(void *actual_elem, void *list_to_add);
-void				object_parser(void *actual_elem, void *list_to_add);
 t_list				**general_parser(t_list **list__to_track, void (*f)(void *, void *));
 
 #endif

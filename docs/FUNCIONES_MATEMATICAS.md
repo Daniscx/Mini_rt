@@ -1,3 +1,4 @@
+
 # Funciones Matemáticas - Para que Claude las implemente
 
 Este documento lista las funciones matemáticas y técnicas que **yo (Claude) voy a implementar** cuando me las pidas. Son las partes más complejas del raytracer.

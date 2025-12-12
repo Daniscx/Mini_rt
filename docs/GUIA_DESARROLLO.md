@@ -1,4 +1,5 @@
-# Guía de Desarrollo - miniRT
+
+ Guía de Desarrollo - miniRT
 
 ## 🎯 ¿Qué se ha hecho hasta ahora?
 
@@ -276,5 +277,3 @@ Para ver qué está parseando:
 Tu primer objetivo es implementar `convert_ambient_light()` en `src/scene/scene.c`.
 
 **Tip**: Mira el código del parser en `src/parse/parse.c` para entender cómo se construyen las listas. Luego, haz el proceso inverso para extraer los datos.
-
-¡Suerte! 🎨
