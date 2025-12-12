@@ -52,36 +52,32 @@ static int	create_rgb(int r, int g, int b)
 }
 
 /*
-** Renderiza la escena completa (actualmente solo gradiente de prueba)
+** Renderiza la escena completa
 ** Parámetros:
 **   - rt: estructura principal con imagen y escena
-** Funcionamiento actual:
-**   - Recorre cada píxel de la ventana
-**   - Crea un gradiente vertical azul claro (cielo)
-**   - Dibuja el píxel en la imagen en memoria
-**   - Muestra la imagen en la ventana con mlx_put_image_to_window
-** TODO: Implementar raytracing real:
-**   - Generar rayo desde cámara para cada píxel
-**   - Calcular intersecciones con objetos de la escena
-**   - Aplicar iluminación y calcular color final
+** Estado actual:
+**   - Color de fondo negro mientras implementas el raytracing
+**   - Los datos de la escena ya están parseados y listos para usar
+** TODO (LO QUE TÚ VAS A IMPLEMENTAR):
+**   1. Generar rayo desde cámara para cada píxel
+**   2. Calcular intersecciones con objetos de la escena
+**   3. Aplicar iluminación y calcular color final
+** NOTA: Cuando implementes el raytracing, este será el bucle principal
 */
 void	render_scene(t_minirt *rt)
 {
 	int		x;
 	int		y;
 	int		color;
-	double	gradient;
 
+	(void)rt;
+	color = create_rgb(0, 0, 0);
 	y = 0;
 	while (y < HEIGHT)
 	{
 		x = 0;
 		while (x < WIDTH)
 		{
-			gradient = (double)y / HEIGHT;
-			color = create_rgb((int)(135 * (1 - gradient) + 206 * gradient),
-					(int)(206 * (1 - gradient) + 235 * gradient),
-					(int)(235 * (1 - gradient) + 255 * gradient));
 			put_pixel(&rt->img, x, y, color);
 			x++;
 		}

@@ -84,6 +84,78 @@ typedef struct s_camera
 }					t_camera;
 
 /*
+** Luz ambiental de la escena
+** Campos:
+**   - ratio: intensidad de la luz ambiental [0.0, 1.0]
+**   - color: color RGB normalizado [0.0, 1.0]
+*/
+typedef struct s_ambient_light
+{
+	float			ratio;
+	t_vec3			color;
+}					t_ambient_light;
+
+/*
+** Luz puntual de la escena
+** Campos:
+**   - position: posición de la luz en el espacio
+**   - brightness: intensidad de la luz [0.0, 1.0]
+**   - color: color RGB normalizado [0.0, 1.0]
+*/
+typedef struct s_light
+{
+	t_vec3			position;
+	float			brightness;
+	t_vec3			color;
+}					t_light;
+
+/*
+** Esfera
+** Campos:
+**   - center: centro de la esfera
+**   - diameter: diámetro de la esfera
+**   - color: color RGB normalizado [0.0, 1.0]
+*/
+typedef struct s_sphere
+{
+	t_vec3			center;
+	float			diameter;
+	t_vec3			color;
+}					t_sphere;
+
+/*
+** Plano
+** Campos:
+**   - point: punto del plano
+**   - normal: vector normal al plano (normalizado)
+**   - color: color RGB normalizado [0.0, 1.0]
+*/
+typedef struct s_plane
+{
+	t_vec3			point;
+	t_vec3			normal;
+	t_vec3			color;
+}					t_plane;
+
+/*
+** Cilindro
+** Campos:
+**   - center: centro del cilindro
+**   - axis: vector dirección del eje del cilindro (normalizado)
+**   - diameter: diámetro del cilindro
+**   - height: altura del cilindro
+**   - color: color RGB normalizado [0.0, 1.0]
+*/
+typedef struct s_cylinder
+{
+	t_vec3			center;
+	t_vec3			axis;
+	float			diameter;
+	float			height;
+	t_vec3			color;
+}					t_cylinder;
+
+/*
 ** Escena completa del raytracer
 ** Campos:
 **   - object: lista de objetos (spheres, planes, cylinders)
@@ -95,7 +167,7 @@ typedef struct s_camera
 **   - Datos en formato de listas anidadas (float* dentro de t_list)
 ** TODO: Convertir estos datos a structs específicas:
 **   - t_sphere, t_plane, t_cylinder
-**   - t_light_point
+**   - t_light
 **   - t_ambient_light
 */
 typedef struct s_scene
@@ -188,6 +260,7 @@ bool				if_betwen_values(float element_to_check, float minmun_value, float maxim
 void				ambient_light_parser(void *actual_elem, void *list_to_add);
 void				light_parser(void *actual_elem, void *list_to_add);
 void				camera_parser(void *actual_elem, void *list_to_add);
-t_list				**general_parser(t_list **list__to_track, void f(void *, void *));
+void				object_parser(void *actual_elem, void *list_to_add);
+t_list				**general_parser(t_list **list__to_track, void (*f)(void *, void *));
 
 #endif

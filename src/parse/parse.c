@@ -53,6 +53,54 @@ bool	if_betwen_values(float element_to_check, float minmun_value,
 }
 
 /*
+** Crea una lista de floats parseados de un array de strings
+** Parámetros:
+**   - splited_element: array de strings con números
+**   - max, min: rango de valores válidos (si range=true)
+**   - range: si true, valida que los valores estén en [min, max]
+** Retorna:
+**   - Lista con los floats parseados
+**   - NULL si hay error de parseo o validación
+*/
+static t_list	**list_of_float_checker(char **splited_element, float max,
+		float min, bool range)
+{
+	t_list	**result;
+	int		i;
+	int		j;
+	float	*actual_float;
+
+	j = 0;
+	result = ft_calloc(1, sizeof(t_list *));
+	while (splited_element[j])
+	{
+		i = 0;
+		if (splited_element[j][i] == '-')
+			i++;
+		while (splited_element[j][i])
+		{
+			if (ft_isdigit(splited_element[j][i]) == 0
+				&& splited_element[j][i] != '.')
+			{
+				ft_printf("%s\n", "invalid number format");
+				return (NULL);
+			}
+			i++;
+		}
+		actual_float = ft_calloc(1, sizeof(float));
+		*actual_float = ft_atof(splited_element[j]);
+		if (range && if_betwen_values(*actual_float, min, max) == false)
+		{
+			ft_printf("%s\n", "value out of range");
+			return (NULL);
+		}
+		ft_lstadd_back(result, ft_lstnew(actual_float));
+		j++;
+	}
+	return (result);
+}
+
+/*
 ** Parsea una línea de Ambient Light del archivo .rt
 ** Formato esperado: A <ratio> <r,g,b>
 ** Ejemplo: A 0.2 255,255,255
@@ -131,7 +179,6 @@ void	ambient_light_parser(void *actual_elem, void *list_to_add)
 ** Parsea una línea de Light (punto de luz) del archivo .rt
 ** Formato esperado: L <x,y,z> <brightness> <r,g,b>
 ** Ejemplo: L -40.0,50.0,0.0 0.6 255,255,255
-** TODO: IMPLEMENTAR - Actualmente está vacía
 ** Debe parsear:
 **   - Posición (x,y,z)
 **   - Brightness ratio [0.0, 1.0]
@@ -139,8 +186,44 @@ void	ambient_light_parser(void *actual_elem, void *list_to_add)
 */
 void	light_parser(void *actual_elem, void *list_to_add)
 {
-	(void)actual_elem;
-	(void)list_to_add;
+	char	**actual_element;
+	t_list	**list_to_add_element;
+	t_list	**new_light_element;
+	char	**splited_element;
+	int		i;
+	float	*actual_float;
+
+	actual_element = (char **)actual_elem;
+	list_to_add_element = (t_list **)list_to_add;
+	i = 0;
+	if (ft_strncmp(actual_element[0], "L", ft_strlen(actual_element[0])) != 0)
+		return ;
+	new_light_element = ft_calloc(1, sizeof(t_list *));
+	splited_element = ft_split(actual_element[1], ',');
+	if (!splited_element)
+		return ;
+	ft_lstadd_back(new_light_element, ft_lstnew(list_of_float_checker(splited_element, 0, 0, false)));
+	free_double_pointer(splited_element);
+	while (actual_element[2][i])
+	{
+		if (ft_isdigit(actual_element[2][i]) == 0 && actual_element[2][i] != '.')
+		{
+			ft_printf("%s\n", "no valid parameter in light brightness");
+			return ;
+		}
+		i++;
+	}
+	actual_float = ft_calloc(1, sizeof(float));
+	*actual_float = ft_atof(actual_element[2]);
+	if (if_betwen_values(*actual_float, 0, 1) == false)
+		ft_printf("%s\n", "light brightness out of range [0.0, 1.0]");
+	ft_lstadd_back(new_light_element, ft_lstnew(actual_float));
+	splited_element = ft_split(actual_element[3], ',');
+	if (!splited_element)
+		return ;
+	ft_lstadd_back(new_light_element, ft_lstnew(list_of_float_checker(splited_element, 255, 0, true)));
+	free_double_pointer(splited_element);
+	ft_lstadd_back(list_to_add_element, ft_lstnew(new_light_element));
 }
 
 /*
@@ -283,6 +366,178 @@ void	camera_parser(void *actual_elem, void *list_to_add)
 }
 
 /*
+** Parser específico para esferas
+** Formato: sp <x,y,z> <diameter> <r,g,b>
+** Ejemplo: sp 0.0,0.0,-20.6 12.6 255,0,0
+*/
+static t_list	**sphere_parser(char **actual_element)
+{
+	t_list	**result;
+	t_list	**float_list;
+	char	**element_splited;
+	float	*actual_float;
+	int		i;
+
+	result = ft_calloc(1, sizeof(t_list *));
+	ft_lstadd_back(result, ft_lstnew(ft_strdup(actual_element[0])));
+	element_splited = ft_split(actual_element[1], ',');
+	float_list = list_of_float_checker(element_splited, 0, 0, false);
+	free_double_pointer(element_splited);
+	if (!float_list)
+		return (free(result), NULL);
+	ft_lstadd_back(result, ft_lstnew(float_list));
+	i = 0;
+	if (actual_element[2][i] == '-')
+		i++;
+	while (actual_element[2][i])
+	{
+		if (ft_isdigit(actual_element[2][i]) == 0 && actual_element[2][i] != '.')
+			return (ft_printf("%s\n", "invalid sphere diameter"), free(result), NULL);
+		i++;
+	}
+	actual_float = ft_calloc(1, sizeof(float));
+	*actual_float = ft_atof(actual_element[2]);
+	ft_lstadd_back(result, ft_lstnew(actual_float));
+	element_splited = ft_split(actual_element[3], ',');
+	float_list = list_of_float_checker(element_splited, 255, 0, true);
+	free_double_pointer(element_splited);
+	if (!float_list)
+		return (free(result), NULL);
+	ft_lstadd_back(result, ft_lstnew(float_list));
+	return (result);
+}
+
+/*
+** Parser específico para planos
+** Formato: pl <x,y,z> <nx,ny,nz> <r,g,b>
+** Ejemplo: pl 0.0,0.0,-10.0 0.0,1.0,0.0 0,0,225
+*/
+static t_list	**plane_parser(char **actual_element)
+{
+	t_list	**result;
+	t_list	**float_list;
+	char	**element_splited;
+
+	result = ft_calloc(1, sizeof(t_list *));
+	ft_lstadd_back(result, ft_lstnew(ft_strdup(actual_element[0])));
+	element_splited = ft_split(actual_element[1], ',');
+	float_list = list_of_float_checker(element_splited, 0, 0, false);
+	free_double_pointer(element_splited);
+	if (!float_list)
+		return (ft_printf("%s\n", "invalid plane position"), free(result), NULL);
+	ft_lstadd_back(result, ft_lstnew(float_list));
+	element_splited = ft_split(actual_element[2], ',');
+	float_list = list_of_float_checker(element_splited, 1, -1, true);
+	free_double_pointer(element_splited);
+	if (!float_list)
+		return (ft_printf("%s\n", "invalid plane normal"), free(result), NULL);
+	ft_lstadd_back(result, ft_lstnew(float_list));
+	element_splited = ft_split(actual_element[3], ',');
+	float_list = list_of_float_checker(element_splited, 255, 0, true);
+	free_double_pointer(element_splited);
+	if (!float_list)
+		return (ft_printf("%s\n", "invalid plane color"), free(result), NULL);
+	ft_lstadd_back(result, ft_lstnew(float_list));
+	return (result);
+}
+
+/*
+** Parser específico para cilindros
+** Formato: cy <x,y,z> <nx,ny,nz> <diameter> <height> <r,g,b>
+** Ejemplo: cy 50.0,0.0,20.6 0.0,0.0,1.0 14.2 21.42 10,0,255
+*/
+static t_list	**cylinder_parser(char **actual_element)
+{
+	t_list	**result;
+	t_list	**float_list;
+	char	**element_splited;
+	float	*actual_float;
+	int		i;
+
+	result = ft_calloc(1, sizeof(t_list *));
+	ft_lstadd_back(result, ft_lstnew(ft_strdup(actual_element[0])));
+	element_splited = ft_split(actual_element[1], ',');
+	float_list = list_of_float_checker(element_splited, 0, 0, false);
+	free_double_pointer(element_splited);
+	if (!float_list)
+		return (free(result), NULL);
+	ft_lstadd_back(result, ft_lstnew(float_list));
+	element_splited = ft_split(actual_element[2], ',');
+	float_list = list_of_float_checker(element_splited, 1, -1, true);
+	free_double_pointer(element_splited);
+	if (!float_list)
+		return (free(result), NULL);
+	ft_lstadd_back(result, ft_lstnew(float_list));
+	i = 0;
+	if (actual_element[3][i] == '-')
+		i++;
+	while (actual_element[3][i])
+	{
+		if (ft_isdigit(actual_element[3][i]) == 0 && actual_element[3][i] != '.')
+			return (ft_printf("%s\n", "invalid cylinder diameter"), free(result), NULL);
+		i++;
+	}
+	actual_float = ft_calloc(1, sizeof(float));
+	*actual_float = ft_atof(actual_element[3]);
+	ft_lstadd_back(result, ft_lstnew(actual_float));
+	i = 0;
+	if (actual_element[4][i] == '-')
+		i++;
+	while (actual_element[4][i])
+	{
+		if (ft_isdigit(actual_element[4][i]) == 0 && actual_element[4][i] != '.')
+			return (ft_printf("%s\n", "invalid cylinder height"), free(result), NULL);
+		i++;
+	}
+	actual_float = ft_calloc(1, sizeof(float));
+	*actual_float = ft_atof(actual_element[4]);
+	ft_lstadd_back(result, ft_lstnew(actual_float));
+	element_splited = ft_split(actual_element[5], ',');
+	float_list = list_of_float_checker(element_splited, 255, 0, true);
+	free_double_pointer(element_splited);
+	if (!float_list)
+		return (free(result), NULL);
+	ft_lstadd_back(result, ft_lstnew(float_list));
+	return (result);
+}
+
+/*
+** Parser genérico para objetos que delega a parsers específicos
+** Parámetros:
+**   - actual_element: línea spliteada (["sp", ...] o ["pl", ...] o ["cy", ...])
+**   - list_to_add_element: lista donde añadir el objeto parseado
+*/
+static void	object_parser(void *actual_elem, void *list_to_add)
+{
+	char	**actual_element;
+	t_list	**list_to_add_element;
+	t_list	**result;
+	size_t	len;
+
+	actual_element = (char **)actual_elem;
+	list_to_add_element = (t_list **)list_to_add;
+	len = ft_strlen(actual_element[0]);
+	if (ft_strncmp(actual_element[0], "sp", len) == 0)
+	{
+		result = sphere_parser(actual_element);
+		if (result)
+			ft_lstadd_back(list_to_add_element, ft_lstnew(result));
+	}
+	else if (ft_strncmp(actual_element[0], "pl", len) == 0)
+	{
+		result = plane_parser(actual_element);
+		if (result)
+			ft_lstadd_back(list_to_add_element, ft_lstnew(result));
+	}
+	else if (ft_strncmp(actual_element[0], "cy", len) == 0)
+	{
+		result = cylinder_parser(actual_element);
+		if (result)
+			ft_lstadd_back(list_to_add_element, ft_lstnew(result));
+	}
+}
+
+/*
 ** Asigna los elementos parseados a la estructura parse_primitive_t
 ** Parámetros:
 **   - element_to_conver: lista con todas las líneas del archivo
@@ -293,9 +548,8 @@ void	camera_parser(void *actual_elem, void *list_to_add)
 ** Funcionamiento:
 **   - Parsea ambient light (A)
 **   - Parsea camera (C)
-** TODO: Añadir parseo de:
-**   - Lights (L)
-**   - Objetos: Sphere (sp), Plane (pl), Cylinder (cy)
+**   - Parsea lights (L)
+**   - Parsea objetos (sp, pl, cy)
 */
 static int	primitive_parse_t_asignation(t_list **element_to_conver,
 		parse_primitive_t *struct_to_assignate)
@@ -308,6 +562,10 @@ static int	primitive_parse_t_asignation(t_list **element_to_conver,
 			camera_parser);
 	if (!struct_to_assignate->camera)
 		return (-1);
+	struct_to_assignate->light = general_parser(element_to_conver,
+			light_parser);
+	struct_to_assignate->object = general_parser(element_to_conver,
+			object_parser);
 	return (0);
 }
 

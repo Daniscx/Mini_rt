@@ -1,14 +1,7 @@
-# Escena simple: una esfera azul con iluminación básica
-# Ideal para probar el raytracer básico
+A 0.2 255,255,255
 
-# Ambient Light: ratio = 0.3, color blanco suave
-A 0.3 200,200,200
+C 0,0,0 0,0,-1 70
 
-# Camera: posición (0,0,-10), mirando hacia +Z, fov 70°
-C 0,0,-10 0,0,1 70
+L -10,10,10 0.7 255,255,255
 
-# Light: luz cenital brillante con color blanco
-L 0,10,-5 0.8 255,255,255
-
-# Sphere: esfera grande azul en el centro
-sp 0,0,10 8 100,150,255
+sp 0,0,-20 10 255,0,0
