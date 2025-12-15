@@ -1,0 +1,20 @@
+# Showcase scene for high resolution render (press P)
+# Demonstrates all features: spheres, planes, cylinders, lighting, shadows
+
+A 0.15 255,255,255
+
+C 0,8,20 0,-0.25,-0.95 70
+
+L -15,20,15 0.7 255,255,255
+L 15,15,10 0.5 255,200,150
+
+sp -6,2,0 4 220,50,50
+sp 0,3,-4 3 50,220,50
+sp 6,2,0 4 50,50,220
+sp 0,6,-2 2 255,200,50
+
+cy -3,0,6 0,1,0 1.5 5 200,100,200
+cy 3,0,6 0,1,0 1.5 5 100,200,200
+
+pl 0,0,0 0,1,0 200,200,200
+pl 0,0,-15 0,0,1 150,180,200

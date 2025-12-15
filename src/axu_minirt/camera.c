@@ -6,24 +6,16 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 17:00:00 by ravazque          #+#    #+#             */
-/*   Updated: 2025/12/10 18:24:07 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/16 12:00:00 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minirt.h"
 
 /*
-** Inicializa la cámara con valores por defecto
-** Parámetros:
-**   - camera: puntero a la cámara a inicializar
-** Configuración por defecto:
-**   - position: (0, 0, -5) → 5 unidades atrás del origen
-**   - direction: (0, 0, 1) → mirando hacia +Z
-**   - up: (0, 1, 0) → eje Y como "arriba"
-**   - right: producto cruz de direction × up
-**   - fov: 60 grados
-**   - aspect_ratio: WIDTH / HEIGHT
-** TODO: Reemplazar valores por defecto con datos del archivo .rt parseado
+** Initializes the camera with default values.
+** Used when no camera data is provided in the scene file.
+** Default configuration places camera at origin looking towards +Z.
 */
 void	camera_init(t_camera *camera)
 {
@@ -32,20 +24,28 @@ void	camera_init(t_camera *camera)
 	camera->up = vec3_new(0.0, 1.0, 0.0);
 	camera->right = vec3_cross(camera->direction, camera->up);
 	camera->fov = 60.0;
-	camera->aspect_ratio = (double)WIDTH / (double)HEIGHT;
+	camera->aspect_ratio = (double)WIDTH_LOW / (double)HEIGHT_LOW;
 }
 
 /*
-** Mueve la cámara en el espacio 3D
-** Parámetros:
-**   - camera: cámara a mover
-**   - offset: vector de desplazamiento a añadir a la posición actual
-** Comportamiento:
-**   - Suma el offset a la posición de la cámara
-**   - No modifica la dirección ni orientación
-** Ejemplo:
-**   - offset = camera.direction * 0.5 → avanza 0.5 unidades hacia adelante
-**   - offset = camera.right * -0.5 → se mueve 0.5 unidades a la izquierda
+** Updates camera orientation vectors (right and up) from direction.
+** Must be called after changing the camera direction to maintain
+** an orthonormal basis for proper ray generation.
+*/
+void	camera_update_vectors(t_camera *camera)
+{
+	t_vec3	world_up;
+
+	world_up = vec3_new(0.0, 1.0, 0.0);
+	if (fabs(vec3_dot(camera->direction, world_up)) > 0.99)
+		world_up = vec3_new(0.0, 0.0, 1.0);
+	camera->right = vec3_normalize(vec3_cross(camera->direction, world_up));
+	camera->up = vec3_normalize(vec3_cross(camera->right, camera->direction));
+}
+
+/*
+** Moves the camera by adding an offset to its position.
+** The offset is typically computed from movement direction and speed.
 */
 void	camera_move(t_camera *camera, t_vec3 offset)
 {
@@ -53,19 +53,9 @@ void	camera_move(t_camera *camera, t_vec3 offset)
 }
 
 /*
-** Rota la cámara usando ángulos de Euler (yaw y pitch)
-** Parámetros:
-**   - camera: cámara a rotar
-**   - yaw: rotación horizontal en radianes (izquierda/derecha)
-**   - pitch: rotación vertical en radianes (arriba/abajo)
-** Funcionamiento:
-**   1. Calcula nueva dirección aplicando rotaciones yaw y pitch
-**   2. Normaliza la nueva dirección
-**   3. Recalcula vectores right y up para mantener base ortonormal
-** Matrices de rotación:
-**   - Yaw: rota alrededor del eje Y (horizontal)
-**   - Pitch: rota alrededor del eje X (vertical)
-** NOTA: Los vectores right y up se recalculan para mantener ortogonalidad
+** Rotates the camera using yaw (horizontal) and pitch (vertical) angles.
+** Yaw rotates around the Y axis, pitch around the right vector.
+** Automatically recalculates orientation vectors after rotation.
 */
 void	camera_rotate(t_camera *camera, double yaw, double pitch)
 {
@@ -83,8 +73,6 @@ void	camera_rotate(t_camera *camera, double yaw, double pitch)
 	new_dir.z = camera->direction.x * sin_yaw + camera->direction.z * cos_yaw;
 	new_dir.y = camera->direction.y * cos_pitch - new_dir.z * sin_pitch;
 	new_dir.z = camera->direction.y * sin_pitch + new_dir.z * cos_pitch;
-	new_dir.x = new_dir.x;
 	camera->direction = vec3_normalize(new_dir);
-	camera->right = vec3_normalize(vec3_cross(camera->direction, vec3_new(0.0, 1.0, 0.0)));
-	camera->up = vec3_normalize(vec3_cross(camera->right, camera->direction));
+	camera_update_vectors(camera);
 }

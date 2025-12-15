@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/15 21:00:00 by ravazque          #+#    #+#             */
-/*   Updated: 2025/12/15 21:48:55 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/15 23:04:19 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ static void	load_camera(t_scene *scene, char **args)
 	scene->camera.position = parse_vec3(args[1]);
 	scene->camera.direction = vec3_normalize(parse_vec3(args[2]));
 	scene->camera.fov = ft_atof(args[3]);
-	scene->camera.aspect_ratio = (double)WIDTH / (double)HEIGHT;
+	scene->camera.aspect_ratio = (double)WIDTH_LOW / (double)HEIGHT_LOW;
 	up = vec3_new(0, 1, 0);
 	if (fabs(vec3_dot(scene->camera.direction, up)) > 0.99)
 		up = vec3_new(0, 0, 1);
@@ -191,15 +191,22 @@ static void	process_line(t_scene *scene, char *line)
 	free_double_pointer(args);
 }
 
-int	scene_load(t_scene *scene, char *filename)
+int	scene_load(t_scene *scene, char *filename, int route)
 {
 	int		fd;
 	char	*line;
 
 	ft_bzero(scene, sizeof(t_scene));
-	fd = open(filename, O_RDONLY);
-	if (fd < 0)
+	if (route == 1)
 		fd = open(ft_strjoin(filename, ".rt"), O_RDONLY);
+	else if (route == 2)
+		fd = open(ft_strjoin("scenes/", ft_strjoin(filename, ".rt")), O_RDONLY);
+	else if (route == 3)
+		fd = open(filename, O_RDONLY);
+	else if (route == 4)
+		fd = open(ft_strjoin("scenes/", filename), O_RDONLY);
+	if (fd < 0)
+		error_manager("Failed to load scene file.");
 	line = get_next_line(fd);
 	while (line)
 	{

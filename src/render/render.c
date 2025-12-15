@@ -6,45 +6,29 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 17:00:00 by ravazque          #+#    #+#             */
-/*   Updated: 2025/12/10 18:24:07 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/16 12:00:00 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minirt.h"
 
 /*
-** Dibuja un píxel en la imagen en memoria
-** Parámetros:
-**   - img: imagen donde dibujar
-**   - x, y: coordenadas del píxel
-**   - color: color en formato ARGB (0x00RRGGBB)
-** Funcionamiento:
-**   - Calcula la posición en memoria: y * line_len + x * bytes_por_pixel
-**   - Escribe el color directamente en memoria
-**   - Valida que las coordenadas estén dentro de la ventana
-** Ventaja: Más rápido que mlx_pixel_put (no requiere X11 calls)
+** Writes a pixel color directly to the image buffer.
+** Validates coordinates are within image bounds.
 */
 static void	put_pixel(t_img *img, int x, int y, int color)
 {
 	char	*dst;
 
-	if (x < 0 || x >= WIDTH || y < 0 || y >= HEIGHT)
+	if (x < 0 || x >= img->width || y < 0 || y >= img->height)
 		return ;
 	dst = img->pixels_ptr + (y * img->line_len + x * (img->bpp / 8));
 	*(unsigned int *)dst = color;
 }
 
 /*
-** Crea un color en formato ARGB a partir de componentes RGB
-** Parámetros:
-**   - r, g, b: componentes rojo, verde, azul [0-255]
-** Retorna:
-**   - Color en formato 0x00RRGGBB
-** Funcionamiento:
-**   - R << 16: coloca el rojo en los bits 16-23
-**   - G << 8:  coloca el verde en los bits 8-15
-**   - B:       coloca el azul en los bits 0-7
-** Ejemplo: create_rgb(255, 0, 0) = 0x00FF0000 (rojo)
+** Converts RGB components (0-255) to a single integer color value.
+** Format: 0x00RRGGBB
 */
 static int	create_rgb(int r, int g, int b)
 {
@@ -52,7 +36,8 @@ static int	create_rgb(int r, int g, int b)
 }
 
 /*
-** Calcula el color de un pixel usando raytracing
+** Traces a ray through the scene and computes the pixel color.
+** Returns black if no intersection, otherwise computes lighting.
 */
 static int	trace_ray(t_ray ray, t_scene *scene)
 {
@@ -73,7 +58,8 @@ static int	trace_ray(t_ray ray, t_scene *scene)
 }
 
 /*
-** Renderiza la escena completa usando raytracing
+** Renders the scene at low resolution for interactive viewing.
+** Uses the standard image buffer.
 */
 void	render_scene(t_minirt *rt)
 {
@@ -82,18 +68,52 @@ void	render_scene(t_minirt *rt)
 	t_ray	ray;
 	int		color;
 
+	rt->scene.camera.aspect_ratio = (double)rt->img.width / rt->img.height;
 	y = 0;
-	while (y < HEIGHT)
+	while (y < rt->img.height)
 	{
 		x = 0;
-		while (x < WIDTH)
+		while (x < rt->img.width)
 		{
-			ray = ray_from_camera(&rt->scene.camera, x, y);
+			ray = ray_from_camera(&rt->scene.camera, x, y, &rt->img);
 			color = trace_ray(ray, &rt->scene);
 			put_pixel(&rt->img, x, y, color);
 			x++;
 		}
 		y++;
 	}
+	mlx_put_image_to_window(rt->mlx, rt->win, rt->img.img_ptr, 0, 0);
+}
+
+/*
+** Renders the scene at high resolution for quality screenshots.
+** Displays for 5 seconds then returns to normal mode.
+*/
+void	render_high_res(t_minirt *rt)
+{
+	int		x;
+	int		y;
+	t_ray	ray;
+	int		color;
+
+	rt->scene.camera.aspect_ratio = (double)rt->img_high.width
+		/ rt->img_high.height;
+	y = 0;
+	while (y < rt->img_high.height)
+	{
+		x = 0;
+		while (x < rt->img_high.width)
+		{
+			ray = ray_from_camera(&rt->scene.camera, x, y, &rt->img_high);
+			color = trace_ray(ray, &rt->scene);
+			put_pixel(&rt->img_high, x, y, color);
+			x++;
+		}
+		y++;
+	}
+	mlx_put_image_to_window(rt->mlx, rt->win, rt->img_high.img_ptr, 0, 0);
+	sleep(5);
+	rt->high_res_mode = false;
+	rt->scene.camera.aspect_ratio = (double)rt->img.width / rt->img.height;
 	mlx_put_image_to_window(rt->mlx, rt->win, rt->img.img_ptr, 0, 0);
 }

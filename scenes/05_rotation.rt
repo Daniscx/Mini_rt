@@ -1,0 +1,10 @@
+# Test: Cylinder rotated 90 degrees on Z axis
+# Criterion: Translations and rotations - Rotation
+
+A 0.2 255,255,255
+
+C 0,5,15 0,-0.2,-1 70
+
+L 10,10,10 0.8 255,255,255
+
+cy 0,2,0 1,0,0 2 10 200,100,50

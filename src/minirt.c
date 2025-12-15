@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 21:30:47 by ravazque          #+#    #+#             */
-/*   Updated: 2025/12/10 18:25:24 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/15 22:44:18 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,12 +49,13 @@ void	error_manager(char *error_message)
 int	main(int argc, char **argv)
 {
 	t_minirt	rt;
+	int			route;
 
 	if (argc != 2)
 		error_manager("Please do \"./miniRT <scene.rt>\"!");
-	parser_file_name(argv[1]);
+	route = parser_file_name(argv[1]);
 	ft_bzero(&rt, sizeof(t_minirt));
-	if (scene_load(&rt.scene, argv[1]) < 0)
+	if (scene_load(&rt.scene, argv[1], route) < 0)
 		error_manager("Failed to load scene file.");
 	minirt_init(&rt);
 	render_scene(&rt);
@@ -62,4 +63,3 @@ int	main(int argc, char **argv)
 	minirt_cleanup(&rt);
 	return (0);
 }
-

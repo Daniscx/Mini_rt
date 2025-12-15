@@ -1,0 +1,10 @@
+# Test: Basic Cylinder along Y axis
+# Criterion: The Basic Shapes - Cylinder
+
+A 0.2 255,255,255
+
+C 0,5,15 0,-0.2,-1 70
+
+L 10,10,10 0.8 255,255,255
+
+cy 0,0,0 0,1,0 3 8 0,200,100

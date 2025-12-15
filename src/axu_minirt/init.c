@@ -6,44 +6,40 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 17:00:00 by ravazque          #+#    #+#             */
-/*   Updated: 2025/12/10 18:24:07 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/16 12:00:00 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minirt.h"
 
 /*
-** Configura los hooks de eventos de X11 para la ventana
-** Parámetros:
-**   - rt: estructura principal con mlx y ventana
-** Funcionamiento:
-**   - Hook de KeyPress: captura teclas presionadas → key_handler
-**   - Hook de DestroyNotify: captura cierre de ventana → close_handler
-** NOTA: No usa mlx_key_hook porque necesitamos hooks específicos de X11
+** Registers all X11 event hooks for the window.
+** Includes keyboard (press/release), mouse motion, expose, and close events.
 */
 static void	events_init(t_minirt *rt)
 {
-	mlx_hook(rt->win, KeyPress, KeyPressMask, key_handler, rt);
+	mlx_hook(rt->win, KeyPress, KeyPressMask, key_press_handler, rt);
+	mlx_hook(rt->win, KeyRelease, KeyReleaseMask, key_release_handler, rt);
+	mlx_hook(rt->win, MotionNotify, PointerMotionMask, mouse_move_handler, rt);
+	mlx_hook(rt->win, Expose, ExposureMask, expose_handler, rt);
 	mlx_hook(rt->win, DestroyNotify, StructureNotifyMask, close_handler, rt);
+	mlx_loop_hook(rt->mlx, loop_handler, rt);
 }
 
 /*
-** Maneja errores de memoria durante la inicialización
-** Parámetros:
-**   - rt: estructura principal (parcialmente inicializada)
-** Comportamiento:
-**   - Libera recursos MLX ya allocados (ventana, display)
-**   - Llama a error_manager para mostrar mensaje y salir
-** NOTA: Solo libera lo que ya se haya inicializado exitosamente
+** Handles memory allocation errors during initialization.
+** Frees any already-allocated resources and exits with error message.
 */
 static void	malloc_error(t_minirt *rt)
 {
 	if (rt->mlx)
 	{
+		if (rt->img.img_ptr)
+			mlx_destroy_image(rt->mlx, rt->img.img_ptr);
+		if (rt->img_high.img_ptr)
+			mlx_destroy_image(rt->mlx, rt->img_high.img_ptr);
 		if (rt->win)
-		{
 			mlx_destroy_window(rt->mlx, rt->win);
-		}
 		mlx_destroy_display(rt->mlx);
 		free(rt->mlx);
 	}
@@ -51,52 +47,53 @@ static void	malloc_error(t_minirt *rt)
 }
 
 /*
-** Inicializa todos los componentes de MinilibX y la cámara
-** Parámetros:
-**   - rt: estructura principal (debe estar inicializada con ft_bzero)
-** Proceso:
-**   1. Inicializa conexión MLX con el servidor X
-**   2. Crea ventana de WIDTH x HEIGHT píxeles
-**   3. Crea imagen en memoria para renderizado rápido
-**   4. Obtiene puntero directo a los píxeles de la imagen
-**   5. Inicializa cámara con valores por defecto
-**   6. Configura hooks de eventos (teclado y cierre)
-** NOTA: Si falla algún paso, llama a malloc_error que limpia y sale
+** Creates an MLX image buffer with the specified dimensions.
+** Returns 0 on success, -1 on failure.
+*/
+static int	create_image(t_minirt *rt, t_img *img, int width, int height)
+{
+	img->img_ptr = mlx_new_image(rt->mlx, width, height);
+	if (!img->img_ptr)
+		return (-1);
+	img->pixels_ptr = mlx_get_data_addr(img->img_ptr, &img->bpp,
+			&img->line_len, &img->endian);
+	img->width = width;
+	img->height = height;
+	return (0);
+}
+
+/*
+** Initializes all MinilibX components and program state.
+** Creates window, image buffers, and sets up event handlers.
 */
 void	minirt_init(t_minirt *rt)
 {
 	rt->mlx = mlx_init();
 	if (!rt->mlx)
 		malloc_error(rt);
-	rt->win = mlx_new_window(rt->mlx, WIDTH, HEIGHT, WIN_TITLE);
+	rt->win = mlx_new_window(rt->mlx, WIDTH_LOW, HEIGHT_LOW, WIN_TITLE);
 	if (!rt->win)
 		malloc_error(rt);
-	rt->img.img_ptr = mlx_new_image(rt->mlx, WIDTH, HEIGHT);
-	if (!rt->img.img_ptr)
+	if (create_image(rt, &rt->img, WIDTH_LOW, HEIGHT_LOW) < 0)
 		malloc_error(rt);
-	rt->img.pixels_ptr = mlx_get_data_addr(rt->img.img_ptr, &rt->img.bpp,
-			&rt->img.line_len, &rt->img.endian);
-	camera_init(&rt->scene.camera);
+	if (create_image(rt, &rt->img_high, WIDTH_HIGH, HEIGHT_HIGH) < 0)
+		malloc_error(rt);
+	rt->high_res_mode = false;
+	rt->needs_render = true;
+	ft_bzero(&rt->input, sizeof(t_input));
 	events_init(rt);
 }
 
 /*
-** Libera todos los recursos allocados por miniRT
-** Parámetros:
-**   - rt: estructura principal a limpiar
-** Comportamiento:
-**   - Destruye imagen de MLX
-**   - Destruye ventana de MLX
-**   - Destruye conexión con X11 (mlx_destroy_display)
-**   - Libera la estructura mlx
-**   - Libera la escena parseada
-** NOTA: Debe llamarse antes de terminar el programa
-**       El orden de destrucción es importante (primero imagen, luego ventana)
+** Frees all allocated resources before program exit.
+** Destroys images, window, display connection, and scene data.
 */
 void	minirt_cleanup(t_minirt *rt)
 {
 	if (rt->img.img_ptr)
 		mlx_destroy_image(rt->mlx, rt->img.img_ptr);
+	if (rt->img_high.img_ptr)
+		mlx_destroy_image(rt->mlx, rt->img_high.img_ptr);
 	if (rt->win)
 		mlx_destroy_window(rt->mlx, rt->win);
 	if (rt->mlx)

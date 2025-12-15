@@ -6,14 +6,15 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/15 20:00:00 by ravazque          #+#    #+#             */
-/*   Updated: 2025/12/15 20:00:00 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/16 12:00:00 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minirt.h"
 
 /*
-** Crea un nuevo rayo
+** Creates a new ray with the given origin and direction.
+** The direction is normalized automatically.
 */
 t_ray	ray_new(t_vec3 origin, t_vec3 direction)
 {
@@ -25,7 +26,8 @@ t_ray	ray_new(t_vec3 origin, t_vec3 direction)
 }
 
 /*
-** Calcula un punto a lo largo del rayo: P = O + t*D
+** Computes a point along the ray at parameter t.
+** Formula: P = O + t * D
 */
 t_vec3	ray_at(t_ray ray, double t)
 {
@@ -33,10 +35,11 @@ t_vec3	ray_at(t_ray ray, double t)
 }
 
 /*
-** Genera un rayo desde la camara a traves del pixel (x, y)
-** Convierte coordenadas de pantalla a coordenadas del mundo
+** Generates a ray from the camera through the pixel at (x, y).
+** Converts screen coordinates to normalized device coordinates,
+** then to world space using the camera's orientation vectors.
 */
-t_ray	ray_from_camera(t_camera *cam, int x, int y)
+t_ray	ray_from_camera(t_camera *cam, int x, int y, t_img *img)
 {
 	double	u;
 	double	v;
@@ -44,8 +47,8 @@ t_ray	ray_from_camera(t_camera *cam, int x, int y)
 	t_vec3	dir;
 
 	fov_scale = tan((cam->fov * M_PI / 180.0) / 2.0);
-	u = (2.0 * ((double)x + 0.5) / (double)WIDTH - 1.0) * cam->aspect_ratio;
-	v = 1.0 - 2.0 * ((double)y + 0.5) / (double)HEIGHT;
+	u = (2.0 * ((double)x + 0.5) / (double)img->width - 1.0) * cam->aspect_ratio;
+	v = 1.0 - 2.0 * ((double)y + 0.5) / (double)img->height;
 	u *= fov_scale;
 	v *= fov_scale;
 	dir = vec3_add(cam->direction,
@@ -54,7 +57,8 @@ t_ray	ray_from_camera(t_camera *cam, int x, int y)
 }
 
 /*
-** Crea un hit record vacio (sin impacto)
+** Creates an empty hit record (no intersection).
+** Initializes t to INFINITY for comparison purposes.
 */
 t_hit	hit_new(void)
 {
