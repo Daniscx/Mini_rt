@@ -49,13 +49,15 @@ void	error_manager(char *error_message)
 int	main(int argc, char **argv)
 {
 	t_minirt	rt;
+	scene_t		*parsed;
 
 	if (argc != 2)
 		error_manager("Please do \"./miniRT <scene.rt>\"!");
 	ft_bzero(&rt, sizeof(t_minirt));
-	rt.scene = scene_constructor(argv[1]);
-	if (!rt.scene)
+	parsed = scene_constructor(argv[1]);
+	if (!parsed)
 		error_manager("Failed to parse scene file.");
+	scene_destructor(parsed);
 	minirt_init(&rt);
 	render_scene(&rt);
 	mlx_loop(rt.mlx);

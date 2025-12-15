@@ -6,31 +6,31 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 21:31:11 by ravazque          #+#    #+#             */
-/*   Updated: 2025/12/10 02:27:40 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/15 20:00:00 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINIRT_H
 # define MINIRT_H
 
+/* ============ INCLUDES ============ */
 # include "../linux-minilibx/mlx.h"
-#  include "../src/aux_libft/libft.h"
+# include "../src/aux_libft/libft.h"
+# include <math.h>
+# include <stdbool.h>
 
+# ifndef M_PI
+#  define M_PI 3.14159265358979323846
+# endif
+
+/* ============ CONSTANTS ============ */
 # define WIDTH 800
 # define HEIGHT 600
 # define WIN_TITLE "miniRT"
-
 # define ESC_KEY 65307
+# define EPSILON 0.0001
 
-/*
-** Vector 3D para representar puntos, direcciones y colores
-** Campos:
-**   - x, y, z: componentes del vector
-** Usos:
-**   - Posiciones en el espacio 3D
-**   - Direcciones normalizadas (vectores unitarios)
-**   - Colores RGB (normalizados 0.0-1.0)
-*/
+/* ============ VECTOR 3D ============ */
 typedef struct s_vec3
 {
 	double			x;
@@ -38,41 +38,79 @@ typedef struct s_vec3
 	double			z;
 }					t_vec3;
 
-/*
-** Imagen de MinilibX
-** Campos:
-**   - img_ptr: puntero a la imagen de MLX
-**   - pixels_ptr: puntero al array de píxeles (obtenido con mlx_get_data_addr)
-**   - bpp: bits por píxel
-**   - line_len: bytes por línea
-**   - endian: 0 = little endian, 1 = big endian
-** Uso:
-**   - Renderizar píxel por píxel directamente en memoria
-**   - Más rápido que mlx_pixel_put
-*/
-typedef struct s_img
+/* ============ RAY ============ */
+typedef struct s_ray
 {
-	void			*img_ptr;
-	char			*pixels_ptr;
-	int				bpp;
-	int				line_len;
-	int				endian;
-}					t_img;
+	t_vec3			origin;
+	t_vec3			direction;
+}					t_ray;
 
-/*
-** Cámara del raytracer
-** Campos:
-**   - position: posición de la cámara en el espacio 3D
-**   - direction: vector de dirección normalizado (hacia dónde mira)
-**   - right: vector derecho (perpendicular a direction y up)
-**   - up: vector arriba (perpendicular a direction y right)
-**   - fov: field of view en grados [0, 180]
-**   - aspect_ratio: relación ancho/alto (WIDTH/HEIGHT)
-** Funcionamiento:
-**   - Los vectores direction, right y up forman una base ortonormal
-**   - Se usan para calcular rayos desde la cámara hacia cada píxel
-** TODO: Inicializar desde los datos parseados del archivo .rt
-*/
+/* ============ OBJECT TYPES ============ */
+typedef enum e_obj_type
+{
+	OBJ_SPHERE,
+	OBJ_PLANE,
+	OBJ_CYLINDER
+}					t_obj_type;
+
+/* ============ GEOMETRIC PRIMITIVES ============ */
+typedef struct s_sphere
+{
+	t_vec3			center;
+	double			diameter;
+	t_vec3			color;
+}					t_sphere;
+
+typedef struct s_plane
+{
+	t_vec3			point;
+	t_vec3			normal;
+	t_vec3			color;
+}					t_plane;
+
+typedef struct s_cylinder
+{
+	t_vec3			center;
+	t_vec3			axis;
+	double			diameter;
+	double			height;
+	t_vec3			color;
+}					t_cylinder;
+
+/* ============ GENERIC OBJECT ============ */
+typedef struct s_object
+{
+	t_obj_type		type;
+	t_sphere		sphere;
+	t_plane			plane;
+	t_cylinder		cylinder;
+}					t_object;
+
+/* ============ HIT RECORD ============ */
+typedef struct s_hit
+{
+	bool			hit;
+	double			t;
+	t_vec3			point;
+	t_vec3			normal;
+	t_vec3			color;
+}					t_hit;
+
+/* ============ LIGHTING ============ */
+typedef struct s_ambient
+{
+	double			ratio;
+	t_vec3			color;
+}					t_ambient;
+
+typedef struct s_light
+{
+	t_vec3			position;
+	double			brightness;
+	t_vec3			color;
+}					t_light;
+
+/* ============ CAMERA ============ */
 typedef struct s_camera
 {
 	t_vec3			position;
@@ -83,116 +121,37 @@ typedef struct s_camera
 	double			aspect_ratio;
 }					t_camera;
 
-/*
-** Luz ambiental de la escena
-** Campos:
-**   - ratio: intensidad de la luz ambiental [0.0, 1.0]
-**   - color: color RGB normalizado [0.0, 1.0]
-*/
-typedef struct s_ambient_light
-{
-	float			ratio;
-	t_vec3			color;
-}					t_ambient_light;
-
-/*
-** Luz puntual de la escena
-** Campos:
-**   - position: posición de la luz en el espacio
-**   - brightness: intensidad de la luz [0.0, 1.0]
-**   - color: color RGB normalizado [0.0, 1.0]
-*/
-typedef struct s_light
-{
-	t_vec3			position;
-	float			brightness;
-	t_vec3			color;
-}					t_light;
-
-/*
-** Esfera
-** Campos:
-**   - center: centro de la esfera
-**   - diameter: diámetro de la esfera
-**   - color: color RGB normalizado [0.0, 1.0]
-*/
-typedef struct s_sphere
-{
-	t_vec3			center;
-	float			diameter;
-	t_vec3			color;
-}					t_sphere;
-
-/*
-** Plano
-** Campos:
-**   - point: punto del plano
-**   - normal: vector normal al plano (normalizado)
-**   - color: color RGB normalizado [0.0, 1.0]
-*/
-typedef struct s_plane
-{
-	t_vec3			point;
-	t_vec3			normal;
-	t_vec3			color;
-}					t_plane;
-
-/*
-** Cilindro
-** Campos:
-**   - center: centro del cilindro
-**   - axis: vector dirección del eje del cilindro (normalizado)
-**   - diameter: diámetro del cilindro
-**   - height: altura del cilindro
-**   - color: color RGB normalizado [0.0, 1.0]
-*/
-typedef struct s_cylinder
-{
-	t_vec3			center;
-	t_vec3			axis;
-	float			diameter;
-	float			height;
-	t_vec3			color;
-}					t_cylinder;
-
-/*
-** Escena completa del raytracer
-** Campos:
-**   - object: lista de objetos (spheres, planes, cylinders)
-**   - light: lista de luces puntuales
-**   - al: ambient light (luz ambiental)
-**   - camera: datos de la cámara parseados
-** Estado actual:
-**   - Estructura poblada por el parser
-**   - Datos en formato de listas anidadas (float* dentro de t_list)
-** TODO: Convertir estos datos a structs específicas:
-**   - t_sphere, t_plane, t_cylinder
-**   - t_light
-**   - t_ambient_light
-*/
+/* ============ SCENE ============ */
 typedef struct s_scene
 {
-	t_list			**object;
-	t_list			**light;
-	void			*al;
-	void			*camera;
-}					scene_t;
+	t_ambient		ambient;
+	t_camera		camera;
+	t_light			*lights;
+	int				light_count;
+	t_object		*objects;
+	int				object_count;
+}					t_scene;
 
-/*
-** Estructura temporal del parser
-** Campos:
-**   - object: lista de objetos parseados (sp, pl, cy)
-**   - light: lista de luces parseadas (L)
-**   - al: ambient light parseada (A)
-**   - camera: cámara parseada (C)
-** Uso:
-**   - Estructura intermedia durante el parseo
-**   - Se transfiere a scene_t después de parsear
-**   - Se destruye después de transferir los datos
-** Formato de datos:
-**   - Cada campo es una lista de listas de floats
-**   - Ejemplo camera: [[x,y,z], [nx,ny,nz], fov]
-*/
+/* ============ MLX IMAGE ============ */
+typedef struct s_img
+{
+	void			*img_ptr;
+	char			*pixels_ptr;
+	int				bpp;
+	int				line_len;
+	int				endian;
+}					t_img;
+
+/* ============ MAIN PROGRAM ============ */
+typedef struct s_minirt
+{
+	void			*mlx;
+	void			*win;
+	t_img			img;
+	t_scene			scene;
+}					t_minirt;
+
+/* ============ PARSER PRIMITIVE (temporal) ============ */
 typedef struct s_parse_primitive
 {
 	t_list			**object;
@@ -201,45 +160,35 @@ typedef struct s_parse_primitive
 	t_list			**camera;
 }					parse_primitive_t;
 
-/*
-** Estructura principal del programa miniRT
-** Campos:
-**   - mlx: conexión con el servidor X (mlx_init)
-**   - win: ventana de MLX (mlx_new_window)
-**   - img: imagen donde se renderiza la escena
-**   - camera: cámara del raytracer (ya procesada)
-**   - scene: escena parseada del archivo .rt
-** Ciclo de vida:
-**   1. main: inicializa con ft_bzero
-**   2. scene_constructor: parsea el archivo .rt
-**   3. minirt_init: crea mlx, win, img y configura camera
-**   4. render_scene: renderiza la escena en img
-**   5. mlx_loop: loop de eventos
-**   6. minirt_cleanup: libera toda la memoria
-*/
-typedef struct s_minirt
+/* legacy scene_t para compatibilidad temporal */
+typedef struct s_scene_legacy
 {
-	void			*mlx;
-	void			*win;
-	t_img			img;
-	t_camera		camera;
-	scene_t		*scene;
-}					t_minirt;
+	t_list			**object;
+	t_list			**light;
+	void			*al;
+	void			*camera;
+}					scene_t;
 
+/* ============ ERROR ============ */
 void				error_manager(char *error_message);
 
+/* ============ INIT & CLEANUP ============ */
 void				minirt_init(t_minirt *rt);
 void				minirt_cleanup(t_minirt *rt);
 
+/* ============ EVENTS ============ */
 int					close_handler(t_minirt *rt);
 int					key_handler(int keycode, t_minirt *rt);
 
+/* ============ CAMERA ============ */
 void				camera_init(t_camera *camera);
 void				camera_move(t_camera *camera, t_vec3 offset);
 void				camera_rotate(t_camera *camera, double yaw, double pitch);
 
+/* ============ RENDER ============ */
 void				render_scene(t_minirt *rt);
 
+/* ============ VECTOR OPERATIONS ============ */
 t_vec3				vec3_new(double x, double y, double z);
 t_vec3				vec3_add(t_vec3 a, t_vec3 b);
 t_vec3				vec3_sub(t_vec3 a, t_vec3 b);
@@ -248,18 +197,44 @@ double				vec3_dot(t_vec3 a, t_vec3 b);
 t_vec3				vec3_cross(t_vec3 a, t_vec3 b);
 t_vec3				vec3_normalize(t_vec3 v);
 double				vec3_length(t_vec3 v);
+t_vec3				vec3_mult(t_vec3 a, t_vec3 b);
+t_vec3				vec3_negate(t_vec3 v);
+double				vec3_clamp(double value, double min, double max);
+int					vec3_to_color(t_vec3 color);
 
+/* ============ RAY ============ */
+t_ray				ray_new(t_vec3 origin, t_vec3 direction);
+t_vec3				ray_at(t_ray ray, double t);
+t_ray				ray_from_camera(t_camera *cam, int x, int y);
+
+/* ============ INTERSECTIONS ============ */
+t_hit				hit_new(void);
+t_hit				intersect_sphere(t_ray ray, t_sphere *sp);
+t_hit				intersect_plane(t_ray ray, t_plane *pl);
+t_hit				intersect_cylinder(t_ray ray, t_cylinder *cy);
+t_hit				find_closest_hit(t_ray ray, t_scene *scene);
+
+/* ============ LIGHTING ============ */
+t_vec3				calculate_lighting(t_hit hit, t_scene *scene);
+bool				is_in_shadow(t_vec3 point, t_vec3 light_dir,
+						double light_dist, t_scene *scene);
+
+/* ============ SCENE CONVERSION ============ */
+int					scene_from_parse(t_scene *scene, parse_primitive_t *parsed);
+void				scene_free(t_scene *scene);
+
+/* ============ PARSER (legacy) ============ */
 scene_t				*scene_constructor(char *file);
 void				scene_destructor(scene_t *scene);
-
 parse_primitive_t	*parse_primiteve_contructor(char *file);
 void				*parse_primiteve_destructor(parse_primitive_t *parse);
-
 void				parser_file_name(char *file);
-bool				if_betwen_values(float element_to_check, float minmun_value, float maximun_value);
+bool				if_betwen_values(float element_to_check,
+						float minmun_value, float maximun_value);
 void				ambient_light_parser(void *actual_elem, void *list_to_add);
 void				light_parser(void *actual_elem, void *list_to_add);
 void				camera_parser(void *actual_elem, void *list_to_add);
-t_list				**general_parser(t_list **list__to_track, void (*f)(void *, void *));
+t_list				**general_parser(t_list **list__to_track,
+						void (*f)(void *, void *));
 
 #endif

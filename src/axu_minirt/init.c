@@ -76,7 +76,7 @@ void	minirt_init(t_minirt *rt)
 		malloc_error(rt);
 	rt->img.pixels_ptr = mlx_get_data_addr(rt->img.img_ptr, &rt->img.bpp,
 			&rt->img.line_len, &rt->img.endian);
-	camera_init(&rt->camera);
+	camera_init(&rt->scene.camera);
 	events_init(rt);
 }
 
@@ -104,6 +104,5 @@ void	minirt_cleanup(t_minirt *rt)
 		mlx_destroy_display(rt->mlx);
 		free(rt->mlx);
 	}
-	if (rt->scene)
-		scene_destructor(rt->scene);
+	scene_free(&rt->scene);
 }

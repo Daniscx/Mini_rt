@@ -87,10 +87,10 @@ static void	free_list_deep(t_list *list)
 **   - Libera la estructura scene_t misma
 ** NOTA: Debe llamarse antes de terminar el programa para evitar memory leaks
 */
-void scene_destructor(scene_t *scene)
+void	scene_destructor(scene_t *scene)
 {
 	if (!scene)
-		return;
+		return ;
 	if (scene->object && *scene->object)
 		free_list_deep(*scene->object);
 	if (scene->object)
@@ -104,4 +104,41 @@ void scene_destructor(scene_t *scene)
 	if (scene->camera)
 		free(scene->camera);
 	free(scene);
+}
+
+/*
+** Libera los recursos de t_scene (nueva estructura)
+** Parametros:
+**   - scene: puntero a la escena a liberar
+** Comportamiento:
+**   - Libera array de luces
+**   - Libera array de objetos
+*/
+void	scene_free(t_scene *scene)
+{
+	if (!scene)
+		return ;
+	if (scene->lights)
+	{
+		free(scene->lights);
+		scene->lights = NULL;
+	}
+	if (scene->objects)
+	{
+		free(scene->objects);
+		scene->objects = NULL;
+	}
+	scene->light_count = 0;
+	scene->object_count = 0;
+}
+
+/*
+** Convierte datos parseados a la nueva estructura t_scene
+** TODO: Implementar conversion de listas a arrays tipados
+*/
+int	scene_from_parse(t_scene *scene, parse_primitive_t *parsed)
+{
+	(void)scene;
+	(void)parsed;
+	return (0);
 }

@@ -49,25 +49,29 @@ int	key_handler(int keycode, t_minirt *rt)
 	if (keycode == XK_Escape)
 		close_handler(rt);
 	else if (keycode == XK_w)
-		camera_move(&rt->camera, vec3_scale(rt->camera.direction, 0.5));
+		camera_move(&rt->scene.camera,
+			vec3_scale(rt->scene.camera.direction, 0.5));
 	else if (keycode == XK_s)
-		camera_move(&rt->camera, vec3_scale(rt->camera.direction, -0.5));
+		camera_move(&rt->scene.camera,
+			vec3_scale(rt->scene.camera.direction, -0.5));
 	else if (keycode == XK_a)
-		camera_move(&rt->camera, vec3_scale(rt->camera.right, -0.5));
+		camera_move(&rt->scene.camera,
+			vec3_scale(rt->scene.camera.right, -0.5));
 	else if (keycode == XK_d)
-		camera_move(&rt->camera, vec3_scale(rt->camera.right, 0.5));
+		camera_move(&rt->scene.camera,
+			vec3_scale(rt->scene.camera.right, 0.5));
 	else if (keycode == XK_space)
-		camera_move(&rt->camera, vec3_scale(rt->camera.up, 0.5));
+		camera_move(&rt->scene.camera, vec3_scale(rt->scene.camera.up, 0.5));
 	else if (keycode == XK_Shift_L)
-		camera_move(&rt->camera, vec3_scale(rt->camera.up, -0.5));
+		camera_move(&rt->scene.camera, vec3_scale(rt->scene.camera.up, -0.5));
 	else if (keycode == XK_Left)
-		camera_rotate(&rt->camera, -0.1, 0.0);
+		camera_rotate(&rt->scene.camera, -0.1, 0.0);
 	else if (keycode == XK_Right)
-		camera_rotate(&rt->camera, 0.1, 0.0);
+		camera_rotate(&rt->scene.camera, 0.1, 0.0);
 	else if (keycode == XK_Up)
-		camera_rotate(&rt->camera, 0.0, 0.1);
+		camera_rotate(&rt->scene.camera, 0.0, 0.1);
 	else if (keycode == XK_Down)
-		camera_rotate(&rt->camera, 0.0, -0.1);
+		camera_rotate(&rt->scene.camera, 0.0, -0.1);
 	render_scene(rt);
 	return (0);
 }

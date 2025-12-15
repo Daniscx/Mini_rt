@@ -72,3 +72,46 @@ t_vec3	vec3_normalize(t_vec3 v)
 		return (vec3_new(0.0, 0.0, 0.0));
 	return (vec3_scale(v, 1.0 / len));
 }
+
+/*
+** Multiplicacion componente a componente (para colores)
+*/
+t_vec3	vec3_mult(t_vec3 a, t_vec3 b)
+{
+	return (vec3_new(a.x * b.x, a.y * b.y, a.z * b.z));
+}
+
+/*
+** Negar un vector
+*/
+t_vec3	vec3_negate(t_vec3 v)
+{
+	return (vec3_new(-v.x, -v.y, -v.z));
+}
+
+/*
+** Clamp un valor entre min y max
+*/
+double	vec3_clamp(double value, double min, double max)
+{
+	if (value < min)
+		return (min);
+	if (value > max)
+		return (max);
+	return (value);
+}
+
+/*
+** Convertir vec3 color [0,1] a int 0xRRGGBB
+*/
+int	vec3_to_color(t_vec3 color)
+{
+	int	r;
+	int	g;
+	int	b;
+
+	r = (int)(vec3_clamp(color.x, 0.0, 1.0) * 255.0);
+	g = (int)(vec3_clamp(color.y, 0.0, 1.0) * 255.0);
+	b = (int)(vec3_clamp(color.z, 0.0, 1.0) * 255.0);
+	return ((r << 16) | (g << 8) | b);
+}
