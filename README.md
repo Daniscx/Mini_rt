@@ -3,24 +3,6 @@
 
 Ray tracer en C usando MinilibX - Proyecto 42 Madrid
 
-## Estado del Proyecto
-
-**En desarrollo** - Infraestructura básica completada
-
-### ✅ Implementado
-- Sistema de ventanas y renderizado con MinilibX
-- Librería completa de operaciones vectoriales 3D
-- Sistema de cámara con movimiento 6DOF (6 grados de libertad)
-- Controles de teclado para navegación y rotación
-- Parser parcial de archivos .rt (ambient light y camera)
-- Estructura de proyecto y Makefile
-
-### 🚧 En desarrollo
-- Parser completo de elementos (luces, objetos)
-- Sistema de ray tracing
-- Intersección con objetos (esferas, planos, cilindros)
-- Iluminación y sombreado
-
 ## Requisitos
 
 - GCC/Clang
@@ -59,33 +41,6 @@ make re      # Recompilar
 | ↑ | Rotar cámara arriba |
 | ↓ | Rotar cámara abajo |
 
-## Estructura del Proyecto
-
-```
-miniRT/
-├── src/
-│   ├── main.c              # Punto de entrada
-│   ├── axu_minirt/         # Sistema MLX
-│   │   ├── init.c          # Inicialización MLX y ventana
-│   │   ├── events.c        # Manejo de eventos teclado/cierre
-│   │   └── camera.c        # Movimiento y rotación de cámara
-│   ├── math/               # Matemáticas vectoriales
-│   │   ├── vec3.c          # Operaciones básicas de vectores
-│   │   └── vec3_utils.c    # Producto cruz, normalización
-│   ├── render/             # Sistema de renderizado
-│   │   └── render.c        # Renderizado de escena
-│   ├── parse/              # Parser archivos .rt
-│   │   └── parse.c         # Lectura y validación de escenas
-│   ├── scene/              # Gestión de escenas
-│   │   └── scene.c         # Constructor/destructor de escenas
-│   └── aux_libft/          # Librería de utilidades
-├── include/
-│   └── minirt.h           # Definiciones y prototipos
-├── scenes/                 # Archivos de escena .rt
-├── linux-minilibx/         # Librería gráfica MinilibX
-└── Makefile
-```
-
 ## Formato de Archivos .rt
 
 Los archivos de escena definen la configuración del mundo 3D:
@@ -117,46 +72,3 @@ cy 2,0,10 0,1,0 2 10 0,255,0
 - Coordenadas: formato `x,y,z` sin espacios
 - Colores RGB: valores enteros [0-255]
 - Vectores normalizados: componentes en rango [-1,1]
-
-## Funciones Implementadas
-
-### Operaciones Vectoriales (src/math/)
-- `vec3_new()` - Crear vector 3D
-- `vec3_add()` - Suma de vectores
-- `vec3_sub()` - Resta de vectores
-- `vec3_scale()` - Multiplicación escalar
-- `vec3_dot()` - Producto escalar
-- `vec3_cross()` - Producto vectorial
-- `vec3_normalize()` - Normalización de vectores
-- `vec3_length()` - Magnitud del vector
-
-### Sistema de Cámara (src/axu_minirt/camera.c)
-- `camera_init()` - Inicialización con valores por defecto
-- `camera_move()` - Traslación en espacio 3D
-- `camera_rotate()` - Rotación yaw/pitch
-
-### Sistema de Renderizado (src/render/render.c)
-- `render_scene()` - Renderiza la escena actual (temporal: gradiente)
-
-## Compilación Técnica
-
-El proyecto usa un sistema de compilación modular:
-- Compilación incremental con barra de progreso
-- Objetos separados para miniRT y libft
-- Linking automático con MinilibX
-- Flags: `-Wall -Wextra -Werror`
-
-## Notas de Desarrollo
-
-El proyecto actualmente renderiza un gradiente de fondo. Los próximos pasos incluyen:
-1. Completar el parser de todos los elementos .rt
-2. Implementar ray tracing básico
-3. Calcular intersecciones con objetos geométricos
-4. Aplicar modelo de iluminación Phong/Lambert
-5. Gestión de múltiples objetos y luces
-
-## Subject
-
-[miniRT.pdf](https://github.com/mcombeau/miniRT/blob/main/doc/en.subject.pdf)
-
----
