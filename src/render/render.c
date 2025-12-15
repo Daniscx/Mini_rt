@@ -52,32 +52,44 @@ static int	create_rgb(int r, int g, int b)
 }
 
 /*
-** Renderiza la escena completa
-** Parámetros:
-**   - rt: estructura principal con imagen y escena
-** Estado actual:
-**   - Color de fondo negro mientras implementas el raytracing
-**   - Los datos de la escena ya están parseados y listos para usar
-** TODO (LO QUE TÚ VAS A IMPLEMENTAR):
-**   1. Generar rayo desde cámara para cada píxel
-**   2. Calcular intersecciones con objetos de la escena
-**   3. Aplicar iluminación y calcular color final
-** NOTA: Cuando implementes el raytracing, este será el bucle principal
+** Calcula el color de un pixel usando raytracing
+*/
+static int	trace_ray(t_ray ray, t_scene *scene)
+{
+	t_hit	hit;
+	t_vec3	color;
+	int		r;
+	int		g;
+	int		b;
+
+	hit = find_closest_hit(ray, scene);
+	if (!hit.hit)
+		return (create_rgb(0, 0, 0));
+	color = calculate_lighting(hit, scene);
+	r = (int)(vec3_clamp(color.x, 0.0, 1.0) * 255.0);
+	g = (int)(vec3_clamp(color.y, 0.0, 1.0) * 255.0);
+	b = (int)(vec3_clamp(color.z, 0.0, 1.0) * 255.0);
+	return (create_rgb(r, g, b));
+}
+
+/*
+** Renderiza la escena completa usando raytracing
 */
 void	render_scene(t_minirt *rt)
 {
 	int		x;
 	int		y;
+	t_ray	ray;
 	int		color;
 
-	(void)rt;
-	color = create_rgb(0, 0, 0);
 	y = 0;
 	while (y < HEIGHT)
 	{
 		x = 0;
 		while (x < WIDTH)
 		{
+			ray = ray_from_camera(&rt->scene.camera, x, y);
+			color = trace_ray(ray, &rt->scene);
 			put_pixel(&rt->img, x, y, color);
 			x++;
 		}

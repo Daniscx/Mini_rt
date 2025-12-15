@@ -13,24 +13,19 @@
 #ifndef MINIRT_H
 # define MINIRT_H
 
-/* ============ INCLUDES ============ */
 # include "../linux-minilibx/mlx.h"
 # include "../src/aux_libft/libft.h"
-# include <math.h>
-# include <stdbool.h>
 
 # ifndef M_PI
 #  define M_PI 3.14159265358979323846
 # endif
 
-/* ============ CONSTANTS ============ */
 # define WIDTH 800
 # define HEIGHT 600
 # define WIN_TITLE "miniRT"
 # define ESC_KEY 65307
 # define EPSILON 0.0001
 
-/* ============ VECTOR 3D ============ */
 typedef struct s_vec3
 {
 	double			x;
@@ -38,14 +33,12 @@ typedef struct s_vec3
 	double			z;
 }					t_vec3;
 
-/* ============ RAY ============ */
 typedef struct s_ray
 {
 	t_vec3			origin;
 	t_vec3			direction;
 }					t_ray;
 
-/* ============ OBJECT TYPES ============ */
 typedef enum e_obj_type
 {
 	OBJ_SPHERE,
@@ -53,7 +46,6 @@ typedef enum e_obj_type
 	OBJ_CYLINDER
 }					t_obj_type;
 
-/* ============ GEOMETRIC PRIMITIVES ============ */
 typedef struct s_sphere
 {
 	t_vec3			center;
@@ -77,7 +69,6 @@ typedef struct s_cylinder
 	t_vec3			color;
 }					t_cylinder;
 
-/* ============ GENERIC OBJECT ============ */
 typedef struct s_object
 {
 	t_obj_type		type;
@@ -86,7 +77,6 @@ typedef struct s_object
 	t_cylinder		cylinder;
 }					t_object;
 
-/* ============ HIT RECORD ============ */
 typedef struct s_hit
 {
 	bool			hit;
@@ -96,7 +86,6 @@ typedef struct s_hit
 	t_vec3			color;
 }					t_hit;
 
-/* ============ LIGHTING ============ */
 typedef struct s_ambient
 {
 	double			ratio;
@@ -110,7 +99,6 @@ typedef struct s_light
 	t_vec3			color;
 }					t_light;
 
-/* ============ CAMERA ============ */
 typedef struct s_camera
 {
 	t_vec3			position;
@@ -121,7 +109,6 @@ typedef struct s_camera
 	double			aspect_ratio;
 }					t_camera;
 
-/* ============ SCENE ============ */
 typedef struct s_scene
 {
 	t_ambient		ambient;
@@ -132,7 +119,6 @@ typedef struct s_scene
 	int				object_count;
 }					t_scene;
 
-/* ============ MLX IMAGE ============ */
 typedef struct s_img
 {
 	void			*img_ptr;
@@ -142,7 +128,6 @@ typedef struct s_img
 	int				endian;
 }					t_img;
 
-/* ============ MAIN PROGRAM ============ */
 typedef struct s_minirt
 {
 	void			*mlx;
@@ -169,26 +154,32 @@ typedef struct s_scene_legacy
 	void			*camera;
 }					scene_t;
 
-/* ============ ERROR ============ */
+// =[ Error ]=============================================================== //
+
 void				error_manager(char *error_message);
 
-/* ============ INIT & CLEANUP ============ */
+// =[ Init & CleanUp ]====================================================== //
+
 void				minirt_init(t_minirt *rt);
 void				minirt_cleanup(t_minirt *rt);
 
-/* ============ EVENTS ============ */
+// =[ Events ]============================================================== //
+
 int					close_handler(t_minirt *rt);
 int					key_handler(int keycode, t_minirt *rt);
 
-/* ============ CAMERA ============ */
+// =[ Camera ]============================================================== //
+
 void				camera_init(t_camera *camera);
 void				camera_move(t_camera *camera, t_vec3 offset);
 void				camera_rotate(t_camera *camera, double yaw, double pitch);
 
-/* ============ RENDER ============ */
+// =[ Render ]============================================================== //
+
 void				render_scene(t_minirt *rt);
 
-/* ============ VECTOR OPERATIONS ============ */
+// =[ Vector Operations ]=================================================== //
+
 t_vec3				vec3_new(double x, double y, double z);
 t_vec3				vec3_add(t_vec3 a, t_vec3 b);
 t_vec3				vec3_sub(t_vec3 a, t_vec3 b);
@@ -202,39 +193,44 @@ t_vec3				vec3_negate(t_vec3 v);
 double				vec3_clamp(double value, double min, double max);
 int					vec3_to_color(t_vec3 color);
 
-/* ============ RAY ============ */
+// =[ Ray ]================================================================= //
+
 t_ray				ray_new(t_vec3 origin, t_vec3 direction);
 t_vec3				ray_at(t_ray ray, double t);
 t_ray				ray_from_camera(t_camera *cam, int x, int y);
 
-/* ============ INTERSECTIONS ============ */
+// =[ Intersections ]======================================================= //
+
 t_hit				hit_new(void);
 t_hit				intersect_sphere(t_ray ray, t_sphere *sp);
 t_hit				intersect_plane(t_ray ray, t_plane *pl);
 t_hit				intersect_cylinder(t_ray ray, t_cylinder *cy);
 t_hit				find_closest_hit(t_ray ray, t_scene *scene);
 
-/* ============ LIGHTING ============ */
-t_vec3				calculate_lighting(t_hit hit, t_scene *scene);
-bool				is_in_shadow(t_vec3 point, t_vec3 light_dir,
-						double light_dist, t_scene *scene);
+// =[ Lighting ]============================================================ //
 
-/* ============ SCENE CONVERSION ============ */
-int					scene_from_parse(t_scene *scene, parse_primitive_t *parsed);
+t_vec3				calculate_lighting(t_hit hit, t_scene *scene);
+bool				is_in_shadow(t_vec3 point, t_vec3 light_dir, double light_dist, t_scene *scene);	// insert a line break to pass norminette - [ 42 ]
+
+// =[ Scene Conversion ]==================================================== //
+
+int					scene_load(t_scene *scene, char *filename);
+int					scene_from_parse(t_scene *scene, parse_primitive_t *parsed);						// insert a line break to pass norminette - [ 42 ]
 void				scene_free(t_scene *scene);
 
-/* ============ PARSER (legacy) ============ */
+// =[ Parser (legacy) ]===================================================== //
+
 scene_t				*scene_constructor(char *file);
 void				scene_destructor(scene_t *scene);
 parse_primitive_t	*parse_primiteve_contructor(char *file);
 void				*parse_primiteve_destructor(parse_primitive_t *parse);
 void				parser_file_name(char *file);
-bool				if_betwen_values(float element_to_check,
-						float minmun_value, float maximun_value);
+bool				if_betwen_values(float element_to_check, float minmun_value, float maximun_value);	// insert a line break to pass norminette - [ 42 ]
 void				ambient_light_parser(void *actual_elem, void *list_to_add);
 void				light_parser(void *actual_elem, void *list_to_add);
 void				camera_parser(void *actual_elem, void *list_to_add);
-t_list				**general_parser(t_list **list__to_track,
-						void (*f)(void *, void *));
+t_list				**general_parser(t_list **list__to_track, void (*f)(void *, void *));				// insert a line break to pass norminette - [ 42 ]
+
+// ========================================================================= //
 
 #endif
