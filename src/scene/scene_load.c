@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/15 21:00:00 by ravazque          #+#    #+#             */
-/*   Updated: 2025/12/15 21:00:00 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/15 21:48:55 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -199,7 +199,7 @@ int	scene_load(t_scene *scene, char *filename)
 	ft_bzero(scene, sizeof(t_scene));
 	fd = open(filename, O_RDONLY);
 	if (fd < 0)
-		return (-1);
+		fd = open(ft_strjoin(filename, ".rt"), O_RDONLY);
 	line = get_next_line(fd);
 	while (line)
 	{

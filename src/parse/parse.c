@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/27 17:54:21 by dmaestro          #+#    #+#             */
-/*   Updated: 2025/12/12 16:44:41 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/15 21:50:13 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,29 @@
 void	parser_file_name(char *file)
 {
 	int	fd_tester;
+	char *try_rt;
 
-	if (ft_strncmp(file + ft_strlen(file) - 3, ".rt", 3) != 0)
-		error_manager("file extension isn't .rt please correct!");
-	fd_tester = open(file, O_RDONLY);
-	if (fd_tester < 0)
-		error_manager("invalid file please check if it exits!");
+	try_rt = ft_strjoin(file, ".rt");	
+	fd_tester = open(try_rt, O_RDONLY);
+	free(try_rt);
+	if (fd_tester >= 0)
+	{
+		ft_putstr_fd("\033[34mAdded the extension \".rt\" to the existing", 0);
+		ft_putstr_fd("\033[1;32m ", 0);
+		ft_putstr_fd(file, 0);
+		ft_putstr_fd("\033[0;34m file with the current name of:\033[1;32m", 0);
+		ft_putstr_fd(" ", 0);
+		ft_putstr_fd(file, 0);
+		ft_putstr_fd("\033[1;32m.rt\033[0m\n", 0);
+	}
+	else
+	{
+		if (ft_strncmp(file + ft_strlen(file) - 3, ".rt", 3) != 0)
+			error_manager("file extension isn't \".rt\" please correct!");
+		fd_tester = open(file, O_RDONLY);
+		if (fd_tester < 0)
+			error_manager("invalid file please check if it exits!");
+	}
 	close(fd_tester);
 }
 
