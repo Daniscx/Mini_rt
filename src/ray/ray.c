@@ -56,18 +56,3 @@ t_ray	ray_from_camera(t_camera *cam, int x, int y, t_img *img)
 	return (ray_new(cam->position, dir));
 }
 
-/*
-** Creates an empty hit record (no intersection).
-** Initializes t to INFINITY for comparison purposes.
-*/
-t_hit	hit_new(void)
-{
-	t_hit	hit;
-
-	hit.hit = false;
-	hit.t = INFINITY;
-	hit.point = vec3_new(0, 0, 0);
-	hit.normal = vec3_new(0, 0, 0);
-	hit.color = vec3_new(0, 0, 0);
-	return (hit);
-}

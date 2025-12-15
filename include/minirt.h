@@ -85,7 +85,8 @@ typedef enum e_obj_type
 {
 	OBJ_SPHERE,
 	OBJ_PLANE,
-	OBJ_CYLINDER
+	OBJ_CYLINDER,
+	OBJ_CONE
 }					t_obj_type;
 
 /* =[ Sphere ]============================================================== */
@@ -123,9 +124,23 @@ typedef struct s_cylinder
 	t_vec3			color;
 }					t_cylinder;
 
+/* =[ Cone ]================================================================ */
+/*
+** Cone defined by apex, axis direction, angle (degrees), height and color.
+*/
+typedef struct s_cone
+{
+	t_vec3			apex;
+	t_vec3			axis;
+	double			angle;
+	double			height;
+	t_vec3			color;
+}					t_cone;
+
 /* =[ Generic Object ]====================================================== */
 /*
 ** Generic object container using struct members for each type.
+** checkerboard: 0=solid, 1=checkerboard pattern (for planes).
 */
 typedef struct s_object
 {
@@ -133,11 +148,15 @@ typedef struct s_object
 	t_sphere		sphere;
 	t_plane			plane;
 	t_cylinder		cylinder;
+	t_cone			cone;
+	int				checkerboard;
 }					t_object;
 
 /* =[ Hit Record ]========================================================== */
 /*
 ** Stores information about a ray-object intersection.
+** specular: shininess exponent for Phong model (0 = no specular).
+** checkerboard: flag for checkerboard pattern.
 */
 typedef struct s_hit
 {
@@ -146,6 +165,8 @@ typedef struct s_hit
 	t_vec3			point;
 	t_vec3			normal;
 	t_vec3			color;
+	double			specular;
+	int				checkerboard;
 }					t_hit;
 
 /* =[ Ambient Light ]======================================================= */
@@ -275,6 +296,7 @@ int					close_handler(t_minirt *rt);
 int					key_press_handler(int keycode, t_minirt *rt);
 int					key_release_handler(int keycode, t_minirt *rt);
 int					mouse_move_handler(int x, int y, t_minirt *rt);
+int					mouse_press_handler(int button, int x, int y, t_minirt *rt);
 int					expose_handler(t_minirt *rt);
 int					loop_handler(t_minirt *rt);
 
@@ -318,13 +340,16 @@ t_hit				hit_new(void);
 t_hit				intersect_sphere(t_ray ray, t_sphere *sp);
 t_hit				intersect_plane(t_ray ray, t_plane *pl);
 t_hit				intersect_cylinder(t_ray ray, t_cylinder *cy);
+t_hit				intersect_cone(t_ray ray, t_cone *co);
 t_hit				find_closest_hit(t_ray ray, t_scene *scene);
 
 /* =[ Lighting Calculations ]=============================================== */
 
-t_vec3				calculate_lighting(t_hit hit, t_scene *scene);
+t_vec3				calculate_lighting(t_hit hit, t_scene *scene,
+						t_vec3 view_dir);
 bool				is_in_shadow(t_vec3 point, t_vec3 light_dir,
 						double light_dist, t_scene *scene);
+t_vec3				apply_checkerboard(t_hit *hit);
 
 /* =[ Scene Management ]==================================================== */
 

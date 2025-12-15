@@ -6,40 +6,51 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/15 20:00:00 by ravazque          #+#    #+#             */
-/*   Updated: 2025/12/15 20:00:00 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/16 14:00:00 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minirt.h"
 
 /*
-** Interseccion rayo-esfera
-** Resuelve: |O + t*D - C|^2 = r^2
-** Ecuacion cuadratica: at^2 + bt + c = 0
+** Initializes a new hit record with default values.
+*/
+t_hit	hit_new(void)
+{
+	t_hit	hit;
+
+	hit.hit = false;
+	hit.t = INFINITY;
+	hit.point = vec3_new(0, 0, 0);
+	hit.normal = vec3_new(0, 1, 0);
+	hit.color = vec3_new(0, 0, 0);
+	hit.specular = 1.0;
+	hit.checkerboard = 0;
+	return (hit);
+}
+
+/*
+** Interseccion rayo-esfera. Resuelve: |O + t*D - C|^2 = r^2
 */
 t_hit	intersect_sphere(t_ray ray, t_sphere *sp)
 {
 	t_hit	hit;
 	t_vec3	oc;
-	double	a;
-	double	b;
-	double	c;
+	double	coef[3];
 	double	disc;
 	double	t;
-	double	r;
 
 	hit = hit_new();
-	r = sp->diameter / 2.0;
 	oc = vec3_sub(ray.origin, sp->center);
-	a = vec3_dot(ray.direction, ray.direction);
-	b = 2.0 * vec3_dot(oc, ray.direction);
-	c = vec3_dot(oc, oc) - r * r;
-	disc = b * b - 4.0 * a * c;
+	coef[0] = vec3_dot(ray.direction, ray.direction);
+	coef[1] = 2.0 * vec3_dot(oc, ray.direction);
+	coef[2] = vec3_dot(oc, oc) - (sp->diameter / 2.0) * (sp->diameter / 2.0);
+	disc = coef[1] * coef[1] - 4.0 * coef[0] * coef[2];
 	if (disc < 0)
 		return (hit);
-	t = (-b - sqrt(disc)) / (2.0 * a);
+	t = (-coef[1] - sqrt(disc)) / (2.0 * coef[0]);
 	if (t < EPSILON)
-		t = (-b + sqrt(disc)) / (2.0 * a);
+		t = (-coef[1] + sqrt(disc)) / (2.0 * coef[0]);
 	if (t < EPSILON)
 		return (hit);
 	hit.hit = true;
@@ -47,13 +58,12 @@ t_hit	intersect_sphere(t_ray ray, t_sphere *sp)
 	hit.point = ray_at(ray, t);
 	hit.normal = vec3_normalize(vec3_sub(hit.point, sp->center));
 	hit.color = sp->color;
+	hit.specular = 1.0;
 	return (hit);
 }
 
 /*
-** Interseccion rayo-plano
-** Resuelve: (O + t*D - P0) . N = 0
-** t = (P0 - O) . N / (D . N)
+** Interseccion rayo-plano. Resuelve: (O + t*D - P0) . N = 0
 */
 t_hit	intersect_plane(t_ray ray, t_plane *pl)
 {
@@ -75,12 +85,12 @@ t_hit	intersect_plane(t_ray ray, t_plane *pl)
 	if (denom > 0)
 		hit.normal = vec3_negate(hit.normal);
 	hit.color = pl->color;
+	hit.specular = 0.3;
 	return (hit);
 }
 
 /*
-** Interseccion rayo-cilindro (cuerpo lateral)
-** Proyecta el rayo en el plano perpendicular al eje
+** Interseccion rayo-cilindro (cuerpo lateral).
 */
 static t_hit	intersect_cylinder_body(t_ray ray, t_cylinder *cy)
 {
@@ -88,29 +98,26 @@ static t_hit	intersect_cylinder_body(t_ray ray, t_cylinder *cy)
 	t_vec3	oc;
 	t_vec3	d_perp;
 	t_vec3	oc_perp;
-	double	a;
-	double	b;
-	double	c;
+	double	coef[3];
 	double	disc;
 	double	t;
-	double	r;
 	double	h;
 
 	hit = hit_new();
-	r = cy->diameter / 2.0;
 	oc = vec3_sub(ray.origin, cy->center);
 	d_perp = vec3_sub(ray.direction,
 			vec3_scale(cy->axis, vec3_dot(ray.direction, cy->axis)));
 	oc_perp = vec3_sub(oc, vec3_scale(cy->axis, vec3_dot(oc, cy->axis)));
-	a = vec3_dot(d_perp, d_perp);
-	b = 2.0 * vec3_dot(d_perp, oc_perp);
-	c = vec3_dot(oc_perp, oc_perp) - r * r;
-	disc = b * b - 4.0 * a * c;
+	coef[0] = vec3_dot(d_perp, d_perp);
+	coef[1] = 2.0 * vec3_dot(d_perp, oc_perp);
+	coef[2] = vec3_dot(oc_perp, oc_perp) - (cy->diameter / 2.0)
+		* (cy->diameter / 2.0);
+	disc = coef[1] * coef[1] - 4.0 * coef[0] * coef[2];
 	if (disc < 0)
 		return (hit);
-	t = (-b - sqrt(disc)) / (2.0 * a);
+	t = (-coef[1] - sqrt(disc)) / (2.0 * coef[0]);
 	if (t < EPSILON)
-		t = (-b + sqrt(disc)) / (2.0 * a);
+		t = (-coef[1] + sqrt(disc)) / (2.0 * coef[0]);
 	if (t < EPSILON)
 		return (hit);
 	hit.point = ray_at(ray, t);
@@ -119,15 +126,15 @@ static t_hit	intersect_cylinder_body(t_ray ray, t_cylinder *cy)
 		return (hit_new());
 	hit.hit = true;
 	hit.t = t;
-	hit.normal = vec3_normalize(vec3_sub(
-				vec3_sub(hit.point, cy->center),
+	hit.normal = vec3_normalize(vec3_sub(vec3_sub(hit.point, cy->center),
 				vec3_scale(cy->axis, h)));
 	hit.color = cy->color;
+	hit.specular = 1.0;
 	return (hit);
 }
 
 /*
-** Interseccion con las tapas del cilindro
+** Interseccion con las tapas del cilindro.
 */
 static t_hit	intersect_cylinder_caps(t_ray ray, t_cylinder *cy)
 {
@@ -135,10 +142,8 @@ static t_hit	intersect_cylinder_caps(t_ray ray, t_cylinder *cy)
 	t_hit		cap_hit;
 	t_plane		cap;
 	double		dist;
-	double		r;
 
 	hit = hit_new();
-	r = cy->diameter / 2.0;
 	cap.normal = cy->axis;
 	cap.point = cy->center;
 	cap.color = cy->color;
@@ -146,7 +151,7 @@ static t_hit	intersect_cylinder_caps(t_ray ray, t_cylinder *cy)
 	if (cap_hit.hit)
 	{
 		dist = vec3_length(vec3_sub(cap_hit.point, cy->center));
-		if (dist <= r && (cap_hit.t < hit.t))
+		if (dist <= cy->diameter / 2.0 && cap_hit.t < hit.t)
 			hit = cap_hit;
 	}
 	cap.point = vec3_add(cy->center, vec3_scale(cy->axis, cy->height));
@@ -154,14 +159,14 @@ static t_hit	intersect_cylinder_caps(t_ray ray, t_cylinder *cy)
 	if (cap_hit.hit)
 	{
 		dist = vec3_length(vec3_sub(cap_hit.point, cap.point));
-		if (dist <= r && (cap_hit.t < hit.t))
+		if (dist <= cy->diameter / 2.0 && cap_hit.t < hit.t)
 			hit = cap_hit;
 	}
 	return (hit);
 }
 
 /*
-** Interseccion rayo-cilindro completa (cuerpo + tapas)
+** Interseccion rayo-cilindro completa (cuerpo + tapas).
 */
 t_hit	intersect_cylinder(t_ray ray, t_cylinder *cy)
 {
@@ -178,7 +183,55 @@ t_hit	intersect_cylinder(t_ray ray, t_cylinder *cy)
 }
 
 /*
-** Encuentra el impacto mas cercano con cualquier objeto de la escena
+** Interseccion rayo-cono. Resuelve ecuacion cuadratica del cono.
+** Cone equation: (D.V)^2 - cos^2(a) = 0 where V is apex to point
+*/
+t_hit	intersect_cone(t_ray ray, t_cone *co)
+{
+	t_hit	hit;
+	t_vec3	oc;
+	double	cos2;
+	double	coef[3];
+	double	disc;
+	double	t;
+	double	h;
+	double	dv;
+	double	ocv;
+
+	hit = hit_new();
+	cos2 = cos(co->angle * M_PI / 180.0);
+	cos2 = cos2 * cos2;
+	oc = vec3_sub(ray.origin, co->apex);
+	dv = vec3_dot(ray.direction, co->axis);
+	ocv = vec3_dot(oc, co->axis);
+	coef[0] = dv * dv - cos2 * vec3_dot(ray.direction, ray.direction);
+	coef[1] = 2.0 * (dv * ocv - cos2 * vec3_dot(ray.direction, oc));
+	coef[2] = ocv * ocv - cos2 * vec3_dot(oc, oc);
+	disc = coef[1] * coef[1] - 4.0 * coef[0] * coef[2];
+	if (disc < 0)
+		return (hit);
+	t = (-coef[1] - sqrt(disc)) / (2.0 * coef[0]);
+	if (t < EPSILON)
+		t = (-coef[1] + sqrt(disc)) / (2.0 * coef[0]);
+	if (t < EPSILON)
+		return (hit);
+	hit.point = ray_at(ray, t);
+	h = vec3_dot(vec3_sub(hit.point, co->apex), co->axis);
+	if (h < 0 || h > co->height)
+		return (hit_new());
+	hit.hit = true;
+	hit.t = t;
+	hit.normal = vec3_sub(hit.point, co->apex);
+	hit.normal = vec3_sub(hit.normal, vec3_scale(co->axis,
+				vec3_dot(hit.normal, co->axis) / cos2));
+	hit.normal = vec3_normalize(hit.normal);
+	hit.color = co->color;
+	hit.specular = 1.0;
+	return (hit);
+}
+
+/*
+** Encuentra el impacto mas cercano con cualquier objeto de la escena.
 */
 t_hit	find_closest_hit(t_ray ray, t_scene *scene)
 {
@@ -196,10 +249,15 @@ t_hit	find_closest_hit(t_ray ray, t_scene *scene)
 			current = intersect_plane(ray, &scene->objects[i].plane);
 		else if (scene->objects[i].type == OBJ_CYLINDER)
 			current = intersect_cylinder(ray, &scene->objects[i].cylinder);
+		else if (scene->objects[i].type == OBJ_CONE)
+			current = intersect_cone(ray, &scene->objects[i].cone);
 		else
 			current = hit_new();
 		if (current.hit && current.t < closest.t)
+		{
 			closest = current;
+			closest.checkerboard = scene->objects[i].checkerboard;
+		}
 		i++;
 	}
 	return (closest);

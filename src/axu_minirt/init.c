@@ -20,6 +20,7 @@ static void	events_init(t_minirt *rt)
 {
 	mlx_hook(rt->win, KeyPress, KeyPressMask, key_press_handler, rt);
 	mlx_hook(rt->win, KeyRelease, KeyReleaseMask, key_release_handler, rt);
+	mlx_hook(rt->win, ButtonPress, ButtonPressMask, mouse_press_handler, rt);
 	mlx_hook(rt->win, MotionNotify, PointerMotionMask, mouse_move_handler, rt);
 	mlx_hook(rt->win, Expose, ExposureMask, expose_handler, rt);
 	mlx_hook(rt->win, DestroyNotify, StructureNotifyMask, close_handler, rt);

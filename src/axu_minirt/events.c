@@ -102,6 +102,24 @@ int	key_release_handler(int keycode, t_minirt *rt)
 }
 
 /*
+** Handles mouse button press. Left click enables mouse capture for camera.
+*/
+int	mouse_press_handler(int button, int x, int y, t_minirt *rt)
+{
+	(void)x;
+	(void)y;
+	if (button == 1)
+	{
+		rt->input.mouse_captured = true;
+		rt->input.last_mouse_x = x;
+		rt->input.last_mouse_y = y;
+	}
+	else if (button == 3)
+		rt->input.mouse_captured = false;
+	return (0);
+}
+
+/*
 ** Handles mouse movement for camera rotation when mouse is captured.
 ** Calculates delta from last position and applies rotation.
 */

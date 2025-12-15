@@ -112,13 +112,14 @@ static void	load_sphere(t_scene *scene, char **args)
 	new_objs[i].sphere.center = parse_vec3(args[1]);
 	new_objs[i].sphere.diameter = ft_atof(args[2]);
 	new_objs[i].sphere.color = parse_color(args[3]);
+	new_objs[i].checkerboard = 0;
 	if (scene->objects)
 		free(scene->objects);
 	scene->objects = new_objs;
 	scene->object_count++;
 }
 
-static void	load_plane(t_scene *scene, char **args)
+static void	load_plane_ex(t_scene *scene, char **args, int checker)
 {
 	t_object	*new_objs;
 	int			i;
@@ -135,10 +136,16 @@ static void	load_plane(t_scene *scene, char **args)
 	new_objs[i].plane.point = parse_vec3(args[1]);
 	new_objs[i].plane.normal = vec3_normalize(parse_vec3(args[2]));
 	new_objs[i].plane.color = parse_color(args[3]);
+	new_objs[i].checkerboard = checker;
 	if (scene->objects)
 		free(scene->objects);
 	scene->objects = new_objs;
 	scene->object_count++;
+}
+
+static void	load_plane(t_scene *scene, char **args)
+{
+	load_plane_ex(scene, args, 0);
 }
 
 static void	load_cylinder(t_scene *scene, char **args)
@@ -160,6 +167,33 @@ static void	load_cylinder(t_scene *scene, char **args)
 	new_objs[i].cylinder.diameter = ft_atof(args[3]);
 	new_objs[i].cylinder.height = ft_atof(args[4]);
 	new_objs[i].cylinder.color = parse_color(args[5]);
+	new_objs[i].checkerboard = 0;
+	if (scene->objects)
+		free(scene->objects);
+	scene->objects = new_objs;
+	scene->object_count++;
+}
+
+static void	load_cone(t_scene *scene, char **args)
+{
+	t_object	*new_objs;
+	int			i;
+
+	if (!args[1] || !args[2] || !args[3] || !args[4] || !args[5])
+		return ;
+	new_objs = malloc(sizeof(t_object) * (scene->object_count + 1));
+	if (!new_objs)
+		return ;
+	i = -1;
+	while (++i < scene->object_count)
+		new_objs[i] = scene->objects[i];
+	new_objs[i].type = OBJ_CONE;
+	new_objs[i].cone.apex = parse_vec3(args[1]);
+	new_objs[i].cone.axis = vec3_normalize(parse_vec3(args[2]));
+	new_objs[i].cone.angle = ft_atof(args[3]);
+	new_objs[i].cone.height = ft_atof(args[4]);
+	new_objs[i].cone.color = parse_color(args[5]);
+	new_objs[i].checkerboard = 0;
 	if (scene->objects)
 		free(scene->objects);
 	scene->objects = new_objs;
@@ -184,10 +218,14 @@ static void	process_line(t_scene *scene, char *line)
 		load_light(scene, args);
 	else if (ft_strncmp(args[0], "sp", 3) == 0)
 		load_sphere(scene, args);
+	else if (ft_strncmp(args[0], "plc", 4) == 0)
+		load_plane_ex(scene, args, 1);
 	else if (ft_strncmp(args[0], "pl", 3) == 0)
 		load_plane(scene, args);
 	else if (ft_strncmp(args[0], "cy", 3) == 0)
 		load_cylinder(scene, args);
+	else if (ft_strncmp(args[0], "co", 3) == 0)
+		load_cone(scene, args);
 	free_double_pointer(args);
 }
 

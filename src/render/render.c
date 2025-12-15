@@ -36,6 +36,27 @@ static int	create_rgb(int r, int g, int b)
 }
 
 /*
+** Clears the image buffer to black.
+*/
+static void	clear_image(t_img *img)
+{
+	int	x;
+	int	y;
+
+	y = 0;
+	while (y < img->height)
+	{
+		x = 0;
+		while (x < img->width)
+		{
+			put_pixel(img, x, y, 0x000000);
+			x++;
+		}
+		y++;
+	}
+}
+
+/*
 ** Traces a ray through the scene and computes the pixel color.
 ** Returns black if no intersection, otherwise computes lighting.
 */
@@ -43,6 +64,7 @@ static int	trace_ray(t_ray ray, t_scene *scene)
 {
 	t_hit	hit;
 	t_vec3	color;
+	t_vec3	view_dir;
 	int		r;
 	int		g;
 	int		b;
@@ -50,7 +72,8 @@ static int	trace_ray(t_ray ray, t_scene *scene)
 	hit = find_closest_hit(ray, scene);
 	if (!hit.hit)
 		return (create_rgb(0, 0, 0));
-	color = calculate_lighting(hit, scene);
+	view_dir = vec3_negate(ray.direction);
+	color = calculate_lighting(hit, scene, view_dir);
 	r = (int)(vec3_clamp(color.x, 0.0, 1.0) * 255.0);
 	g = (int)(vec3_clamp(color.y, 0.0, 1.0) * 255.0);
 	b = (int)(vec3_clamp(color.z, 0.0, 1.0) * 255.0);
@@ -87,7 +110,7 @@ void	render_scene(t_minirt *rt)
 
 /*
 ** Renders the scene at high resolution for quality screenshots.
-** Displays for 5 seconds then returns to normal mode.
+** Shows black screen during render, then 10 second countdown.
 */
 void	render_high_res(t_minirt *rt)
 {
@@ -95,24 +118,35 @@ void	render_high_res(t_minirt *rt)
 	int		y;
 	t_ray	ray;
 	int		color;
+	int		countdown;
 
+	ft_printf("\n[HIGH QUALITY MODE] Rendering at %dx%d...\n",
+		WIDTH_HIGH, HEIGHT_HIGH);
+	clear_image(&rt->img_high);
+	mlx_put_image_to_window(rt->mlx, rt->win, rt->img_high.img_ptr, 0, 0);
 	rt->scene.camera.aspect_ratio = (double)rt->img_high.width
 		/ rt->img_high.height;
-	y = 0;
-	while (y < rt->img_high.height)
+	y = -1;
+	while (++y < rt->img_high.height)
 	{
-		x = 0;
-		while (x < rt->img_high.width)
+		x = -1;
+		while (++x < rt->img_high.width)
 		{
 			ray = ray_from_camera(&rt->scene.camera, x, y, &rt->img_high);
 			color = trace_ray(ray, &rt->scene);
 			put_pixel(&rt->img_high, x, y, color);
-			x++;
 		}
-		y++;
 	}
 	mlx_put_image_to_window(rt->mlx, rt->win, rt->img_high.img_ptr, 0, 0);
-	sleep(5);
+	ft_printf("[HIGH QUALITY MODE] Render complete! Countdown: ");
+	countdown = 10;
+	while (countdown > 0)
+	{
+		ft_printf("%d... ", countdown);
+		sleep(1);
+		countdown--;
+	}
+	ft_printf("\n[HIGH QUALITY MODE] Returning to navigation mode.\n\n");
 	rt->high_res_mode = false;
 	rt->scene.camera.aspect_ratio = (double)rt->img.width / rt->img.height;
 	mlx_put_image_to_window(rt->mlx, rt->win, rt->img.img_ptr, 0, 0);
