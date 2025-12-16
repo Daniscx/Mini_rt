@@ -28,20 +28,6 @@ make re     # Recompile from scratch
 ./miniRT scenes/showcase.rt
 ```
 
-## Controls
-
-| Key | Action |
-|-----|--------|
-| W/S | Move forward/backward |
-| A/D | Move left/right |
-| Space/Shift | Move up/down |
-| Arrow keys | Rotate camera |
-| Mouse | Look around |
-| P | High resolution render (5s) |
-| ESC | Exit |
-
-Multiple movement keys can be pressed simultaneously (e.g., W+A for diagonal movement).
-
 ## Scene File Format (.rt)
 
 ```
@@ -59,15 +45,6 @@ cy <x,y,z> <nx,ny,nz> <d> <h> <R,G,B>  # Cylinder
 - Light brightness: 0.0 - 1.0
 - FOV: 0 - 180 degrees
 - RGB: 0 - 255
-
-## Raytracing Pipeline
-
-1. Parse scene file into typed structures
-2. For each pixel, cast ray from camera
-3. Find closest intersection with scene objects
-4. Calculate lighting (ambient + diffuse) with shadow checks
-5. Write pixel color to image buffer
-6. Display image via MinilibX
 
 ## Requirements
 
