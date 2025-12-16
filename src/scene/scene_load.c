@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/15 21:00:00 by ravazque          #+#    #+#             */
-/*   Updated: 2025/12/16 02:02:32 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/16 03:29:48 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -245,7 +245,7 @@ int	scene_load(t_scene *scene, char *filename, int route)
 		to_open = ft_strjoin("scenes/", in_open);
 	}
 	else if (route == 3)
-		to_open = filename;
+		to_open = ft_strdup(filename);
 	else if (route == 4)
 		to_open = ft_strjoin("scenes/", filename);
 	fd = open(to_open, O_RDONLY);
@@ -274,3 +274,5 @@ int	scene_load(t_scene *scene, char *filename, int route)
 		free(in_open);
 	return (free(to_open), 0);
 }
+
+// aqui hay un free erróneo

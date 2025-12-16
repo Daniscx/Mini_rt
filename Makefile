@@ -18,9 +18,7 @@ APP_OBJ_DIR     = $(OBJ_ROOT)/miniRT
 LIBFT_OBJ_DIR   = $(OBJ_ROOT)/aux_libft
 
 CC       = cc
-# CFLAGS   = -Wall -Wextra -Werror -I$(INC_DIR) -I$(LIBFT_DIR) -I$(MLX_DIR)
-
-CFLAGS   = -Wall -Wextra -Werror -Wno-error=incompatible-pointer-types -I$(INC_DIR) -I$(LIBFT_DIR) -I$(MLX_DIR) # Cluster 🡹
+CFLAGS   = -Wall -Wextra -Werror -I$(INC_DIR) -I$(LIBFT_DIR) -I$(MLX_DIR)
 
 LDFLAGS  = -L$(MLX_DIR) -lmlx -L/usr/lib -lXext -lX11 -lm -lz
 AR       = ar
@@ -35,6 +33,7 @@ LIBFT_OBJS = $(LIBFT_SRCS:$(LIBFT_DIR)/%.c=$(LIBFT_OBJ_DIR)/%.o)
 RESET           = \001\033[0m\002
 TURQUOISE       = \001\033[0;36m\002
 LIGHT_TURQUOISE = \001\033[1;36m\002
+DARK_BLUE		= \001\033[0;34m\002
 LIGHT_GREEN     = \001\033[1;32m\002
 LIGHT_RED       = \001\033[1;91m\002
 
@@ -51,7 +50,7 @@ define show_progress
 	[ "$$dots" -ge 0 ] || dots=0; \
 	green=$$(printf "\033[1;32m"); \
 	reset=$$(printf "\033[0m"); \
-	printf "\rCompiling: ["; \
+	printf "\rCompiling miniRT: ["; \
 	bar=$$(printf "%*s" "$$hashes" ""); bar=$${bar// /#}; \
 	printf "%s" "$$green$$bar$$reset"; \
 	dot=$$(printf "%*s" "$$dots" ""); dot=$${dot// /.}; \
@@ -67,7 +66,8 @@ $(NAME): $(MLX_A) $(LIBFT_A) $(OBJS)
 	@echo -e "$(LIGHT_TURQUOISE)miniRT ready!$(RESET)"
 
 $(MLX_A):
-	@$(MAKE) -C $(MLX_DIR)
+	@echo -e "$(DARK_BLUE)Compiling minilibx...$(RESET)"
+	@$(MAKE) -C $(MLX_DIR) > /dev/null 2>&1
 
 $(LIBFT_A): $(LIBFT_OBJS)
 	@$(AR) $(ARFLAGS) $@ $^
@@ -88,18 +88,19 @@ $(OBJ_ROOT) $(APP_OBJ_DIR) $(LIBFT_OBJ_DIR):
 clean:
 	@echo -e "$(LIGHT_RED)Running object cleanup...$(RESET)"
 	@rm -rf "$(OBJ_ROOT)"
-	@$(MAKE) -C $(MLX_DIR) clean
+	@$(MAKE) -C $(MLX_DIR) clean > /dev/null 2>&1
 	@echo -e "$(TURQUOISE)Cleaning of objects completed!$(RESET)"
 
 fclean:
 	@echo -e "$(LIGHT_RED)Running a full cleanup...$(RESET)"
 	@rm -rf "$(OBJ_ROOT)"
 	@rm -f "$(NAME)" "$(LIBFT_A)"
-	@$(MAKE) -C $(MLX_DIR) clean
+	@$(MAKE) -C $(MLX_DIR) clean > /dev/null 2>&1
 	@echo -e "$(TURQUOISE)Full cleaning finished!$(RESET)"
 
 re:
 	@$(MAKE) fclean
+	@echo -e "———"
 	@$(MAKE) -s all
 
 .PHONY: all clean fclean re
