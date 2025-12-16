@@ -30,7 +30,8 @@ t_hit	hit_new(void)
 }
 
 /*
-** Interseccion rayo-esfera. Resuelve: |O + t*D - C|^2 = r^2
+** Ray-sphere intersection. Solves: |O + t*D - C|^2 = r^2
+** Returns hit record with intersection data or miss.
 */
 t_hit	intersect_sphere(t_ray ray, t_sphere *sp)
 {
@@ -63,7 +64,8 @@ t_hit	intersect_sphere(t_ray ray, t_sphere *sp)
 }
 
 /*
-** Interseccion rayo-plano. Resuelve: (O + t*D - P0) . N = 0
+** Ray-plane intersection. Solves: (O + t*D - P0) . N = 0
+** Returns hit record with intersection data or miss.
 */
 t_hit	intersect_plane(t_ray ray, t_plane *pl)
 {
@@ -90,7 +92,8 @@ t_hit	intersect_plane(t_ray ray, t_plane *pl)
 }
 
 /*
-** Interseccion rayo-cilindro (cuerpo lateral).
+** Ray-cylinder intersection (lateral body only).
+** Computes intersection with the cylindrical surface.
 */
 static t_hit	intersect_cylinder_body(t_ray ray, t_cylinder *cy)
 {
@@ -134,7 +137,8 @@ static t_hit	intersect_cylinder_body(t_ray ray, t_cylinder *cy)
 }
 
 /*
-** Interseccion con las tapas del cilindro.
+** Ray-cylinder caps intersection.
+** Tests intersection with the circular caps at both ends of the cylinder.
 */
 static t_hit	intersect_cylinder_caps(t_ray ray, t_cylinder *cy)
 {
@@ -166,7 +170,8 @@ static t_hit	intersect_cylinder_caps(t_ray ray, t_cylinder *cy)
 }
 
 /*
-** Interseccion rayo-cilindro completa (cuerpo + tapas).
+** Complete ray-cylinder intersection (body + caps).
+** Returns the closest hit between body and caps.
 */
 t_hit	intersect_cylinder(t_ray ray, t_cylinder *cy)
 {
@@ -183,7 +188,7 @@ t_hit	intersect_cylinder(t_ray ray, t_cylinder *cy)
 }
 
 /*
-** Interseccion rayo-cono. Resuelve ecuacion cuadratica del cono.
+** Ray-cone intersection. Solves the cone quadratic equation.
 ** Cone equation: (D.V)^2 - cos^2(a) = 0 where V is apex to point
 */
 t_hit	intersect_cone(t_ray ray, t_cone *co)
@@ -231,7 +236,8 @@ t_hit	intersect_cone(t_ray ray, t_cone *co)
 }
 
 /*
-** Encuentra el impacto mas cercano con cualquier objeto de la escena.
+** Finds the closest hit with any object in the scene.
+** Tests all objects and returns the nearest intersection.
 */
 t_hit	find_closest_hit(t_ray ray, t_scene *scene)
 {

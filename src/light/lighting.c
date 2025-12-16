@@ -35,8 +35,8 @@ t_vec3	apply_checkerboard(t_hit *hit)
 }
 
 /*
-** Verifica si un punto esta en sombra respecto a una luz.
-** Lanza un rayo desde el punto hacia la luz y verifica interseccion.
+** Checks if a point is in shadow relative to a light source.
+** Casts a ray from the point towards the light and checks for intersection.
 */
 bool	is_in_shadow(t_vec3 point, t_vec3 light_dir, double light_dist,
 			t_scene *scene)
@@ -80,7 +80,7 @@ static t_vec3	calculate_specular(t_hit hit, t_light *light, t_vec3 view_dir)
 }
 
 /*
-** Calcula la componente difusa de la iluminacion (modelo Lambert).
+** Calculates the diffuse component of lighting (Lambert model).
 ** diffuse = object_color * light_color * brightness * max(0, N . L)
 */
 static t_vec3	calculate_diffuse(t_hit hit, t_light *light, t_scene *scene)
@@ -103,10 +103,48 @@ static t_vec3	calculate_diffuse(t_hit hit, t_light *light, t_scene *scene)
 }
 
 /*
-** Calcula el color final de un punto usando modelo de iluminacion:
-** Color = Ambiente + Difuso + Especular (Phong model)
+** Calculates the final color of a point using lighting model:
+** Color = Ambient + Diffuse + Specular (Phong model)
 ** Supports colored lights and multiple light sources.
 */
+/*
+** [ADVANCED FEATURE - Currently disabled]
+** Calculates indirect lighting (color bleeding) by sampling the hemisphere.
+** When enabled, light bounces off objects and picks up their color,
+** creating realistic color interactions (e.g., red wall tints nearby objects).
+**
+** To enable: Uncomment ENABLE_COLOR_BLEEDING in minirt.h
+*/
+#ifdef ENABLE_COLOR_BLEEDING
+static t_vec3	calculate_color_bleeding(t_hit hit, t_scene *scene)
+{
+	t_vec3	result;
+	t_vec3	sample_dir;
+	t_ray	bounce_ray;
+	t_hit	bounce_hit;
+	int		samples;
+	int		i;
+
+	result = vec3_new(0, 0, 0);
+	samples = 8;
+	i = 0;
+	while (i < samples)
+	{
+		sample_dir = vec3_normalize(vec3_add(hit.normal,
+			vec3_new((i % 3) * 0.5 - 0.5, ((i / 3) % 3) * 0.5 - 0.5,
+				((i / 9) % 3) * 0.5 - 0.5)));
+		bounce_ray.origin = vec3_add(hit.point, vec3_scale(hit.normal,
+			EPSILON * 10));
+		bounce_ray.direction = sample_dir;
+		bounce_hit = find_closest_hit(bounce_ray, scene);
+		if (bounce_hit.hit)
+			result = vec3_add(result, vec3_scale(bounce_hit.color, 0.2));
+		i++;
+	}
+	return (vec3_scale(result, 1.0 / samples));
+}
+#endif
+
 t_vec3	calculate_lighting(t_hit hit, t_scene *scene, t_vec3 view_dir)
 {
 	t_vec3	result;
@@ -129,5 +167,9 @@ t_vec3	calculate_lighting(t_hit hit, t_scene *scene, t_vec3 view_dir)
 		result = vec3_add(result, specular);
 		i++;
 	}
+#ifdef ENABLE_COLOR_BLEEDING
+	result = vec3_add(result, vec3_mult(hit.color,
+		calculate_color_bleeding(hit, scene)));
+#endif
 	return (result);
 }

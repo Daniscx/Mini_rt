@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 17:00:00 by ravazque          #+#    #+#             */
-/*   Updated: 2025/12/16 04:29:58 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/16 07:56:06 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,9 @@ int	close_handler(t_minirt *rt)
 */
 int	expose_handler(t_minirt *rt)
 {
-	if (rt->img.img_ptr)
+	if (rt->high_res_mode && rt->img_high.img_ptr)
+		mlx_put_image_to_window(rt->mlx, rt->win, rt->img_high.img_ptr, 0, 0);
+	else if (rt->img.img_ptr)
 		mlx_put_image_to_window(rt->mlx, rt->win, rt->img.img_ptr, 0, 0);
 	return (0);
 }
@@ -64,7 +66,7 @@ static int	get_key_index(int keycode)
 
 /*
 ** Handles key press events. Sets key state to true for movement keys.
-** Special keys (ESC, P, M) are handled immediately.
+** Special keys (ESC, P, M, O) are handled immediately.
 */
 int	key_press_handler(int keycode, t_minirt *rt)
 {
@@ -74,12 +76,24 @@ int	key_press_handler(int keycode, t_minirt *rt)
 		close_handler(rt);
 	else if (keycode == XK_p || keycode == XK_P)
 	{
-		rt->high_res_mode = true;
-		render_high_res(rt);
+		if (rt->high_res_mode)
+			render_low_res(rt);
+		else
+			render_high_res(rt);
 	}
-	else if (keycode == XK_m || keycode == XK_M)
+	else if ((keycode == XK_m || keycode == XK_M) && !rt->high_res_mode)
+	{
 		rt->input.mouse_captured = !rt->input.mouse_captured;
-	else
+		if (rt->input.mouse_captured)
+		{
+			mlx_mouse_hide(rt->mlx, rt->win);
+			// Centrar el ratón inmediatamente al capturar
+			mlx_mouse_move(rt->mlx, rt->win, WIDTH_LOW / 2, HEIGHT_LOW / 2);
+		}
+		else
+			mlx_mouse_show(rt->mlx, rt->win);
+	}
+	else if (!rt->high_res_mode)
 	{
 		key_idx = get_key_index(keycode);
 		if (key_idx >= 0)
@@ -95,6 +109,8 @@ int	key_release_handler(int keycode, t_minirt *rt)
 {
 	int	key_idx;
 
+	if (rt->high_res_mode)
+		return (0);
 	key_idx = get_key_index(keycode);
 	if (key_idx >= 0)
 		rt->input.keys[key_idx] = false;
@@ -102,47 +118,53 @@ int	key_release_handler(int keycode, t_minirt *rt)
 }
 
 /*
-** Handles mouse button press. Left click enables mouse capture for camera.
+** Handles mouse button press. Disabled in high-res mode.
 */
 int	mouse_press_handler(int button, int x, int y, t_minirt *rt)
 {
 	(void)x;
 	(void)y;
-	if (button == 1)
-	{
-		rt->input.mouse_captured = true;
-		rt->input.last_mouse_x = x;
-		rt->input.last_mouse_y = y;
-	}
-	else if (button == 3)
-		rt->input.mouse_captured = false;
+	(void)button;
+	(void)rt;
 	return (0);
 }
 
 /*
 ** Handles mouse movement for camera rotation when mouse is captured.
-** Calculates delta from last position and applies rotation.
+** Calculates delta from center position, applies rotation, and re-centers cursor.
+** FIXED: Solo funciona en modo baja resolución y con mouse capturado.
 */
 int	mouse_move_handler(int x, int y, t_minirt *rt)
 {
 	int		dx;
 	int		dy;
+	int		center_x;
+	int		center_y;
 
-	if (!rt->input.mouse_captured)
-	{
-		rt->input.last_mouse_x = x;
-		rt->input.last_mouse_y = y;
+	// No procesar movimiento en modo alta resolución
+	if (rt->high_res_mode)
 		return (0);
-	}
-	dx = x - rt->input.last_mouse_x;
-	dy = y - rt->input.last_mouse_y;
-	rt->input.last_mouse_x = x;
-	rt->input.last_mouse_y = y;
-	if (dx != 0 || dy != 0)
+	
+	// No procesar si el ratón no está capturado
+	if (!rt->input.mouse_captured)
+		return (0);
+
+	// Calcular centro según el modo actual
+	center_x = WIDTH_LOW / 2;
+	center_y = HEIGHT_LOW / 2;
+
+	// Calcular delta desde el centro
+	dx = x - center_x;
+	dy = y - center_y;
+
+	// Solo aplicar rotación si hay movimiento significativo
+	// Esto evita micromovimientos al centrar
+	if (abs(dx) > 1 || abs(dy) > 1)
 	{
-		mlx_mouse_hide(rt->mlx, rt->win);
-		camera_rotate(&rt->scene.camera, dx * MOUSE_SENS, -dy * MOUSE_SENS);
+		camera_rotate(&rt->scene.camera, -dx * MOUSE_SENS, -dy * MOUSE_SENS);
 		rt->needs_render = true;
+		// Re-centrar el cursor
+		mlx_mouse_move(rt->mlx, rt->win, center_x, center_y);
 	}
 	return (0);
 }
@@ -187,9 +209,9 @@ static void	process_rotation(t_minirt *rt)
 	yaw = 0;
 	pitch = 0;
 	if (rt->input.keys[KEY_LEFT])
-		yaw -= ROT_SPEED;
-	if (rt->input.keys[KEY_RIGHT])
 		yaw += ROT_SPEED;
+	if (rt->input.keys[KEY_RIGHT])
+		yaw -= ROT_SPEED;
 	if (rt->input.keys[KEY_UP])
 		pitch += ROT_SPEED;
 	if (rt->input.keys[KEY_DOWN])
@@ -204,6 +226,7 @@ static void	process_rotation(t_minirt *rt)
 /*
 ** Main loop handler called every frame by MLX.
 ** Processes input and renders when needed.
+** Only active in low-res mode.
 */
 int	loop_handler(t_minirt *rt)
 {

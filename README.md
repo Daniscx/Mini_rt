@@ -74,4 +74,3 @@ cy <x,y,z> <nx,ny,nz> <d> <h> <R,G,B>  # Cylinder
 - Linux with X11
 - GCC compiler
 - Make
-

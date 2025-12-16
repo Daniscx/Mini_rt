@@ -13,20 +13,20 @@
 #include "../../include/minirt.h"
 
 /*
-** Calcula el producto cruz (cross product) de dos vectores
-** Parámetros:
-**   - a, b: vectores a multiplicar
-** Retorna:
-**   - Vector perpendicular a ambos a y b
-** Fórmula:
+** Calculates the cross product of two vectors.
+** Parameters:
+**   - a, b: vectors to multiply
+** Returns:
+**   - Vector perpendicular to both a and b
+** Formula:
 **   - result.x = a.y*b.z - a.z*b.y
 **   - result.y = a.z*b.x - a.x*b.z
 **   - result.z = a.x*b.y - a.y*b.x
-** Propiedades:
-**   - El resultado es perpendicular a ambos vectores
-**   - La magnitud = |a| * |b| * sin(θ)
-**   - Sigue la regla de la mano derecha
-** Uso: Calcular normales de planos, bases ortogonales para cámara
+** Properties:
+**   - Result is perpendicular to both vectors
+**   - Magnitude = |a| * |b| * sin(θ)
+**   - Follows the right-hand rule
+** Usage: Calculate plane normals, orthogonal bases for camera
 */
 t_vec3	vec3_cross(t_vec3 a, t_vec3 b)
 {
@@ -39,12 +39,12 @@ t_vec3	vec3_cross(t_vec3 a, t_vec3 b)
 }
 
 /*
-** Calcula la longitud (magnitud) de un vector
-** Parámetros:
-**   - v: vector del cual calcular la longitud
-** Retorna:
-**   - Escalar: sqrt(v.x² + v.y² + v.z²)
-** Uso: Calcular distancias, verificar normalización
+** Calculates the length (magnitude) of a vector.
+** Parameters:
+**   - v: vector whose length to calculate
+** Returns:
+**   - Scalar: sqrt(v.x² + v.y² + v.z²)
+** Usage: Calculate distances, verify normalization
 */
 double	vec3_length(t_vec3 v)
 {
@@ -52,16 +52,16 @@ double	vec3_length(t_vec3 v)
 }
 
 /*
-** Normaliza un vector (lo convierte en vector unitario)
-** Parámetros:
-**   - v: vector a normalizar
-** Retorna:
-**   - Vector con misma dirección pero longitud 1.0
-**   - Vector cero si la longitud original es 0
-** Funcionamiento:
-**   - Calcula longitud
-**   - Divide cada componente por la longitud
-** Uso: Direcciones de rayos, normales de superficies
+** Normalizes a vector (converts to unit vector).
+** Parameters:
+**   - v: vector to normalize
+** Returns:
+**   - Vector with same direction but length 1.0
+**   - Zero vector if original length is 0
+** Behavior:
+**   - Calculates length
+**   - Divides each component by the length
+** Usage: Ray directions, surface normals
 */
 t_vec3	vec3_normalize(t_vec3 v)
 {
@@ -74,7 +74,7 @@ t_vec3	vec3_normalize(t_vec3 v)
 }
 
 /*
-** Multiplicacion componente a componente (para colores)
+** Component-wise multiplication (for colors).
 */
 t_vec3	vec3_mult(t_vec3 a, t_vec3 b)
 {
@@ -82,7 +82,7 @@ t_vec3	vec3_mult(t_vec3 a, t_vec3 b)
 }
 
 /*
-** Negar un vector
+** Negates a vector (reverses direction).
 */
 t_vec3	vec3_negate(t_vec3 v)
 {
@@ -90,7 +90,7 @@ t_vec3	vec3_negate(t_vec3 v)
 }
 
 /*
-** Clamp un valor entre min y max
+** Clamps a value between min and max.
 */
 double	vec3_clamp(double value, double min, double max)
 {
@@ -102,7 +102,7 @@ double	vec3_clamp(double value, double min, double max)
 }
 
 /*
-** Convertir vec3 color [0,1] a int 0xRRGGBB
+** Converts vec3 color [0,1] to int 0xRRGGBB format.
 */
 int	vec3_to_color(t_vec3 color)
 {

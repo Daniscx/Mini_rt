@@ -103,4 +103,12 @@ re:
 	@echo -e "———"
 	@$(MAKE) -s all
 
+run:
+	@$(MAKE) re
+	@$(MAKE) clean
+	@echo -e "———"
+	@./$(NAME) test
+
 .PHONY: all clean fclean re
+
+# If you see "-e" before the loading messages, etc., when compiling, it's a problem with the terminal; try using Bash!

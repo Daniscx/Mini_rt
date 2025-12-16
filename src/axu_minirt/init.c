@@ -104,3 +104,17 @@ void	minirt_cleanup(t_minirt *rt)
 	}
 	scene_free(&rt->scene);
 }
+
+/*
+** Resizes the window by destroying and recreating it with new dimensions.
+** Also re-registers all event handlers.
+*/
+void	resize_window(t_minirt *rt, int width, int height)
+{
+	if (rt->win)
+		mlx_destroy_window(rt->mlx, rt->win);
+	rt->win = mlx_new_window(rt->mlx, width, height, WIN_TITLE);
+	if (!rt->win)
+		malloc_error(rt);
+	events_init(rt);
+}

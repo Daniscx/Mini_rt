@@ -24,19 +24,29 @@
 #  define M_PI 3.14159265358979323846
 # endif
 
+/* =[ Advanced Features (Optional) ]======================================== */
+/*
+** Uncomment the line below to enable color bleeding (indirect lighting).
+** This adds bounced light that takes on the color of reflecting objects,
+** creating more realistic color interactions (e.g., red sphere tints nearby
+** objects with red light). Increases rendering time.
+*/
+
+# define ENABLE_COLOR_BLEEDING
+
 /* =[ Window Configuration ]================================================ */
 
 # define WIN_TITLE "miniRT"
 
-# define WIDTH_LOW 400
-# define HEIGHT_LOW 300
-# define WIDTH_HIGH 1200
-# define HEIGHT_HIGH 900
+# define WIDTH_LOW 426
+# define HEIGHT_LOW 240
+# define WIDTH_HIGH 1920
+# define HEIGHT_HIGH 1080
 
 # define EPSILON 0.0001
 # define MOVE_SPEED 0.3
 # define ROT_SPEED 0.05
-# define MOUSE_SENS 0.0075
+# define MOUSE_SENS 0.001
 
 /* =[ Key State Indices ]=================================================== */
 
@@ -57,6 +67,7 @@
 ** Represents a 3D vector or point in space.
 ** Used for positions, directions, and colors (RGB normalized to 0-1).
 */
+
 typedef struct s_vec3
 {
 	double			x;
@@ -69,6 +80,7 @@ typedef struct s_vec3
 ** Represents a ray in 3D space with origin and direction.
 ** Direction should always be normalized.
 */
+
 typedef struct s_ray
 {
 	t_vec3			origin;
@@ -79,6 +91,7 @@ typedef struct s_ray
 /*
 ** Enumeration of supported geometric primitive types.
 */
+
 typedef enum e_obj_type
 {
 	OBJ_SPHERE,
@@ -91,6 +104,7 @@ typedef enum e_obj_type
 /*
 ** Sphere primitive defined by center, diameter and color.
 */
+
 typedef struct s_sphere
 {
 	t_vec3			center;
@@ -102,6 +116,7 @@ typedef struct s_sphere
 /*
 ** Infinite plane defined by a point, normal vector and color.
 */
+
 typedef struct s_plane
 {
 	t_vec3			point;
@@ -113,6 +128,7 @@ typedef struct s_plane
 /*
 ** Cylinder defined by center (base), axis direction, diameter, height, color.
 */
+
 typedef struct s_cylinder
 {
 	t_vec3			center;
@@ -126,6 +142,7 @@ typedef struct s_cylinder
 /*
 ** Cone defined by apex, axis direction, angle (degrees), height and color.
 */
+
 typedef struct s_cone
 {
 	t_vec3			apex;
@@ -140,6 +157,7 @@ typedef struct s_cone
 ** Generic object container using struct members for each type.
 ** checkerboard: 0=solid, 1=checkerboard pattern (for planes).
 */
+
 typedef struct s_object
 {
 	t_obj_type		type;
@@ -156,6 +174,7 @@ typedef struct s_object
 ** specular: shininess exponent for Phong model (0 = no specular).
 ** checkerboard: flag for checkerboard pattern.
 */
+
 typedef struct s_hit
 {
 	bool			hit;
@@ -171,6 +190,7 @@ typedef struct s_hit
 /*
 ** Ambient lighting component with intensity ratio and color.
 */
+
 typedef struct s_ambient
 {
 	double			ratio;
@@ -181,6 +201,7 @@ typedef struct s_ambient
 /*
 ** Point light source with position, brightness and color.
 */
+
 typedef struct s_light
 {
 	t_vec3			position;
@@ -191,7 +212,10 @@ typedef struct s_light
 /* =[ Camera ]============================================================== */
 /*
 ** Camera with position, orientation vectors and field of view.
+** yaw: horizontal rotation angle (radians)
+** pitch: vertical rotation angle (radians), clamped to prevent gimbal lock
 */
+
 typedef struct s_camera
 {
 	t_vec3			position;
@@ -200,12 +224,15 @@ typedef struct s_camera
 	t_vec3			up;
 	double			fov;
 	double			aspect_ratio;
+	double			yaw;
+	double			pitch;
 }					t_camera;
 
 /* =[ Scene ]=============================================================== */
 /*
 ** Complete scene with ambient light, camera, lights and objects.
 */
+
 typedef struct s_scene
 {
 	t_ambient		ambient;
@@ -220,6 +247,7 @@ typedef struct s_scene
 /*
 ** MLX image buffer for direct pixel manipulation.
 */
+
 typedef struct s_img
 {
 	void			*img_ptr;
@@ -235,6 +263,7 @@ typedef struct s_img
 /*
 ** Tracks keyboard and mouse input state for smooth movement.
 */
+
 typedef struct s_input
 {
 	bool			keys[KEY_COUNT];
@@ -249,6 +278,7 @@ typedef struct s_input
 /*
 ** Main program structure containing all runtime data.
 */
+
 typedef struct s_minirt
 {
 	void			*mlx;
@@ -287,6 +317,7 @@ void				error_manager(char *error_message);
 
 void				minirt_init(t_minirt *rt);
 void				minirt_cleanup(t_minirt *rt);
+void				resize_window(t_minirt *rt, int width, int height);
 
 /* =[ Event Handlers ]====================================================== */
 
@@ -309,6 +340,7 @@ void				camera_update_vectors(t_camera *camera);
 
 void				render_scene(t_minirt *rt);
 void				render_high_res(t_minirt *rt);
+void				render_low_res(t_minirt *rt);
 
 /* =[ Vector Operations ]=================================================== */
 

@@ -25,6 +25,8 @@ void	camera_init(t_camera *camera)
 	camera->right = vec3_cross(camera->direction, camera->up);
 	camera->fov = 60.0;
 	camera->aspect_ratio = (double)WIDTH_LOW / (double)HEIGHT_LOW;
+	camera->yaw = 0.0;
+	camera->pitch = 0.0;
 }
 
 /*
@@ -54,25 +56,31 @@ void	camera_move(t_camera *camera, t_vec3 offset)
 
 /*
 ** Rotates the camera using yaw (horizontal) and pitch (vertical) angles.
-** Yaw rotates around the Y axis, pitch around the right vector.
-** Automatically recalculates orientation vectors after rotation.
+** Pitch is clamped to [-80°, +80°] to prevent gimbal lock/control inversion.
+** Uses spherical coordinates for smooth, intuitive rotation.
 */
-void	camera_rotate(t_camera *camera, double yaw, double pitch)
+void	camera_rotate(t_camera *camera, double yaw_delta, double pitch_delta)
 {
-	double	cos_yaw;
-	double	sin_yaw;
 	double	cos_pitch;
 	double	sin_pitch;
-	t_vec3	new_dir;
+	double	cos_yaw;
+	double	sin_yaw;
+	double	max_pitch;
 
-	cos_yaw = cos(yaw);
-	sin_yaw = sin(yaw);
-	cos_pitch = cos(pitch);
-	sin_pitch = sin(pitch);
-	new_dir.x = camera->direction.x * cos_yaw - camera->direction.z * sin_yaw;
-	new_dir.z = camera->direction.x * sin_yaw + camera->direction.z * cos_yaw;
-	new_dir.y = camera->direction.y * cos_pitch - new_dir.z * sin_pitch;
-	new_dir.z = camera->direction.y * sin_pitch + new_dir.z * cos_pitch;
-	camera->direction = vec3_normalize(new_dir);
+	max_pitch = 80.0 * M_PI / 180.0;
+	camera->yaw += yaw_delta;
+	camera->pitch += pitch_delta;
+	if (camera->pitch > max_pitch)
+		camera->pitch = max_pitch;
+	if (camera->pitch < -max_pitch)
+		camera->pitch = -max_pitch;
+	cos_pitch = cos(camera->pitch);
+	sin_pitch = sin(camera->pitch);
+	cos_yaw = cos(camera->yaw);
+	sin_yaw = sin(camera->yaw);
+	camera->direction.x = cos_pitch * sin_yaw;
+	camera->direction.y = sin_pitch;
+	camera->direction.z = cos_pitch * cos_yaw;
+	camera->direction = vec3_normalize(camera->direction);
 	camera_update_vectors(camera);
 }

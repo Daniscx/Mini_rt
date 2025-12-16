@@ -13,19 +13,19 @@
 #include "../../include/minirt.h"
 
 /*
-** Constructor de la escena principal del raytracer
-** Parámetros:
-**   - file: ruta al archivo .rt de la escena
-** Retorna:
-**   - Puntero a scene_t con todos los datos parseados
-**   - NULL si hay error
-** Funcionamiento:
-**   1. Parsea el archivo .rt con parse_primiteve_contructor
-**   2. Crea estructura scene_t
-**   3. Transfiere los punteros de parsed a scene
-**   4. Libera la estructura temporal parsed (no su contenido)
-** NOTA: Los punteros (object, light, al, camera) pasan de parsed a scene
-**       sin copiar datos, por lo que no se deben liberar dos veces
+** Main scene constructor for the raytracer.
+** Parameters:
+**   - file: path to the .rt scene file
+** Returns:
+**   - Pointer to scene_t with all parsed data
+**   - NULL on error
+** Behavior:
+**   1. Parses the .rt file with parse_primiteve_contructor
+**   2. Creates scene_t structure
+**   3. Transfers pointers from parsed to scene
+**   4. Frees temporary parsed structure (not its content)
+** NOTE: Pointers (object, light, al, camera) are transferred from parsed
+**       to scene without copying data, so they must not be freed twice.
 */
 scene_t *scene_constructor(char *file)
 {
@@ -50,15 +50,15 @@ scene_t *scene_constructor(char *file)
 }
 
 /*
-** Libera recursivamente una lista y su contenido
-** Parámetros:
-**   - list: lista a liberar
-** Comportamiento:
-**   - Recorre toda la lista
-**   - Libera el content de cada nodo
-**   - Libera cada nodo
-** IMPORTANTE: Solo libera un nivel de profundidad
-**             Para listas anidadas, necesita lógica adicional
+** Recursively frees a list and its content.
+** Parameters:
+**   - list: list to free
+** Behavior:
+**   - Iterates through the entire list
+**   - Frees the content of each node
+**   - Frees each node
+** IMPORTANT: Only frees one level deep.
+**            Nested lists require additional logic.
 */
 static void	free_list_deep(t_list *list)
 {
@@ -75,17 +75,17 @@ static void	free_list_deep(t_list *list)
 }
 
 /*
-** Destructor de la estructura scene_t
-** Libera toda la memoria allocada para la escena
-** Parámetros:
-**   - scene: estructura de escena a destruir
-** Comportamiento:
-**   - Libera las listas de objetos (spheres, planes, cylinders)
-**   - Libera las listas de luces
-**   - Libera ambient light
-**   - Libera datos de la cámara
-**   - Libera la estructura scene_t misma
-** NOTA: Debe llamarse antes de terminar el programa para evitar memory leaks
+** Destructor for the scene_t structure.
+** Frees all allocated memory for the scene.
+** Parameters:
+**   - scene: scene structure to destroy
+** Behavior:
+**   - Frees object lists (spheres, planes, cylinders)
+**   - Frees light lists
+**   - Frees ambient light
+**   - Frees camera data
+**   - Frees the scene_t structure itself
+** NOTE: Must be called before program termination to avoid memory leaks.
 */
 void	scene_destructor(scene_t *scene)
 {
@@ -107,12 +107,12 @@ void	scene_destructor(scene_t *scene)
 }
 
 /*
-** Libera los recursos de t_scene (nueva estructura)
-** Parametros:
-**   - scene: puntero a la escena a liberar
-** Comportamiento:
-**   - Libera array de luces
-**   - Libera array de objetos
+** Frees resources from t_scene (new structure).
+** Parameters:
+**   - scene: pointer to the scene to free
+** Behavior:
+**   - Frees lights array
+**   - Frees objects array
 */
 void	scene_free(t_scene *scene)
 {
@@ -133,8 +133,9 @@ void	scene_free(t_scene *scene)
 }
 
 /*
-** Convierte datos parseados a la nueva estructura t_scene
-** TODO: Implementar conversion de listas a arrays tipados
+** Converts parsed data to the new t_scene structure.
+** NOTE: Currently unused - the program works directly with parsed structures.
+**       This function is reserved for future refactoring if needed.
 */
 int	scene_from_parse(t_scene *scene, parse_primitive_t *parsed)
 {

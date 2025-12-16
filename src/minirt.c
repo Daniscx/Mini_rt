@@ -13,13 +13,13 @@
 #include "../include/minirt.h"
 
 /*
-** Maneja errores mostrando un mensaje y terminando el programa
-** Parámetros:
-**   - error_message: mensaje de error a mostrar
-** Comportamiento:
-**   - Imprime el mensaje de error en stderr
-**   - Sale del programa con exit(1)
-** NOTA: Si error_message es NULL, sale sin mostrar mensaje
+** Handles errors by displaying a message and terminating the program.
+** Parameters:
+**   - error_message: error message to display
+** Behavior:
+**   - Prints the error message to stderr
+**   - Exits the program with exit(1)
+** Note: If error_message is NULL, exits without displaying message
 */
 void	error_manager(char *error_message)
 {
@@ -31,20 +31,20 @@ void	error_manager(char *error_message)
 }
 
 /*
-** Función principal del programa miniRT
-** Parámetros:
-**   - argc: número de argumentos
-**   - argv: array de argumentos (argv[1] = archivo.rt)
-** Flujo del programa:
-**   1. Valida argumentos (debe ser exactamente 2)
-**   2. Inicializa estructura t_minirt a cero
-**   3. Parsea el archivo .rt con scene_constructor
-**   4. Inicializa MLX, ventana e imagen
-**   5. Renderiza la escena
-**   6. Entra en el loop de eventos de MLX
-**   7. Limpia memoria al salir (nunca llega aquí por mlx_loop)
-** Retorna:
-**   - 0 si todo OK (nunca alcanzado debido a mlx_loop)
+** Main function of the miniRT program.
+** Parameters:
+**   - argc: number of arguments
+**   - argv: array of arguments (argv[1] = scene.rt file)
+** Program flow:
+**   1. Validates arguments (must be exactly 2)
+**   2. Initializes t_minirt structure to zero
+**   3. Parses the .rt file with scene_load
+**   4. Initializes MLX, window and images
+**   5. Renders the scene
+**   6. Enters the MLX event loop
+**   7. Cleans up memory on exit (never reached due to mlx_loop)
+** Returns:
+**   - 0 if successful (never reached due to mlx_loop)
 */
 int	main(int argc, char **argv)
 {

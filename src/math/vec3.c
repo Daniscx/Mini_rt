@@ -13,12 +13,12 @@
 #include "../../include/minirt.h"
 
 /*
-** Crea un nuevo vector 3D
-** Parámetros:
-**   - x, y, z: componentes del vector
-** Retorna:
-**   - Vector t_vec3 con los valores dados
-** Uso: Crear posiciones, direcciones, colores RGB
+** Creates a new 3D vector.
+** Parameters:
+**   - x, y, z: vector components
+** Returns:
+**   - t_vec3 vector with given values
+** Usage: Create positions, directions, RGB colors
 */
 t_vec3	vec3_new(double x, double y, double z)
 {
@@ -31,12 +31,12 @@ t_vec3	vec3_new(double x, double y, double z)
 }
 
 /*
-** Suma dos vectores componente a componente
-** Parámetros:
-**   - a, b: vectores a sumar
-** Retorna:
-**   - Vector resultado (a.x + b.x, a.y + b.y, a.z + b.z)
-** Uso: Trasladar puntos, combinar direcciones
+** Adds two vectors component-wise.
+** Parameters:
+**   - a, b: vectors to add
+** Returns:
+**   - Result vector (a.x + b.x, a.y + b.y, a.z + b.z)
+** Usage: Translate points, combine directions
 */
 t_vec3	vec3_add(t_vec3 a, t_vec3 b)
 {
@@ -44,12 +44,12 @@ t_vec3	vec3_add(t_vec3 a, t_vec3 b)
 }
 
 /*
-** Resta dos vectores componente a componente
-** Parámetros:
-**   - a, b: vectores a restar
-** Retorna:
-**   - Vector resultado (a - b)
-** Uso: Calcular dirección entre dos puntos, distancias
+** Subtracts two vectors component-wise.
+** Parameters:
+**   - a, b: vectors to subtract
+** Returns:
+**   - Result vector (a - b)
+** Usage: Calculate direction between two points, distances
 */
 t_vec3	vec3_sub(t_vec3 a, t_vec3 b)
 {
@@ -57,13 +57,13 @@ t_vec3	vec3_sub(t_vec3 a, t_vec3 b)
 }
 
 /*
-** Multiplica un vector por un escalar
-** Parámetros:
-**   - v: vector a escalar
-**   - scalar: factor de escala
-** Retorna:
-**   - Vector resultado (v.x * scalar, v.y * scalar, v.z * scalar)
-** Uso: Ajustar longitud de vectores, escalar colores
+** Multiplies a vector by a scalar.
+** Parameters:
+**   - v: vector to scale
+**   - scalar: scaling factor
+** Returns:
+**   - Result vector (v.x * scalar, v.y * scalar, v.z * scalar)
+** Usage: Adjust vector length, scale colors
 */
 t_vec3	vec3_scale(t_vec3 v, double scalar)
 {
@@ -71,16 +71,16 @@ t_vec3	vec3_scale(t_vec3 v, double scalar)
 }
 
 /*
-** Calcula el producto punto (dot product) de dos vectores
-** Parámetros:
-**   - a, b: vectores a multiplicar
-** Retorna:
-**   - Escalar: a.x*b.x + a.y*b.y + a.z*b.z
-** Propiedades:
-**   - Si a·b = 0 → vectores perpendiculares
-**   - Si a·b > 0 → ángulo agudo
-**   - Si a·b < 0 → ángulo obtuso
-** Uso: Cálculos de iluminación, proyecciones, ángulos
+** Calculates the dot product of two vectors.
+** Parameters:
+**   - a, b: vectors to multiply
+** Returns:
+**   - Scalar: a.x*b.x + a.y*b.y + a.z*b.z
+** Properties:
+**   - If a·b = 0 → perpendicular vectors
+**   - If a·b > 0 → acute angle
+**   - If a·b < 0 → obtuse angle
+** Usage: Lighting calculations, projections, angles
 */
 double	vec3_dot(t_vec3 a, t_vec3 b)
 {
