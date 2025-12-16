@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/15 20:00:00 by ravazque          #+#    #+#             */
-/*   Updated: 2025/12/16 08:56:26 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/16 08:58:20 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,7 @@ t_vec3	apply_checkerboard(t_hit *hit)
 ** Checks if a point is in shadow relative to a light source.
 ** Casts a ray from the point towards the light and checks for intersection.
 */
-bool	is_in_shadow(t_vec3 point, t_vec3 light_dir, double light_dist,
-			t_scene *scene)
+bool	is_in_shadow(t_vec3 point, t_vec3 light_dir, double light_dist, t_scene *scene)
 {
 	t_ray	shadow_ray;
 	t_hit	hit;
