@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 17:00:00 by ravazque          #+#    #+#             */
-/*   Updated: 2025/12/16 07:56:06 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/16 08:52:12 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,6 @@ int	key_press_handler(int keycode, t_minirt *rt)
 		if (rt->input.mouse_captured)
 		{
 			mlx_mouse_hide(rt->mlx, rt->win);
-			// Centrar el ratón inmediatamente al capturar
 			mlx_mouse_move(rt->mlx, rt->win, WIDTH_LOW / 2, HEIGHT_LOW / 2);
 		}
 		else
@@ -141,29 +140,18 @@ int	mouse_move_handler(int x, int y, t_minirt *rt)
 	int		center_x;
 	int		center_y;
 
-	// No procesar movimiento en modo alta resolución
 	if (rt->high_res_mode)
 		return (0);
-	
-	// No procesar si el ratón no está capturado
 	if (!rt->input.mouse_captured)
 		return (0);
-
-	// Calcular centro según el modo actual
 	center_x = WIDTH_LOW / 2;
 	center_y = HEIGHT_LOW / 2;
-
-	// Calcular delta desde el centro
 	dx = x - center_x;
 	dy = y - center_y;
-
-	// Solo aplicar rotación si hay movimiento significativo
-	// Esto evita micromovimientos al centrar
 	if (abs(dx) > 1 || abs(dy) > 1)
 	{
 		camera_rotate(&rt->scene.camera, -dx * MOUSE_SENS, -dy * MOUSE_SENS);
 		rt->needs_render = true;
-		// Re-centrar el cursor
 		mlx_mouse_move(rt->mlx, rt->win, center_x, center_y);
 	}
 	return (0);

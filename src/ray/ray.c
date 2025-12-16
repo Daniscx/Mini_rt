@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/15 20:00:00 by ravazque          #+#    #+#             */
-/*   Updated: 2025/12/16 12:00:00 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/16 08:44:44 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,4 +55,3 @@ t_ray	ray_from_camera(t_camera *cam, int x, int y, t_img *img)
 			vec3_add(vec3_scale(cam->right, u), vec3_scale(cam->up, v)));
 	return (ray_new(cam->position, dir));
 }
-

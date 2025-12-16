@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/27 17:54:21 by dmaestro          #+#    #+#             */
-/*   Updated: 2025/12/16 02:54:40 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/16 08:54:04 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,21 +22,21 @@
 **   - Llama a error_manager si hay algún problema
 */
 
-static void print_directory_message(char *file)
+static void	print_directory_message(char *file)
 {
 	ft_putstr_fd("\033[32mAdded directory “./scenes/” to the file: \033[1;32m", 0);
 	ft_putstr_fd(file, 0);
 	ft_putstr_fd("\033[0m\n", 0);
 }
 
-static void print_directory_rt_message(char *file)
+static void	print_directory_rt_message(char *file)
 {
 	ft_putstr_fd("\033[32mAdded directory “./scenes/” to the file as well as extension “.rt”: \033[1;32m", 0);
 	ft_putstr_fd(file, 0);
 	ft_putstr_fd("\033[0m\n", 0);
 }
 
-static void print_extnsion_message(char *file)
+static void	print_extnsion_message(char *file)
 {
 	ft_putstr_fd("\033[32mAdded “.rt” extension to the file: \033[1;32m", 0);
 	ft_putstr_fd(file, 0);
@@ -45,21 +45,21 @@ static void print_extnsion_message(char *file)
 
 int	parser_file_name(char *file)
 {
-	int	fd_tester;
-	char *try_rt;
+	int		fd_tester;
+	char	*try_rt;
 
 	if (ft_strncmp(file + ft_strlen(file) - 3, ".rt", 3) != 0)
 	{
 		try_rt = ft_strjoin(file, ".rt");
 		fd_tester = open(try_rt, O_RDONLY);
 		if (fd_tester >= 0)
-			return(print_extnsion_message(file), free(try_rt), close(fd_tester), 1);
+			return (print_extnsion_message(file), free(try_rt), close(fd_tester), 1);
 		free(try_rt);
 		try_rt = NULL;
-		try_rt = ft_strjoin("scenes/", try_rt);	
+		try_rt = ft_strjoin("scenes/", try_rt);
 		fd_tester = open(try_rt, O_RDONLY);
 		if (fd_tester >= 0)
-			return(print_directory_rt_message(file), free(try_rt), close(fd_tester), 2);
+			return (print_directory_rt_message(file), free(try_rt), close(fd_tester), 2);
 		free(try_rt);
 		close(fd_tester);
 		error_manager("invalid file please check if it exits!");
@@ -68,11 +68,11 @@ int	parser_file_name(char *file)
 	{
 		fd_tester = open(file, O_RDONLY);
 		if (fd_tester >= 0)
-			return(close(fd_tester), 3);
-		try_rt = ft_strjoin("scenes/", file);	
+			return (close(fd_tester), 3);
+		try_rt = ft_strjoin("scenes/", file);
 		fd_tester = open(try_rt, O_RDONLY);
 		if (fd_tester >= 0)
-			return(print_directory_message(file), free(try_rt), close(fd_tester), 4);
+			return (print_directory_message(file), free(try_rt), close(fd_tester), 4);
 		free(try_rt);
 		close(fd_tester);
 		error_manager("Failed to open the file.");

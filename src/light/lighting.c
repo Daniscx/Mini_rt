@@ -6,15 +6,11 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/15 20:00:00 by ravazque          #+#    #+#             */
-/*   Updated: 2025/12/16 14:00:00 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/16 08:56:26 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minirt.h"
-
-#define CHECKER_SCALE 2.0
-#define SPECULAR_EXP 32.0
-#define SPECULAR_STRENGTH 0.5
 
 /*
 ** Applies checkerboard pattern to hit point for planes.
@@ -102,6 +98,7 @@ static t_vec3	calculate_diffuse(t_hit hit, t_light *light, t_scene *scene)
 	return (vec3_scale(diffuse, diff * light->brightness));
 }
 
+/* =[ Test ]================================================================ */
 /*
 ** Calculates the final color of a point using lighting model:
 ** Color = Ambient + Diffuse + Specular (Phong model)
@@ -115,7 +112,9 @@ static t_vec3	calculate_diffuse(t_hit hit, t_light *light, t_scene *scene)
 **
 ** To enable: Uncomment ENABLE_COLOR_BLEEDING in minirt.h
 */
+
 #ifdef ENABLE_COLOR_BLEEDING
+
 static t_vec3	calculate_color_bleeding(t_hit hit, t_scene *scene)
 {
 	t_vec3	result;
@@ -130,11 +129,8 @@ static t_vec3	calculate_color_bleeding(t_hit hit, t_scene *scene)
 	i = 0;
 	while (i < samples)
 	{
-		sample_dir = vec3_normalize(vec3_add(hit.normal,
-			vec3_new((i % 3) * 0.5 - 0.5, ((i / 3) % 3) * 0.5 - 0.5,
-				((i / 9) % 3) * 0.5 - 0.5)));
-		bounce_ray.origin = vec3_add(hit.point, vec3_scale(hit.normal,
-			EPSILON * 10));
+		sample_dir = vec3_normalize(vec3_add(hit.normal, vec3_new((i % 3) * 0.5 - 0.5, ((i / 3) % 3) * 0.5 - 0.5, ((i / 9) % 3) * 0.5 - 0.5)));
+		bounce_ray.origin = vec3_add(hit.point, vec3_scale(hit.normal, EPSILON * 10));
 		bounce_ray.direction = sample_dir;
 		bounce_hit = find_closest_hit(bounce_ray, scene);
 		if (bounce_hit.hit)
@@ -143,7 +139,10 @@ static t_vec3	calculate_color_bleeding(t_hit hit, t_scene *scene)
 	}
 	return (vec3_scale(result, 1.0 / samples));
 }
+
 #endif
+
+/* ========================================================================= */
 
 t_vec3	calculate_lighting(t_hit hit, t_scene *scene, t_vec3 view_dir)
 {
@@ -167,9 +166,17 @@ t_vec3	calculate_lighting(t_hit hit, t_scene *scene, t_vec3 view_dir)
 		result = vec3_add(result, specular);
 		i++;
 	}
+
+/* =[ Test ]================================================================ */
+
 #ifdef ENABLE_COLOR_BLEEDING
+
 	result = vec3_add(result, vec3_mult(hit.color,
 		calculate_color_bleeding(hit, scene)));
+
 #endif
+
+/* ========================================================================= */
+
 	return (result);
 }

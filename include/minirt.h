@@ -32,9 +32,9 @@
 ** objects with red light). Increases rendering time.
 */
 
-# define ENABLE_COLOR_BLEEDING
+// # define ENABLE_COLOR_BLEEDING
 
-/* =[ Window Configuration ]================================================ */
+/* =[ Defines ]============================================================= */
 
 # define WIN_TITLE "miniRT"
 
@@ -47,6 +47,10 @@
 # define MOVE_SPEED 0.3
 # define ROT_SPEED 0.05
 # define MOUSE_SENS 0.001
+
+# define CHECKER_SCALE 2.0
+# define SPECULAR_EXP 32.0
+# define SPECULAR_STRENGTH 0.5
 
 /* =[ Key State Indices ]=================================================== */
 
@@ -291,7 +295,7 @@ typedef struct s_minirt
 	bool			needs_render;
 }					t_minirt;
 
-/* =[ Legacy Parser Structures ]============================================ */
+/* =[ Legacy Parser Structures ]=( Change )================================= */
 
 typedef struct s_parse_primitive
 {
@@ -396,5 +400,7 @@ void				ambient_light_parser(void *actual_elem, void *list_to_add);
 void				light_parser(void *actual_elem, void *list_to_add);
 void				camera_parser(void *actual_elem, void *list_to_add);
 t_list				**general_parser(t_list **list__to_track, void (*f)(void *, void *));
+
+/* ========================================================================= */
 
 #endif

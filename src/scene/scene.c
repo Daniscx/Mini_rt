@@ -27,9 +27,9 @@
 ** NOTE: Pointers (object, light, al, camera) are transferred from parsed
 **       to scene without copying data, so they must not be freed twice.
 */
-scene_t *scene_constructor(char *file)
+scene_t	*scene_constructor(char *file)
 {
-	scene_t			*scene;
+	scene_t				*scene;
 	parse_primitive_t	*parsed;
 
 	parsed = parse_primiteve_contructor(file);

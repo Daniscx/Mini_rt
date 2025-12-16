@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 17:00:00 by ravazque          #+#    #+#             */
-/*   Updated: 2025/12/16 08:08:49 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/16 08:51:15 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ static void	clear_image(t_img *img)
 		y++;
 	}
 }
-
 
 /*
 ** Traces a ray through the scene and computes the pixel color.
@@ -122,7 +121,7 @@ void	render_high_res(t_minirt *rt)
 
 	ft_putstr_fd("\n\033[1;35m[HIGH QUALITY MODE]\033[1;0m", 0);
 	ft_printf(" Rendering at %dx%d!\n", WIDTH_HIGH, HEIGHT_HIGH);
-		if (rt->input.mouse_captured)
+	if (rt->input.mouse_captured)
 	{
 		rt->input.mouse_captured = false;
 		mlx_mouse_show(rt->mlx, rt->win);

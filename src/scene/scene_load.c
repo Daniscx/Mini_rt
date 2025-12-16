@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/15 21:00:00 by ravazque          #+#    #+#             */
-/*   Updated: 2025/12/16 05:26:13 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/16 08:50:45 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -238,7 +238,7 @@ int	scene_load(t_scene *scene, char *filename, int route)
 	char	*line;
 	char	*to_open;
 	char	*in_open;
-	
+
 	ft_bzero(scene, sizeof(t_scene));
 	if (route == 1)
 		to_open = ft_strjoin(filename, ".rt");
