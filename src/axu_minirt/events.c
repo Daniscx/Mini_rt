@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 17:00:00 by ravazque          #+#    #+#             */
-/*   Updated: 2025/12/16 12:00:00 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/16 01:51:52 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,6 +140,7 @@ int	mouse_move_handler(int x, int y, t_minirt *rt)
 	rt->input.last_mouse_y = y;
 	if (dx != 0 || dy != 0)
 	{
+		mlx_mouse_hide(rt->mlx, rt->win);
 		camera_rotate(&rt->scene.camera, dx * MOUSE_SENS, -dy * MOUSE_SENS);
 		rt->needs_render = true;
 	}

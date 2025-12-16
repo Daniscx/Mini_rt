@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 17:00:00 by ravazque          #+#    #+#             */
-/*   Updated: 2025/12/16 12:00:00 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/16 02:47:37 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,85 @@ static void	clear_image(t_img *img)
 		y++;
 	}
 }
+
+// /*
+// ** Gets pixel color from image buffer.
+// ** Returns 0 if coordinates are out of bounds.
+// */
+// static int	get_pixel(t_img *img, int x, int y)
+// {
+// 	char	*src;
+
+// 	if (x < 0 || x >= img->width || y < 0 || y >= img->height)
+// 		return (0);
+// 	src = img->pixels_ptr + (y * img->line_len + x * (img->bpp / 8));
+// 	return (*(unsigned int *)src);
+// }
+
+// /*
+// ** Downscales high resolution image to low resolution using box filter.
+// ** Averages colors in each block for antialiasing effect.
+// */
+// static void	downscale_image(t_img *src, t_img *dst)
+// {
+// 	int		dx;
+// 	int		dy;
+// 	int		sx;
+// 	int		sy;
+// 	float	scale_x;
+// 	float	scale_y;
+// 	int		color;
+// 	int		r;
+// 	int		g;
+// 	int		b;
+// 	int		count;
+// 	int		sample_x;
+// 	int		sample_y;
+
+// 	scale_x = (float)src->width / dst->width;
+// 	scale_y = (float)src->height / dst->height;
+// 	dy = 0;
+// 	while (dy < dst->height)
+// 	{
+// 		dx = 0;
+// 		while (dx < dst->width)
+// 		{
+// 			r = 0;
+// 			g = 0;
+// 			b = 0;
+// 			count = 0;
+// 			sample_y = 0;
+// 			while (sample_y < (int)scale_y)
+// 			{
+// 				sample_x = 0;
+// 				while (sample_x < (int)scale_x)
+// 				{
+// 					sx = (int)(dx * scale_x) + sample_x;
+// 					sy = (int)(dy * scale_y) + sample_y;
+// 					if (sx < src->width && sy < src->height)
+// 					{
+// 						color = get_pixel(src, sx, sy);
+// 						r += (color >> 16) & 0xFF;
+// 						g += (color >> 8) & 0xFF;
+// 						b += color & 0xFF;
+// 						count++;
+// 					}
+// 					sample_x++;
+// 				}
+// 				sample_y++;
+// 			}
+// 			if (count > 0)
+// 			{
+// 				r /= count;
+// 				g /= count;
+// 				b /= count;
+// 			}
+// 			put_pixel(dst, dx, dy, create_rgb(r, g, b));
+// 			dx++;
+// 		}
+// 		dy++;
+// 	}
+// }
 
 /*
 ** Traces a ray through the scene and computes the pixel color.
@@ -120,8 +199,8 @@ void	render_high_res(t_minirt *rt)
 	int		color;
 	int		countdown;
 
-	ft_printf("\n[HIGH QUALITY MODE] Rendering at %dx%d...\n",
-		WIDTH_HIGH, HEIGHT_HIGH);
+	ft_putstr_fd("\n\033[1;35m[HIGH QUALITY MODE]\033[1;0m", 0);
+	ft_printf(" Rendering at %dx%d!\n", WIDTH_HIGH, HEIGHT_HIGH);
 	clear_image(&rt->img_high);
 	mlx_put_image_to_window(rt->mlx, rt->win, rt->img_high.img_ptr, 0, 0);
 	rt->scene.camera.aspect_ratio = (double)rt->img_high.width
@@ -138,7 +217,8 @@ void	render_high_res(t_minirt *rt)
 		}
 	}
 	mlx_put_image_to_window(rt->mlx, rt->win, rt->img_high.img_ptr, 0, 0);
-	ft_printf("[HIGH QUALITY MODE] Render complete! Countdown: ");
+	ft_putstr_fd("\033[1;35m[HIGH QUALITY MODE]\033[1;0m", 0);
+	ft_printf(" Render complete! Countdown: ");
 	countdown = 10;
 	while (countdown > 0)
 	{
@@ -146,7 +226,8 @@ void	render_high_res(t_minirt *rt)
 		sleep(1);
 		countdown--;
 	}
-	ft_printf("\n[HIGH QUALITY MODE] Returning to navigation mode.\n\n");
+	ft_putstr_fd("\n\033[1;35m[HIGH QUALITY MODE]\033[1;0m", 0);
+	ft_printf(" Returning to navigation mode.\n\n");
 	rt->high_res_mode = false;
 	rt->scene.camera.aspect_ratio = (double)rt->img.width / rt->img.height;
 	mlx_put_image_to_window(rt->mlx, rt->win, rt->img.img_ptr, 0, 0);

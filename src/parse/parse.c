@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/27 17:54:21 by dmaestro          #+#    #+#             */
-/*   Updated: 2025/12/15 23:12:34 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/16 02:54:40 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,17 +50,16 @@ int	parser_file_name(char *file)
 
 	if (ft_strncmp(file + ft_strlen(file) - 3, ".rt", 3) != 0)
 	{
-		try_rt = ft_strjoin(file, ".rt");	
+		try_rt = ft_strjoin(file, ".rt");
 		fd_tester = open(try_rt, O_RDONLY);
 		if (fd_tester >= 0)
 			return(print_extnsion_message(file), free(try_rt), close(fd_tester), 1);
-		else
-		{
-			try_rt = ft_strjoin("scenes/", try_rt);	
-			fd_tester = open(try_rt, O_RDONLY);
-			if (fd_tester >= 0)
-				return(print_directory_rt_message(file), free(try_rt), close(fd_tester), 2);
-		}
+		free(try_rt);
+		try_rt = NULL;
+		try_rt = ft_strjoin("scenes/", try_rt);	
+		fd_tester = open(try_rt, O_RDONLY);
+		if (fd_tester >= 0)
+			return(print_directory_rt_message(file), free(try_rt), close(fd_tester), 2);
 		free(try_rt);
 		close(fd_tester);
 		error_manager("invalid file please check if it exits!");
@@ -70,15 +69,15 @@ int	parser_file_name(char *file)
 		fd_tester = open(file, O_RDONLY);
 		if (fd_tester >= 0)
 			return(close(fd_tester), 3);
-		else
-		{
-			try_rt = ft_strjoin("scenes/", file);	
-			fd_tester = open(try_rt, O_RDONLY);
-			if (fd_tester >= 0)
-				return(print_directory_message(file), free(try_rt), close(fd_tester), 4);
-		}
+		try_rt = ft_strjoin("scenes/", file);	
+		fd_tester = open(try_rt, O_RDONLY);
+		if (fd_tester >= 0)
+			return(print_directory_message(file), free(try_rt), close(fd_tester), 4);
+		free(try_rt);
+		close(fd_tester);
+		error_manager("Failed to open the file.");
 	}
-	return(0);
+	return (0);
 }
 
 /*

@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/15 21:00:00 by ravazque          #+#    #+#             */
-/*   Updated: 2025/12/15 23:04:19 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/16 02:02:32 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -233,18 +233,29 @@ int	scene_load(t_scene *scene, char *filename, int route)
 {
 	int		fd;
 	char	*line;
-
+	char	*to_open;
+	char	*in_open;
+	
 	ft_bzero(scene, sizeof(t_scene));
 	if (route == 1)
-		fd = open(ft_strjoin(filename, ".rt"), O_RDONLY);
+		to_open = ft_strjoin(filename, ".rt");
 	else if (route == 2)
-		fd = open(ft_strjoin("scenes/", ft_strjoin(filename, ".rt")), O_RDONLY);
+	{
+		in_open = ft_strjoin(filename, ".rt");
+		to_open = ft_strjoin("scenes/", in_open);
+	}
 	else if (route == 3)
-		fd = open(filename, O_RDONLY);
+		to_open = filename;
 	else if (route == 4)
-		fd = open(ft_strjoin("scenes/", filename), O_RDONLY);
+		to_open = ft_strjoin("scenes/", filename);
+	fd = open(to_open, O_RDONLY);
 	if (fd < 0)
+	{
+		if (route == 2)
+			free(in_open);
+		free(to_open);
 		error_manager("Failed to load scene file.");
+	}
 	line = get_next_line(fd);
 	while (line)
 	{
@@ -254,6 +265,12 @@ int	scene_load(t_scene *scene, char *filename, int route)
 	}
 	close(fd);
 	if (scene->light_count == 0 || scene->object_count == 0)
-		return (-1);
-	return (0);
+	{
+		if (route == 2)
+			free(in_open);
+		return (free(to_open), -1);
+	}
+	if (route == 2)
+		free(in_open);
+	return (free(to_open), 0);
 }

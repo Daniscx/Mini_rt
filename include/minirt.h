@@ -17,10 +17,6 @@
 
 # include "../linux-minilibx/mlx.h"
 # include "../src/aux_libft/libft.h"
-# include <math.h>
-# include <stdbool.h>
-# include <X11/keysym.h>
-# include <X11/X.h>
 
 /* =[ Math Constants ]====================================================== */
 
@@ -30,15 +26,17 @@
 
 /* =[ Window Configuration ]================================================ */
 
+# define WIN_TITLE "miniRT"
+
 # define WIDTH_LOW 400
 # define HEIGHT_LOW 300
 # define WIDTH_HIGH 1200
 # define HEIGHT_HIGH 900
-# define WIN_TITLE "miniRT - 42 Project"
+
 # define EPSILON 0.0001
 # define MOVE_SPEED 0.3
 # define ROT_SPEED 0.05
-# define MOUSE_SENS 0.003
+# define MOUSE_SENS 0.0075
 
 /* =[ Key State Indices ]=================================================== */
 
@@ -331,8 +329,7 @@ int					vec3_to_color(t_vec3 color);
 
 t_ray				ray_new(t_vec3 origin, t_vec3 direction);
 t_vec3				ray_at(t_ray ray, double t);
-t_ray				ray_from_camera(t_camera *cam, int x, int y,
-						t_img *img);
+t_ray				ray_from_camera(t_camera *cam, int x, int y, t_img *img);
 
 /* =[ Intersection Tests ]================================================== */
 
@@ -345,10 +342,8 @@ t_hit				find_closest_hit(t_ray ray, t_scene *scene);
 
 /* =[ Lighting Calculations ]=============================================== */
 
-t_vec3				calculate_lighting(t_hit hit, t_scene *scene,
-						t_vec3 view_dir);
-bool				is_in_shadow(t_vec3 point, t_vec3 light_dir,
-						double light_dist, t_scene *scene);
+t_vec3				calculate_lighting(t_hit hit, t_scene *scene, t_vec3 view_dir);
+bool				is_in_shadow(t_vec3 point, t_vec3 light_dir, double light_dist, t_scene *scene);
 t_vec3				apply_checkerboard(t_hit *hit);
 
 /* =[ Scene Management ]==================================================== */
@@ -364,12 +359,10 @@ void				scene_destructor(scene_t *scene);
 parse_primitive_t	*parse_primiteve_contructor(char *file);
 void				*parse_primiteve_destructor(parse_primitive_t *parse);
 int					parser_file_name(char *file);
-bool				if_betwen_values(float element_to_check,
-						float minmun_value, float maximun_value);
+bool				if_betwen_values(float element_to_check, float minmun_value, float maximun_value);
 void				ambient_light_parser(void *actual_elem, void *list_to_add);
 void				light_parser(void *actual_elem, void *list_to_add);
 void				camera_parser(void *actual_elem, void *list_to_add);
-t_list				**general_parser(t_list **list__to_track,
-						void (*f)(void *, void *));
+t_list				**general_parser(t_list **list__to_track, void (*f)(void *, void *));
 
 #endif
