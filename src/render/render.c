@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 17:00:00 by ravazque          #+#    #+#             */
-/*   Updated: 2025/12/16 10:56:23 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/16 17:31:33 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,15 +118,10 @@ void	render_high_res(t_minirt *rt)
 	t_ray	ray;
 	int		color;
 
-	ft_putstr_fd("\n\033[1;35m[HIGH QUALITY MODE]\033[1;0m", 0);
+	ft_putstr_fd("\n\033[1;35m[HIGH QUALITY RENDER]\033[1;0m", 0);
 	ft_printf(" Rendering at %dx%d!\n", WIDTH_HIGH, HEIGHT_HIGH);
-	if (rt->input.mouse_captured)
-	{
-		rt->input.mouse_captured = false;
-		mlx_mouse_show(rt->mlx, rt->win);
-	}
-	ft_bzero(rt->input.keys, sizeof(rt->input.keys));
-	rt->input.mouse_captured = false;
+	ft_bzero(&rt->input, sizeof(t_input));
+	rt->input.selected_obj = -1;
 	resize_window(rt, WIDTH_HIGH, HEIGHT_HIGH);
 	mlx_mouse_show(rt->mlx, rt->win);
 	clear_image(&rt->img_high);
@@ -150,32 +145,24 @@ void	render_high_res(t_minirt *rt)
 	printf("\r - Progress: 100%%\n");
 	fflush(stdout);
 	mlx_put_image_to_window(rt->mlx, rt->win, rt->img_high.img_ptr, 0, 0);
-	ft_putstr_fd("\033[1;35m[HIGH QUALITY MODE]\033[1;0m", 0);
-	ft_printf(" Render complete! Press 'P' to return to low resolution.\n\n");
+	ft_putstr_fd("\033[1;35m[HIGH QUALITY RENDER]\033[1;0m", 0);
+	ft_printf(" Render complete! Press ");
+	ft_putstr_fd("\033[1;31m'esc'\033[1;0m", 0);
+	ft_printf(" to exit!\n");
 	rt->high_res_mode = true;
 }
 
 /*
 ** Switches back to low resolution navigation mode. Resets input state,
-** resizes window, centers mouse cursor and triggers a re-render.
+** resizes window and triggers a re-render.
 */
 void	render_low_res(t_minirt *rt)
 {
 	ft_putstr_fd("\033[1;36m[NAVIGATION MODE]\033[1;0m", 0);
-	ft_printf(" Switching to %dx%d...\n\n", WIDTH_LOW, HEIGHT_LOW);
-	if (rt->input.mouse_captured)
-	{
-		rt->input.mouse_captured = false;
-		mlx_mouse_show(rt->mlx, rt->win);
-	}
-	ft_bzero(rt->input.keys, sizeof(rt->input.keys));
-	rt->input.mouse_captured = false;
+	ft_printf(" Switching to %dx%d...\n", WIDTH_LOW, HEIGHT_LOW);
+	ft_bzero(&rt->input, sizeof(t_input));
+	rt->input.selected_obj = -1;
 	resize_window(rt, WIDTH_LOW, HEIGHT_LOW);
-	mlx_mouse_move(rt->mlx, rt->win, WIDTH_LOW / 2, HEIGHT_LOW / 2);
-	rt->input.mouse_x = WIDTH_LOW / 2;
-	rt->input.mouse_y = HEIGHT_LOW / 2;
-	rt->input.last_mouse_x = WIDTH_LOW / 2;
-	rt->input.last_mouse_y = HEIGHT_LOW / 2;
 	mlx_mouse_show(rt->mlx, rt->win);
 	rt->high_res_mode = false;
 	rt->scene.camera.aspect_ratio = (double)rt->img.width / rt->img.height;

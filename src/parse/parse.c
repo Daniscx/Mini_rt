@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/27 17:54:21 by dmaestro          #+#    #+#             */
-/*   Updated: 2025/12/16 11:03:24 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/16 16:29:46 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static void	print_directory_message(char *file)
 {
 	ft_putstr_fd("\033[32mAdded directory “./scenes/” to the file: \033[1;32m", 0);
 	ft_putstr_fd(file, 0);
-	ft_putstr_fd("\033[0m\n", 0);
+	ft_putstr_fd("\033[0m\n\n", 0);
 }
 
 /*
@@ -29,7 +29,7 @@ static void	print_directory_rt_message(char *file)
 {
 	ft_putstr_fd("\033[32mAdded directory “./scenes/” to the file as well as extension “.rt”: \033[1;32m", 0);
 	ft_putstr_fd(file, 0);
-	ft_putstr_fd("\033[0m\n", 0);
+	ft_putstr_fd("\033[0m\n\n", 0);
 }
 
 /*
@@ -39,7 +39,7 @@ static void	print_extnsion_message(char *file)
 {
 	ft_putstr_fd("\033[32mAdded “.rt” extension to the file: \033[1;32m", 0);
 	ft_putstr_fd(file, 0);
-	ft_putstr_fd("\033[0m\n", 0);
+	ft_putstr_fd("\033[0m\n\n", 0);
 }
 
 /*

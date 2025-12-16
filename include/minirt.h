@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 10:01:26 by ravazque          #+#    #+#             */
-/*   Updated: 2025/12/16 11:00:39 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/16 16:21:21 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@
 # define EPSILON 0.0001
 # define MOVE_SPEED 0.3
 # define ROT_SPEED 0.05
-# define MOUSE_SENS 0.001
+# define MOUSE_SENS 0.005
 
 # define CHECKER_SCALE 2.0
 # define SPECULAR_EXP 32.0
@@ -265,16 +265,21 @@ typedef struct s_img
 /* =[ Input State ]========================================================= */
 /*
 ** Tracks keyboard and mouse input state for smooth movement.
+** drag_plane_point: point on the drag plane (for lateral movement).
+** drag_plane_normal: normal of drag plane (camera direction).
 */
 
 typedef struct s_input
 {
 	bool			keys[KEY_COUNT];
-	int				mouse_x;
-	int				mouse_y;
-	int				last_mouse_x;
-	int				last_mouse_y;
 	bool			mouse_captured;
+	int				last_x;
+	int				last_y;
+	bool			first_move;
+	int				selected_obj;
+	bool			dragging;
+	t_vec3			drag_plane_point;
+	t_vec3			drag_plane_normal;
 }					t_input;
 
 /* =[ Main Program State ]================================================== */
@@ -329,8 +334,15 @@ int					key_press_handler(int keycode, t_minirt *rt);
 int					key_release_handler(int keycode, t_minirt *rt);
 int					mouse_move_handler(int x, int y, t_minirt *rt);
 int					mouse_press_handler(int button, int x, int y, t_minirt *rt);
+int					mouse_release_handler(int button, int x, int y, t_minirt *rt);
 int					expose_handler(t_minirt *rt);
 int					loop_handler(t_minirt *rt);
+void				warp_mouse_center(t_minirt *rt);
+
+/* =[ Object Selection & Manipulation ]===================================== */
+
+// int					find_object_at_pixel(t_minirt *rt, int x, int y, double *out_dist);
+// void				move_object(t_object *obj, t_vec3 new_pos);
 
 /* =[ Camera Operations ]=================================================== */
 
