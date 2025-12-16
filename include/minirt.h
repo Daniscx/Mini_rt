@@ -1,19 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minirt.h                                          :+:      :+:    :+:   */
+/*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/09 21:31:11 by ravazque          #+#    #+#             */
-/*   Updated: 2025/12/16 12:00:00 by ravazque         ###   ########.fr       */
+/*   Created: 2025/12/09 10:01:26 by ravazque          #+#    #+#             */
+/*   Updated: 2025/12/16 11:00:39 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINIRT_H
 # define MINIRT_H
-
-/* =[ System Includes ]===================================================== */
 
 # include "../linux-minilibx/mlx.h"
 # include "../src/aux_libft/libft.h"
@@ -40,8 +38,9 @@
 
 # define WIDTH_LOW 426
 # define HEIGHT_LOW 240
-# define WIDTH_HIGH 1920
-# define HEIGHT_HIGH 1080
+
+# define WIDTH_HIGH 1280 // 1920
+# define HEIGHT_HIGH 720 // 1080
 
 # define EPSILON 0.0001
 # define MOVE_SPEED 0.3

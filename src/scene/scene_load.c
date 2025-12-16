@@ -6,12 +6,15 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/15 21:00:00 by ravazque          #+#    #+#             */
-/*   Updated: 2025/12/16 08:50:45 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/16 10:44:01 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minirt.h"
 
+/*
+** Parses a comma-separated string into a 3D vector.
+*/
 static t_vec3	parse_vec3(char *str)
 {
 	char	**split;
@@ -30,6 +33,9 @@ static t_vec3	parse_vec3(char *str)
 	return (v);
 }
 
+/*
+** Parses RGB color string (0-255) and converts to normalized (0-1) vector.
+*/
 static t_vec3	parse_color(char *str)
 {
 	t_vec3	c;
@@ -41,6 +47,9 @@ static t_vec3	parse_color(char *str)
 	return (c);
 }
 
+/*
+** Loads ambient light from parsed arguments into scene structure.
+*/
 static void	load_ambient(t_scene *scene, char **args)
 {
 	if (!args[1] || !args[2])
@@ -49,6 +58,9 @@ static void	load_ambient(t_scene *scene, char **args)
 	scene->ambient.color = parse_color(args[2]);
 }
 
+/*
+** Loads camera from parsed arguments. Calculates orientation vectors.
+*/
 static void	load_camera(t_scene *scene, char **args)
 {
 	t_vec3	up;
@@ -70,6 +82,9 @@ static void	load_camera(t_scene *scene, char **args)
 	scene->camera.up = vec3_cross(scene->camera.right, scene->camera.direction);
 }
 
+/*
+** Loads a point light into the scene. Reallocates lights array.
+*/
 static void	load_light(t_scene *scene, char **args)
 {
 	t_light	*new_lights;
@@ -98,6 +113,9 @@ static void	load_light(t_scene *scene, char **args)
 	scene->light_count++;
 }
 
+/*
+** Loads a sphere object into the scene. Reallocates objects array.
+*/
 static void	load_sphere(t_scene *scene, char **args)
 {
 	t_object	*new_objs;
@@ -122,6 +140,9 @@ static void	load_sphere(t_scene *scene, char **args)
 	scene->object_count++;
 }
 
+/*
+** Loads a plane object with optional checkerboard pattern.
+*/
 static void	load_plane_ex(t_scene *scene, char **args, int checker)
 {
 	t_object	*new_objs;
@@ -146,11 +167,17 @@ static void	load_plane_ex(t_scene *scene, char **args, int checker)
 	scene->object_count++;
 }
 
+/*
+** Wrapper for load_plane_ex without checkerboard pattern.
+*/
 static void	load_plane(t_scene *scene, char **args)
 {
 	load_plane_ex(scene, args, 0);
 }
 
+/*
+** Loads a cylinder object into the scene.
+*/
 static void	load_cylinder(t_scene *scene, char **args)
 {
 	t_object	*new_objs;
@@ -177,6 +204,9 @@ static void	load_cylinder(t_scene *scene, char **args)
 	scene->object_count++;
 }
 
+/*
+** Loads a cone object into the scene.
+*/
 static void	load_cone(t_scene *scene, char **args)
 {
 	t_object	*new_objs;
@@ -203,6 +233,9 @@ static void	load_cone(t_scene *scene, char **args)
 	scene->object_count++;
 }
 
+/*
+** Processes a single line from .rt file and delegates to appropriate loader.
+*/
 static void	process_line(t_scene *scene, char *line)
 {
 	char	**args;
@@ -232,6 +265,9 @@ static void	process_line(t_scene *scene, char *line)
 	free_double_pointer(args);
 }
 
+/*
+** Main scene loader. Opens file based on route code, parses all lines.
+*/
 int	scene_load(t_scene *scene, char *filename, int route)
 {
 	int		fd;

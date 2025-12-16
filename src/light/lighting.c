@@ -6,15 +6,15 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/15 20:00:00 by ravazque          #+#    #+#             */
-/*   Updated: 2025/12/16 08:58:20 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/16 10:45:45 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minirt.h"
 
 /*
-** Applies checkerboard pattern to hit point for planes.
-** Alternates between original color and a darker version.
+** Applies checkerboard pattern to a surface based on world coordinates.
+** Alternates between original color and darkened version.
 */
 t_vec3	apply_checkerboard(t_hit *hit)
 {
@@ -31,10 +31,11 @@ t_vec3	apply_checkerboard(t_hit *hit)
 }
 
 /*
-** Checks if a point is in shadow relative to a light source.
-** Casts a ray from the point towards the light and checks for intersection.
+** Checks if a point is in shadow from a light source.
+** Casts a shadow ray and checks for intersections before the light.
 */
-bool	is_in_shadow(t_vec3 point, t_vec3 light_dir, double light_dist, t_scene *scene)
+bool	is_in_shadow(t_vec3 point, t_vec3 light_dir, double light_dist,
+		t_scene *scene)
 {
 	t_ray	shadow_ray;
 	t_hit	hit;
@@ -48,9 +49,8 @@ bool	is_in_shadow(t_vec3 point, t_vec3 light_dir, double light_dist, t_scene *sc
 }
 
 /*
-** Calculates specular component using Phong model.
-** reflect_dir = 2 * (N . L) * N - L
-** specular = (R . V)^n * intensity
+** Calculates specular highlight using Phong reflection model.
+** Returns bright spot where light reflects directly towards viewer.
 */
 static t_vec3	calculate_specular(t_hit hit, t_light *light, t_vec3 view_dir)
 {
@@ -75,8 +75,8 @@ static t_vec3	calculate_specular(t_hit hit, t_light *light, t_vec3 view_dir)
 }
 
 /*
-** Calculates the diffuse component of lighting (Lambert model).
-** diffuse = object_color * light_color * brightness * max(0, N . L)
+** Calculates diffuse lighting based on angle between surface and light.
+** Returns zero if point is in shadow.
 */
 static t_vec3	calculate_diffuse(t_hit hit, t_light *light, t_scene *scene)
 {
@@ -97,23 +97,12 @@ static t_vec3	calculate_diffuse(t_hit hit, t_light *light, t_scene *scene)
 	return (vec3_scale(diffuse, diff * light->brightness));
 }
 
-/* =[ Test ]================================================================ */
-/*
-** Calculates the final color of a point using lighting model:
-** Color = Ambient + Diffuse + Specular (Phong model)
-** Supports colored lights and multiple light sources.
-*/
-/*
-** [ADVANCED FEATURE - Currently disabled]
-** Calculates indirect lighting (color bleeding) by sampling the hemisphere.
-** When enabled, light bounces off objects and picks up their color,
-** creating realistic color interactions (e.g., red wall tints nearby objects).
-**
-** To enable: Uncomment ENABLE_COLOR_BLEEDING in minirt.h
-*/
-
 #ifdef ENABLE_COLOR_BLEEDING
 
+/*
+** Calculates indirect lighting by sampling nearby surfaces.
+** Simulates light bouncing and color transfer between objects.
+*/
 static t_vec3	calculate_color_bleeding(t_hit hit, t_scene *scene)
 {
 	t_vec3	result;
@@ -128,8 +117,11 @@ static t_vec3	calculate_color_bleeding(t_hit hit, t_scene *scene)
 	i = 0;
 	while (i < samples)
 	{
-		sample_dir = vec3_normalize(vec3_add(hit.normal, vec3_new((i % 3) * 0.5 - 0.5, ((i / 3) % 3) * 0.5 - 0.5, ((i / 9) % 3) * 0.5 - 0.5)));
-		bounce_ray.origin = vec3_add(hit.point, vec3_scale(hit.normal, EPSILON * 10));
+		sample_dir = vec3_normalize(vec3_add(hit.normal,
+					vec3_new((i % 3) * 0.5 - 0.5, ((i / 3) % 3) * 0.5 - 0.5,
+						((i / 9) % 3) * 0.5 - 0.5)));
+		bounce_ray.origin = vec3_add(hit.point,
+				vec3_scale(hit.normal, EPSILON * 10));
 		bounce_ray.direction = sample_dir;
 		bounce_hit = find_closest_hit(bounce_ray, scene);
 		if (bounce_hit.hit)
@@ -141,8 +133,10 @@ static t_vec3	calculate_color_bleeding(t_hit hit, t_scene *scene)
 
 #endif
 
-/* ========================================================================= */
-
+/*
+** Computes total lighting for a hit point: ambient + diffuse + specular.
+** Applies checkerboard pattern if enabled and adds all light contributions.
+*/
 t_vec3	calculate_lighting(t_hit hit, t_scene *scene, t_vec3 view_dir)
 {
 	t_vec3	result;
@@ -165,17 +159,9 @@ t_vec3	calculate_lighting(t_hit hit, t_scene *scene, t_vec3 view_dir)
 		result = vec3_add(result, specular);
 		i++;
 	}
-
-/* =[ Test ]================================================================ */
-
 #ifdef ENABLE_COLOR_BLEEDING
-
 	result = vec3_add(result, vec3_mult(hit.color,
-		calculate_color_bleeding(hit, scene)));
-
+				calculate_color_bleeding(hit, scene)));
 #endif
-
-/* ========================================================================= */
-
 	return (result);
 }

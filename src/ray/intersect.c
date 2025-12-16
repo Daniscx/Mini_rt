@@ -6,14 +6,14 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/15 20:00:00 by ravazque          #+#    #+#             */
-/*   Updated: 2025/12/16 14:00:00 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/16 10:43:38 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minirt.h"
 
 /*
-** Initializes a new hit record with default values.
+** Creates and initializes a default hit record with no intersection.
 */
 t_hit	hit_new(void)
 {
@@ -30,8 +30,8 @@ t_hit	hit_new(void)
 }
 
 /*
-** Ray-sphere intersection. Solves: |O + t*D - C|^2 = r^2
-** Returns hit record with intersection data or miss.
+** Tests ray-sphere intersection using quadratic formula.
+** Returns hit record with intersection point, normal and color if hit.
 */
 t_hit	intersect_sphere(t_ray ray, t_sphere *sp)
 {
@@ -64,8 +64,7 @@ t_hit	intersect_sphere(t_ray ray, t_sphere *sp)
 }
 
 /*
-** Ray-plane intersection. Solves: (O + t*D - P0) . N = 0
-** Returns hit record with intersection data or miss.
+** Tests ray-plane intersection. Flips normal if ray hits from behind.
 */
 t_hit	intersect_plane(t_ray ray, t_plane *pl)
 {
@@ -92,8 +91,8 @@ t_hit	intersect_plane(t_ray ray, t_plane *pl)
 }
 
 /*
-** Ray-cylinder intersection (lateral body only).
-** Computes intersection with the cylindrical surface.
+** Tests ray intersection with the curved surface of a cylinder.
+** Checks if hit point is within the cylinder height bounds.
 */
 static t_hit	intersect_cylinder_body(t_ray ray, t_cylinder *cy)
 {
@@ -137,8 +136,7 @@ static t_hit	intersect_cylinder_body(t_ray ray, t_cylinder *cy)
 }
 
 /*
-** Ray-cylinder caps intersection.
-** Tests intersection with the circular caps at both ends of the cylinder.
+** Tests ray intersection with cylinder end caps (top and bottom discs).
 */
 static t_hit	intersect_cylinder_caps(t_ray ray, t_cylinder *cy)
 {
@@ -170,7 +168,7 @@ static t_hit	intersect_cylinder_caps(t_ray ray, t_cylinder *cy)
 }
 
 /*
-** Complete ray-cylinder intersection (body + caps).
+** Tests complete ray-cylinder intersection (body and caps).
 ** Returns the closest hit between body and caps.
 */
 t_hit	intersect_cylinder(t_ray ray, t_cylinder *cy)
@@ -188,8 +186,8 @@ t_hit	intersect_cylinder(t_ray ray, t_cylinder *cy)
 }
 
 /*
-** Ray-cone intersection. Solves the cone quadratic equation.
-** Cone equation: (D.V)^2 - cos^2(a) = 0 where V is apex to point
+** Tests ray-cone intersection. Uses apex angle to define cone shape.
+** Only intersects within the specified height from apex.
 */
 t_hit	intersect_cone(t_ray ray, t_cone *co)
 {
@@ -236,8 +234,8 @@ t_hit	intersect_cone(t_ray ray, t_cone *co)
 }
 
 /*
-** Finds the closest hit with any object in the scene.
-** Tests all objects and returns the nearest intersection.
+** Iterates through all scene objects to find the closest intersection.
+** Returns hit record for nearest object or empty hit if none found.
 */
 t_hit	find_closest_hit(t_ray ray, t_scene *scene)
 {

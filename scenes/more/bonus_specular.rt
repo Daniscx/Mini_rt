@@ -1,6 +1,3 @@
-# BONUS: Specular reflection (Phong model)
-# Notice the bright highlights on spheres
-
 A 0.1 255,255,255
 
 C 0,5,12 0,-0.2,-1 70

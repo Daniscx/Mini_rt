@@ -74,3 +74,9 @@ cy <x,y,z> <nx,ny,nz> <d> <h> <R,G,B>  # Cylinder
 - Linux with X11
 - GCC compiler
 - Make
+
+---
+
+La funcion de "M" no funciona tras el reescalado a mucha resolucion y vuelta a la normal D:
+
+---

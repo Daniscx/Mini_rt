@@ -6,15 +6,47 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 17:00:00 by ravazque          #+#    #+#             */
-/*   Updated: 2025/12/16 12:00:00 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/16 10:43:28 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minirt.h"
+#include <X11/Xlib.h>
+
+typedef struct s_xvar_internal
+{
+	Display		*display;
+	Window		root;
+	int			screen;
+}				t_xvar_internal;
+
+typedef struct s_win_list_internal
+{
+	Window		window;
+}				t_win_list_internal;
 
 /*
-** Registers all X11 event hooks for the window.
-** Includes keyboard (press/release), mouse motion, expose, and close events.
+** Centers the window on the screen using X11 display dimensions.
+*/
+static void	center_window(t_minirt *rt, int width, int height)
+{
+	Display	*display;
+	int		screen_width;
+	int		screen_height;
+	int		x;
+	int		y;
+
+	display = ((t_xvar_internal *)rt->mlx)->display;
+	screen_width = DisplayWidth(display, DefaultScreen(display));
+	screen_height = DisplayHeight(display, DefaultScreen(display));
+	x = (screen_width - width) / 2;
+	y = (screen_height - height) / 2;
+	XMoveWindow(display, ((t_win_list_internal *)rt->win)->window, x, y);
+	XFlush(display);
+}
+
+/*
+** Registers all MLX event hooks for keyboard, mouse and window events.
 */
 static void	events_init(t_minirt *rt)
 {
@@ -28,8 +60,7 @@ static void	events_init(t_minirt *rt)
 }
 
 /*
-** Handles memory allocation errors during initialization.
-** Frees any already-allocated resources and exits with error message.
+** Handles memory allocation errors. Cleans up and exits with error message.
 */
 static void	malloc_error(t_minirt *rt)
 {
@@ -64,8 +95,8 @@ static int	create_image(t_minirt *rt, t_img *img, int width, int height)
 }
 
 /*
-** Initializes all MinilibX components and program state.
-** Creates window, image buffers, and sets up event handlers.
+** Initializes MLX, window, images and event handlers.
+** Creates both low and high resolution image buffers.
 */
 void	minirt_init(t_minirt *rt)
 {
@@ -75,6 +106,7 @@ void	minirt_init(t_minirt *rt)
 	rt->win = mlx_new_window(rt->mlx, WIDTH_LOW, HEIGHT_LOW, WIN_TITLE);
 	if (!rt->win)
 		malloc_error(rt);
+	center_window(rt, WIDTH_LOW, HEIGHT_LOW);
 	if (create_image(rt, &rt->img, WIDTH_LOW, HEIGHT_LOW) < 0)
 		malloc_error(rt);
 	if (create_image(rt, &rt->img_high, WIDTH_HIGH, HEIGHT_HIGH) < 0)
@@ -86,8 +118,7 @@ void	minirt_init(t_minirt *rt)
 }
 
 /*
-** Frees all allocated resources before program exit.
-** Destroys images, window, display connection, and scene data.
+** Frees all allocated resources: images, window, MLX and scene data.
 */
 void	minirt_cleanup(t_minirt *rt)
 {
@@ -106,8 +137,8 @@ void	minirt_cleanup(t_minirt *rt)
 }
 
 /*
-** Resizes the window by destroying and recreating it with new dimensions.
-** Also re-registers all event handlers.
+** Destroys current window and creates a new one with given dimensions.
+** Re-registers event hooks and centers the new window.
 */
 void	resize_window(t_minirt *rt, int width, int height)
 {
@@ -116,5 +147,6 @@ void	resize_window(t_minirt *rt, int width, int height)
 	rt->win = mlx_new_window(rt->mlx, width, height, WIN_TITLE);
 	if (!rt->win)
 		malloc_error(rt);
+	center_window(rt, width, height);
 	events_init(rt);
 }

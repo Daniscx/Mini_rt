@@ -6,27 +6,14 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 17:00:00 by ravazque          #+#    #+#             */
-/*   Updated: 2025/12/10 18:24:07 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/16 10:46:00 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minirt.h"
 
 /*
-** Calculates the cross product of two vectors.
-** Parameters:
-**   - a, b: vectors to multiply
-** Returns:
-**   - Vector perpendicular to both a and b
-** Formula:
-**   - result.x = a.y*b.z - a.z*b.y
-**   - result.y = a.z*b.x - a.x*b.z
-**   - result.z = a.x*b.y - a.y*b.x
-** Properties:
-**   - Result is perpendicular to both vectors
-**   - Magnitude = |a| * |b| * sin(θ)
-**   - Follows the right-hand rule
-** Usage: Calculate plane normals, orthogonal bases for camera
+** Returns the cross product of two vectors (perpendicular vector).
 */
 t_vec3	vec3_cross(t_vec3 a, t_vec3 b)
 {
@@ -39,12 +26,7 @@ t_vec3	vec3_cross(t_vec3 a, t_vec3 b)
 }
 
 /*
-** Calculates the length (magnitude) of a vector.
-** Parameters:
-**   - v: vector whose length to calculate
-** Returns:
-**   - Scalar: sqrt(v.x² + v.y² + v.z²)
-** Usage: Calculate distances, verify normalization
+** Returns the magnitude (length) of a vector using Euclidean distance.
 */
 double	vec3_length(t_vec3 v)
 {
@@ -52,16 +34,7 @@ double	vec3_length(t_vec3 v)
 }
 
 /*
-** Normalizes a vector (converts to unit vector).
-** Parameters:
-**   - v: vector to normalize
-** Returns:
-**   - Vector with same direction but length 1.0
-**   - Zero vector if original length is 0
-** Behavior:
-**   - Calculates length
-**   - Divides each component by the length
-** Usage: Ray directions, surface normals
+** Returns a unit vector (length 1) in the same direction as v.
 */
 t_vec3	vec3_normalize(t_vec3 v)
 {
@@ -74,7 +47,7 @@ t_vec3	vec3_normalize(t_vec3 v)
 }
 
 /*
-** Component-wise multiplication (for colors).
+** Returns component-wise multiplication of two vectors (for color mixing).
 */
 t_vec3	vec3_mult(t_vec3 a, t_vec3 b)
 {
@@ -82,7 +55,7 @@ t_vec3	vec3_mult(t_vec3 a, t_vec3 b)
 }
 
 /*
-** Negates a vector (reverses direction).
+** Returns the negation of a vector (all components multiplied by -1).
 */
 t_vec3	vec3_negate(t_vec3 v)
 {
@@ -90,7 +63,7 @@ t_vec3	vec3_negate(t_vec3 v)
 }
 
 /*
-** Clamps a value between min and max.
+** Clamps a value between min and max bounds.
 */
 double	vec3_clamp(double value, double min, double max)
 {
@@ -102,7 +75,7 @@ double	vec3_clamp(double value, double min, double max)
 }
 
 /*
-** Converts vec3 color [0,1] to int 0xRRGGBB format.
+** Converts a color vector (0.0-1.0 range) to a 32-bit RGB integer.
 */
 int	vec3_to_color(t_vec3 color)
 {

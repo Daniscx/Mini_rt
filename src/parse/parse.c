@@ -6,22 +6,15 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/27 17:54:21 by dmaestro          #+#    #+#             */
-/*   Updated: 2025/12/16 08:54:04 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/16 11:03:24 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minirt.h"
 
 /*
-** Valida que el archivo de entrada tenga extensión .rt y que exista.
-** Parámetros:
-**   - file: ruta al archivo de escena a validar
-** Comportamiento:
-**   - Verifica que termine en ".rt"
-**   - Intenta abrir el archivo para comprobar que existe
-**   - Llama a error_manager si hay algún problema
+** Prints message when directory prefix is added to filename.
 */
-
 static void	print_directory_message(char *file)
 {
 	ft_putstr_fd("\033[32mAdded directory “./scenes/” to the file: \033[1;32m", 0);
@@ -29,6 +22,9 @@ static void	print_directory_message(char *file)
 	ft_putstr_fd("\033[0m\n", 0);
 }
 
+/*
+** Prints message when both directory and .rt extension are added.
+*/
 static void	print_directory_rt_message(char *file)
 {
 	ft_putstr_fd("\033[32mAdded directory “./scenes/” to the file as well as extension “.rt”: \033[1;32m", 0);
@@ -36,6 +32,9 @@ static void	print_directory_rt_message(char *file)
 	ft_putstr_fd("\033[0m\n", 0);
 }
 
+/*
+** Prints message when .rt extension is added to filename.
+*/
 static void	print_extnsion_message(char *file)
 {
 	ft_putstr_fd("\033[32mAdded “.rt” extension to the file: \033[1;32m", 0);
@@ -43,6 +42,10 @@ static void	print_extnsion_message(char *file)
 	ft_putstr_fd("\033[0m\n", 0);
 }
 
+/*
+** Validates and resolves the scene file path.
+** Tries different combinations of path and extension. Returns route code.
+*/
 int	parser_file_name(char *file)
 {
 	int		fd_tester;
@@ -81,17 +84,9 @@ int	parser_file_name(char *file)
 }
 
 /*
-** Verifica si un valor está dentro de un rango [min, max].
-** Parámetros:
-**   - element_to_check: valor a verificar
-**   - minmun_value: límite inferior del rango (inclusivo)
-**   - maximun_value: límite superior del rango (inclusivo)
-** Retorna:
-**   - true si está dentro del rango
-**   - false si está fuera
+** Checks if a value is within a given range [min, max].
 */
-bool	if_betwen_values(float element_to_check, float minmun_value,
-		float maximun_value)
+bool	if_betwen_values(float element_to_check, float minmun_value, float maximun_value)
 {
 	if (element_to_check > maximun_value || element_to_check < minmun_value)
 		return (false);
@@ -99,14 +94,8 @@ bool	if_betwen_values(float element_to_check, float minmun_value,
 }
 
 /*
-** Crea una lista de floats parseados de un array de strings
-** Parámetros:
-**   - splited_element: array de strings con números
-**   - max, min: rango de valores válidos (si range=true)
-**   - range: si true, valida que los valores estén en [min, max]
-** Retorna:
-**   - Lista con los floats parseados
-**   - NULL si hay error de parseo o validación
+** Parses an array of strings into a list of floats.
+** Validates format and optionally checks value range.
 */
 static t_list	**list_of_float_checker(char **splited_element, float max, float min, bool range)
 {
@@ -146,18 +135,8 @@ static t_list	**list_of_float_checker(char **splited_element, float max, float m
 }
 
 /*
-** Parsea una línea de Ambient Light del archivo .rt
-** Formato esperado: A <ratio> <r,g,b>
-** Ejemplo: A 0.2 255,255,255
-** Parámetros:
-**   - actual_elem: array de strings (línea spliteada por espacios)
-**   - list_to_add: lista donde guardar los datos parseados
-** Resultado:
-**   - Añade a la lista: [ratio_float, [r_float, g_float, b_float]]
-** Validaciones:
-**   - ratio: [0.0, 1.0]
-**   - rgb: cada componente [0, 255]
-** TODO: Actualmente solo imprime errores, debería retornar error o abortar
+** Parses ambient light line from .rt file.
+** Format: A <ratio> <r,g,b>. Validates ratio [0,1] and RGB [0,255].
 */
 void	ambient_light_parser(void *actual_elem, void *list_to_add)
 {
@@ -221,13 +200,8 @@ void	ambient_light_parser(void *actual_elem, void *list_to_add)
 }
 
 /*
-** Parsea una línea de Light (punto de luz) del archivo .rt
-** Formato esperado: L <x,y,z> <brightness> <r,g,b>
-** Ejemplo: L -40.0,50.0,0.0 0.6 255,255,255
-** Debe parsear:
-**   - Posición (x,y,z)
-**   - Brightness ratio [0.0, 1.0]
-**   - Color RGB [0, 255]
+** Parses point light line from .rt file.
+** Format: L <x,y,z> <brightness> <r,g,b>
 */
 void	light_parser(void *actual_elem, void *list_to_add)
 {
@@ -272,17 +246,8 @@ void	light_parser(void *actual_elem, void *list_to_add)
 }
 
 /*
-** Parser genérico que itera sobre una lista y aplica una función parser
-** Parámetros:
-**   - list__to_track: lista con las líneas del archivo (cada nodo es char**)
-**   - f: función parser específica (ambient_light_parser, camera_parser, etc)
-** Retorna:
-**   - Lista con los elementos parseados por la función f
-** Funcionamiento:
-**   - Recorre toda la lista
-**   - Llama a la función f para cada elemento
-**   - La función f decide si procesa o ignora cada línea
-**   - Permite que múltiples parsers procesen la misma lista
+** Generic parser that iterates a list and applies a parser function.
+** Each parser function decides whether to process or skip each line.
 */
 t_list	**general_parser(t_list **list__to_track, void (*f)(void *, void *))
 {
@@ -304,19 +269,8 @@ t_list	**general_parser(t_list **list__to_track, void (*f)(void *, void *))
 }
 
 /*
-** Parsea una línea de Camera del archivo .rt
-** Formato esperado: C <x,y,z> <nx,ny,nz> <fov>
-** Ejemplo: C -50.0,0,20 0,0,1 70
-** Parámetros:
-**   - actual_elem: array de strings (línea spliteada)
-**   - list_to_add: lista donde guardar los datos parseados
-** Resultado:
-**   - Añade: [posición(x,y,z), dirección(nx,ny,nz), fov]
-** Validaciones:
-**   - posición: cualquier valor float
-**   - dirección: cada componente [-1.0, 1.0] (vector normalizado)
-**   - fov: [0, 180]
-** TODO: Debería normalizar el vector de dirección
+** Parses camera line from .rt file.
+** Format: C <x,y,z> <nx,ny,nz> <fov>. Direction should be normalized.
 */
 void	camera_parser(void *actual_elem, void *list_to_add)
 {
@@ -411,9 +365,7 @@ void	camera_parser(void *actual_elem, void *list_to_add)
 }
 
 /*
-** Parser específico para esferas
-** Formato: sp <x,y,z> <diameter> <r,g,b>
-** Ejemplo: sp 0.0,0.0,-20.6 12.6 255,0,0
+** Parses sphere object. Format: sp <x,y,z> <diameter> <r,g,b>
 */
 static t_list	**sphere_parser(char **actual_element)
 {
@@ -453,9 +405,7 @@ static t_list	**sphere_parser(char **actual_element)
 }
 
 /*
-** Parser específico para planos
-** Formato: pl <x,y,z> <nx,ny,nz> <r,g,b>
-** Ejemplo: pl 0.0,0.0,-10.0 0.0,1.0,0.0 0,0,225
+** Parses plane object. Format: pl <x,y,z> <nx,ny,nz> <r,g,b>
 */
 static t_list	**plane_parser(char **actual_element)
 {
@@ -487,9 +437,7 @@ static t_list	**plane_parser(char **actual_element)
 }
 
 /*
-** Parser específico para cilindros
-** Formato: cy <x,y,z> <nx,ny,nz> <diameter> <height> <r,g,b>
-** Ejemplo: cy 50.0,0.0,20.6 0.0,0.0,1.0 14.2 21.42 10,0,255
+** Parses cylinder object. Format: cy <x,y,z> <nx,ny,nz> <diam> <height> <r,g,b>
 */
 static t_list	**cylinder_parser(char **actual_element)
 {
@@ -547,10 +495,7 @@ static t_list	**cylinder_parser(char **actual_element)
 }
 
 /*
-** Parser genérico para objetos que delega a parsers específicos
-** Parámetros:
-**   - actual_element: línea spliteada (["sp", ...] o ["pl", ...] o ["cy", ...])
-**   - list_to_add_element: lista donde añadir el objeto parseado
+** Delegates to specific object parsers based on type identifier.
 */
 static void	object_parser(void *actual_elem, void *list_to_add)
 {
@@ -583,18 +528,8 @@ static void	object_parser(void *actual_elem, void *list_to_add)
 }
 
 /*
-** Asigna los elementos parseados a la estructura parse_primitive_t
-** Parámetros:
-**   - element_to_conver: lista con todas las líneas del archivo
-**   - struct_to_assignate: estructura donde guardar los resultados
-** Retorna:
-**   - 0 si todo OK
-**   - -1 si hubo error
-** Funcionamiento:
-**   - Parsea ambient light (A)
-**   - Parsea camera (C)
-**   - Parsea lights (L)
-**   - Parsea objetos (sp, pl, cy)
+** Assigns parsed elements to the parse_primitive_t structure.
+** Parses ambient light, camera, lights and objects. Returns 0 on success.
 */
 static int	primitive_parse_t_asignation(t_list **element_to_conver,
 		parse_primitive_t *struct_to_assignate)
@@ -615,19 +550,7 @@ static int	primitive_parse_t_asignation(t_list **element_to_conver,
 }
 
 /*
-** Lee todo el contenido del archivo .rt y lo guarda en una lista
-** Parámetros:
-**   - file: ruta al archivo .rt
-** Retorna:
-**   - Lista de listas: cada nodo contiene un char** (línea spliteada)
-** Funcionamiento:
-**   - Lee línea por línea con get_next_line
-**   - Splitea cada línea por espacios
-**   - Guarda cada línea spliteada en un nodo de la lista
-** Estructura resultante:
-**   nodo1->content = ["A", "0.2", "255,255,255"]
-**   nodo2->content = ["C", "-50,0,20", "0,0,1", "70"]
-**   ...
+** Reads .rt file content and stores each line as a split array in a list.
 */
 static t_list	**get_file_content(char *file)
 {
@@ -655,11 +578,7 @@ static t_list	**get_file_content(char *file)
 }
 
 /*
-** Libera recursivamente una lista y su contenido
-** Parámetros:
-**   - list: lista a liberar
-** IMPORTANTE: Solo libera el content si es un puntero simple
-** Para contenido complejo (listas anidadas), se necesita lógica adicional
+** Recursively frees a list and its content nodes.
 */
 static void	free_list_recursive(t_list *list)
 {
@@ -676,17 +595,7 @@ static void	free_list_recursive(t_list *list)
 }
 
 /*
-** Destructor de la estructura parse_primitive_t
-** Libera toda la memoria allocada durante el parseo
-** Parámetros:
-**   - parse: estructura a destruir
-** Retorna:
-**   - NULL (para facilitar parse = parse_primiteve_destructor(parse))
-** Libera:
-**   - ambient light (al)
-**   - camera
-**   - light
-**   - object (spheres, planes, cylinders)
+** Destructor for parse_primitive_t. Frees all allocated memory.
 */
 void	*parse_primiteve_destructor(parse_primitive_t *parse)
 {
@@ -713,18 +622,7 @@ void	*parse_primiteve_destructor(parse_primitive_t *parse)
 }
 
 /*
-** Constructor principal del parser
-** Parámetros:
-**   - file: ruta al archivo .rt a parsear
-** Retorna:
-**   - parse_primitive_t* con todos los datos parseados
-**   - NULL si hay error
-** Proceso:
-**   1. Valida el nombre del archivo
-**   2. Lee todo el contenido del archivo
-**   3. Parsea cada tipo de elemento (A, C, L, objetos)
-**   4. Retorna la estructura con los datos
-** TODO: Liberar get_file_content después de usarlo (memory leak)
+** Main parser constructor. Reads and parses the .rt scene file.
 */
 parse_primitive_t	*parse_primiteve_contructor(char *file)
 {

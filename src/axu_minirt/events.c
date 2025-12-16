@@ -6,15 +6,14 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 17:00:00 by ravazque          #+#    #+#             */
-/*   Updated: 2025/12/16 08:52:12 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/16 10:43:23 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minirt.h"
 
 /*
-** Handles window close event (X button or window manager close).
-** Frees all allocated resources and exits the program cleanly.
+** Handles window close event. Cleans up resources and exits the program.
 */
 int	close_handler(t_minirt *rt)
 {
@@ -23,8 +22,7 @@ int	close_handler(t_minirt *rt)
 }
 
 /*
-** Handles window expose event (window becomes visible after being hidden).
-** Redraws the scene to ensure content is always visible.
+** Handles window expose event. Redraws the current image to the window.
 */
 int	expose_handler(t_minirt *rt)
 {
@@ -36,8 +34,8 @@ int	expose_handler(t_minirt *rt)
 }
 
 /*
-** Maps X11 keycodes to internal key indices for state tracking.
-** Returns -1 if the key is not mapped.
+** Maps X11 keycode to internal key index for tracking pressed keys.
+** Returns -1 if the key is not a movement or rotation key.
 */
 static int	get_key_index(int keycode)
 {
@@ -65,8 +63,8 @@ static int	get_key_index(int keycode)
 }
 
 /*
-** Handles key press events. Sets key state to true for movement keys.
-** Special keys (ESC, P, M, O) are handled immediately.
+** Handles key press events. Manages ESC to exit, P for resolution toggle,
+** M for mouse capture mode, and movement keys for camera control.
 */
 int	key_press_handler(int keycode, t_minirt *rt)
 {
@@ -86,11 +84,24 @@ int	key_press_handler(int keycode, t_minirt *rt)
 		rt->input.mouse_captured = !rt->input.mouse_captured;
 		if (rt->input.mouse_captured)
 		{
-			mlx_mouse_hide(rt->mlx, rt->win);
+			ft_bzero(rt->input.keys, sizeof(rt->input.keys));
+			rt->input.mouse_x = WIDTH_LOW / 2;
+			rt->input.mouse_y = HEIGHT_LOW / 2;
+			rt->input.last_mouse_x = WIDTH_LOW / 2;
+			rt->input.last_mouse_y = HEIGHT_LOW / 2;
 			mlx_mouse_move(rt->mlx, rt->win, WIDTH_LOW / 2, HEIGHT_LOW / 2);
+			mlx_mouse_hide(rt->mlx, rt->win);
 		}
 		else
+		{
+			ft_bzero(rt->input.keys, sizeof(rt->input.keys));
+			rt->input.mouse_x = WIDTH_LOW / 2;
+			rt->input.mouse_y = HEIGHT_LOW / 2;
+			rt->input.last_mouse_x = WIDTH_LOW / 2;
+			rt->input.last_mouse_y = HEIGHT_LOW / 2;
+			mlx_mouse_move(rt->mlx, rt->win, WIDTH_LOW / 2, HEIGHT_LOW / 2);
 			mlx_mouse_show(rt->mlx, rt->win);
+		}
 	}
 	else if (!rt->high_res_mode)
 	{
@@ -102,7 +113,7 @@ int	key_press_handler(int keycode, t_minirt *rt)
 }
 
 /*
-** Handles key release events. Sets key state to false for movement keys.
+** Handles key release events. Updates the key state array to stop movement.
 */
 int	key_release_handler(int keycode, t_minirt *rt)
 {
@@ -117,7 +128,7 @@ int	key_release_handler(int keycode, t_minirt *rt)
 }
 
 /*
-** Handles mouse button press. Disabled in high-res mode.
+** Handles mouse button press events. Currently unused but required by MLX.
 */
 int	mouse_press_handler(int button, int x, int y, t_minirt *rt)
 {
@@ -129,9 +140,8 @@ int	mouse_press_handler(int button, int x, int y, t_minirt *rt)
 }
 
 /*
-** Handles mouse movement for camera rotation when mouse is captured.
-** Calculates delta from center position, applies rotation, and re-centers cursor.
-** FIXED: Solo funciona en modo baja resolución y con mouse capturado.
+** Handles mouse movement for FPS-style camera rotation when captured.
+** Ignores large deltas to prevent jumps after window resize or wrap-around.
 */
 int	mouse_move_handler(int x, int y, t_minirt *rt)
 {
@@ -140,26 +150,37 @@ int	mouse_move_handler(int x, int y, t_minirt *rt)
 	int		center_x;
 	int		center_y;
 
-	if (rt->high_res_mode)
-		return (0);
-	if (!rt->input.mouse_captured)
+	if (rt->high_res_mode || !rt->input.mouse_captured)
 		return (0);
 	center_x = WIDTH_LOW / 2;
 	center_y = HEIGHT_LOW / 2;
+	if (x < 0 || x >= WIDTH_LOW || y < 0 || y >= HEIGHT_LOW)
+	{
+		mlx_mouse_move(rt->mlx, rt->win, center_x, center_y);
+		rt->input.last_mouse_x = center_x;
+		rt->input.last_mouse_y = center_y;
+		return (0);
+	}
 	dx = x - center_x;
 	dy = y - center_y;
-	if (abs(dx) > 1 || abs(dy) > 1)
+	if (dx == 0 && dy == 0)
+		return (0);
+	if (abs(dx) > 50 || abs(dy) > 50)
 	{
-		camera_rotate(&rt->scene.camera, -dx * MOUSE_SENS, -dy * MOUSE_SENS);
-		rt->needs_render = true;
 		mlx_mouse_move(rt->mlx, rt->win, center_x, center_y);
+		rt->input.last_mouse_x = center_x;
+		rt->input.last_mouse_y = center_y;
+		return (0);
 	}
+	camera_rotate(&rt->scene.camera, -dx * MOUSE_SENS, -dy * MOUSE_SENS);
+	rt->needs_render = true;
+	mlx_mouse_move(rt->mlx, rt->win, center_x, center_y);
 	return (0);
 }
 
 /*
-** Processes movement input based on current key states.
-** Handles simultaneous key presses correctly (e.g., W+A for diagonal).
+** Processes WASD and Space/Shift keys to move camera in 3D space.
+** Movement is relative to camera orientation for intuitive FPS controls.
 */
 static void	process_movement(t_minirt *rt)
 {
@@ -187,7 +208,8 @@ static void	process_movement(t_minirt *rt)
 }
 
 /*
-** Processes rotation input based on current arrow key states.
+** Processes arrow keys for camera rotation (yaw and pitch).
+** Provides keyboard-based camera look control as alternative to mouse.
 */
 static void	process_rotation(t_minirt *rt)
 {
@@ -212,9 +234,8 @@ static void	process_rotation(t_minirt *rt)
 }
 
 /*
-** Main loop handler called every frame by MLX.
-** Processes input and renders when needed.
-** Only active in low-res mode.
+** Main loop hook called by MLX. Processes input and triggers re-render.
+** Disabled during high resolution mode to prevent interference.
 */
 int	loop_handler(t_minirt *rt)
 {

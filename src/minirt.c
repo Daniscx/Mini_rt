@@ -6,20 +6,14 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 21:30:47 by ravazque          #+#    #+#             */
-/*   Updated: 2025/12/16 01:37:51 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/16 10:45:37 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minirt.h"
 
 /*
-** Handles errors by displaying a message and terminating the program.
-** Parameters:
-**   - error_message: error message to display
-** Behavior:
-**   - Prints the error message to stderr
-**   - Exits the program with exit(1)
-** Note: If error_message is NULL, exits without displaying message
+** Prints error message to stderr and exits the program with failure status.
 */
 void	error_manager(char *error_message)
 {
@@ -31,20 +25,7 @@ void	error_manager(char *error_message)
 }
 
 /*
-** Main function of the miniRT program.
-** Parameters:
-**   - argc: number of arguments
-**   - argv: array of arguments (argv[1] = scene.rt file)
-** Program flow:
-**   1. Validates arguments (must be exactly 2)
-**   2. Initializes t_minirt structure to zero
-**   3. Parses the .rt file with scene_load
-**   4. Initializes MLX, window and images
-**   5. Renders the scene
-**   6. Enters the MLX event loop
-**   7. Cleans up memory on exit (never reached due to mlx_loop)
-** Returns:
-**   - 0 if successful (never reached due to mlx_loop)
+** Program entry point. Loads scene, initializes graphics and starts loop.
 */
 int	main(int argc, char **argv)
 {

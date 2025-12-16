@@ -6,16 +6,15 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 17:00:00 by ravazque          #+#    #+#             */
-/*   Updated: 2025/12/16 12:00:00 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/16 10:43:15 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minirt.h"
 
 /*
-** Initializes the camera with default values.
-** Used when no camera data is provided in the scene file.
-** Default configuration places camera at origin looking towards +Z.
+** Initializes camera with default position, direction and field of view.
+** Sets up initial orientation vectors for rendering calculations.
 */
 void	camera_init(t_camera *camera)
 {
@@ -30,9 +29,8 @@ void	camera_init(t_camera *camera)
 }
 
 /*
-** Updates camera orientation vectors (right and up) from direction.
-** Must be called after changing the camera direction to maintain
-** an orthonormal basis for proper ray generation.
+** Recalculates camera right and up vectors from current direction.
+** Uses world up vector, with fallback when looking straight up/down.
 */
 void	camera_update_vectors(t_camera *camera)
 {
@@ -46,8 +44,7 @@ void	camera_update_vectors(t_camera *camera)
 }
 
 /*
-** Moves the camera by adding an offset to its position.
-** The offset is typically computed from movement direction and speed.
+** Translates camera position by the given offset vector.
 */
 void	camera_move(t_camera *camera, t_vec3 offset)
 {
@@ -55,9 +52,8 @@ void	camera_move(t_camera *camera, t_vec3 offset)
 }
 
 /*
-** Rotates the camera using yaw (horizontal) and pitch (vertical) angles.
-** Pitch is clamped to [-80°, +80°] to prevent gimbal lock/control inversion.
-** Uses spherical coordinates for smooth, intuitive rotation.
+** Rotates camera by yaw and pitch deltas. Pitch is clamped to avoid gimbal
+** lock. Recalculates direction vector from spherical to cartesian coords.
 */
 void	camera_rotate(t_camera *camera, double yaw_delta, double pitch_delta)
 {

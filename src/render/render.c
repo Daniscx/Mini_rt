@@ -6,15 +6,15 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 17:00:00 by ravazque          #+#    #+#             */
-/*   Updated: 2025/12/16 08:51:15 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/16 10:56:23 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minirt.h"
 
 /*
-** Writes a pixel color directly to the image buffer.
-** Validates coordinates are within image bounds.
+** Writes a pixel color to the image buffer at the specified coordinates.
+** Performs bounds checking to prevent buffer overflow.
 */
 static void	put_pixel(t_img *img, int x, int y, int color)
 {
@@ -27,8 +27,7 @@ static void	put_pixel(t_img *img, int x, int y, int color)
 }
 
 /*
-** Converts RGB components (0-255) to a single integer color value.
-** Format: 0x00RRGGBB
+** Packs RGB color components into a single 32-bit integer.
 */
 static int	create_rgb(int r, int g, int b)
 {
@@ -36,7 +35,7 @@ static int	create_rgb(int r, int g, int b)
 }
 
 /*
-** Clears the image buffer to black.
+** Fills the entire image buffer with black pixels.
 */
 static void	clear_image(t_img *img)
 {
@@ -57,8 +56,8 @@ static void	clear_image(t_img *img)
 }
 
 /*
-** Traces a ray through the scene and computes the pixel color.
-** Returns black if no intersection, otherwise computes lighting.
+** Traces a ray through the scene and returns the color at the hit point.
+** Returns black if no intersection is found.
 */
 static int	trace_ray(t_ray ray, t_scene *scene)
 {
@@ -81,8 +80,8 @@ static int	trace_ray(t_ray ray, t_scene *scene)
 }
 
 /*
-** Renders the scene at low resolution for interactive viewing.
-** Uses the standard image buffer.
+** Renders the scene at low resolution for real-time navigation.
+** Iterates over each pixel and traces rays from camera.
 */
 void	render_scene(t_minirt *rt)
 {
@@ -109,8 +108,8 @@ void	render_scene(t_minirt *rt)
 }
 
 /*
-** Renders the scene at high resolution and displays it in a full-size window.
-** Mouse capture is disabled during high-res rendering.
+** Renders scene at high resolution. Disables input, resizes window,
+** and displays progress. Used for final quality screenshots.
 */
 void	render_high_res(t_minirt *rt)
 {
@@ -127,7 +126,9 @@ void	render_high_res(t_minirt *rt)
 		mlx_mouse_show(rt->mlx, rt->win);
 	}
 	ft_bzero(rt->input.keys, sizeof(rt->input.keys));
+	rt->input.mouse_captured = false;
 	resize_window(rt, WIDTH_HIGH, HEIGHT_HIGH);
+	mlx_mouse_show(rt->mlx, rt->win);
 	clear_image(&rt->img_high);
 	rt->scene.camera.aspect_ratio = (double)rt->img_high.width / rt->img_high.height;
 	y = -1;
@@ -135,7 +136,7 @@ void	render_high_res(t_minirt *rt)
 	{
 		if (y % 100 == 0)
 		{
-			printf("\r - Progress: %d%%", y / 10);
+			printf("\r - Progress: %d%%", (y * 100) / rt->img_high.height);
 			fflush(stdout);
 		}
 		x = -1;
@@ -146,7 +147,8 @@ void	render_high_res(t_minirt *rt)
 			put_pixel(&rt->img_high, x, y, color);
 		}
 	}
-	ft_printf("\n");
+	printf("\r - Progress: 100%%\n");
+	fflush(stdout);
 	mlx_put_image_to_window(rt->mlx, rt->win, rt->img_high.img_ptr, 0, 0);
 	ft_putstr_fd("\033[1;35m[HIGH QUALITY MODE]\033[1;0m", 0);
 	ft_printf(" Render complete! Press 'P' to return to low resolution.\n\n");
@@ -154,8 +156,8 @@ void	render_high_res(t_minirt *rt)
 }
 
 /*
-** Returns to low resolution mode.
-** Ensures mouse is visible and not captured.
+** Switches back to low resolution navigation mode. Resets input state,
+** resizes window, centers mouse cursor and triggers a re-render.
 */
 void	render_low_res(t_minirt *rt)
 {
@@ -167,7 +169,14 @@ void	render_low_res(t_minirt *rt)
 		mlx_mouse_show(rt->mlx, rt->win);
 	}
 	ft_bzero(rt->input.keys, sizeof(rt->input.keys));
+	rt->input.mouse_captured = false;
 	resize_window(rt, WIDTH_LOW, HEIGHT_LOW);
+	mlx_mouse_move(rt->mlx, rt->win, WIDTH_LOW / 2, HEIGHT_LOW / 2);
+	rt->input.mouse_x = WIDTH_LOW / 2;
+	rt->input.mouse_y = HEIGHT_LOW / 2;
+	rt->input.last_mouse_x = WIDTH_LOW / 2;
+	rt->input.last_mouse_y = HEIGHT_LOW / 2;
+	mlx_mouse_show(rt->mlx, rt->win);
 	rt->high_res_mode = false;
 	rt->scene.camera.aspect_ratio = (double)rt->img.width / rt->img.height;
 	rt->needs_render = true;

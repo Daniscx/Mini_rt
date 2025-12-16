@@ -6,15 +6,14 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/15 20:00:00 by ravazque          #+#    #+#             */
-/*   Updated: 2025/12/16 08:44:44 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/16 10:43:43 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minirt.h"
 
 /*
-** Creates a new ray with the given origin and direction.
-** The direction is normalized automatically.
+** Creates a new ray with given origin and direction. Direction is normalized.
 */
 t_ray	ray_new(t_vec3 origin, t_vec3 direction)
 {
@@ -26,8 +25,7 @@ t_ray	ray_new(t_vec3 origin, t_vec3 direction)
 }
 
 /*
-** Computes a point along the ray at parameter t.
-** Formula: P = O + t * D
+** Returns the point along the ray at parameter t: origin + t * direction.
 */
 t_vec3	ray_at(t_ray ray, double t)
 {
@@ -35,9 +33,8 @@ t_vec3	ray_at(t_ray ray, double t)
 }
 
 /*
-** Generates a ray from the camera through the pixel at (x, y).
-** Converts screen coordinates to normalized device coordinates,
-** then to world space using the camera's orientation vectors.
+** Generates a ray from camera through the pixel at screen coordinates (x,y).
+** Uses FOV and aspect ratio to calculate ray direction in world space.
 */
 t_ray	ray_from_camera(t_camera *cam, int x, int y, t_img *img)
 {
