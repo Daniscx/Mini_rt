@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/27 17:54:21 by dmaestro          #+#    #+#             */
-/*   Updated: 2025/12/16 16:29:46 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/17 22:04:53 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static void	print_directory_message(char *file)
 {
 	ft_putstr_fd("\033[32mAdded directory “./scenes/” to the file: \033[1;32m", 0);
 	ft_putstr_fd(file, 0);
-	ft_putstr_fd("\033[0m\n\n", 0);
+	ft_putstr_fd("\033[0m\n", 0);
 }
 
 /*
@@ -29,7 +29,7 @@ static void	print_directory_rt_message(char *file)
 {
 	ft_putstr_fd("\033[32mAdded directory “./scenes/” to the file as well as extension “.rt”: \033[1;32m", 0);
 	ft_putstr_fd(file, 0);
-	ft_putstr_fd("\033[0m\n\n", 0);
+	ft_putstr_fd("\033[0m\n", 0);
 }
 
 /*
@@ -39,7 +39,7 @@ static void	print_extnsion_message(char *file)
 {
 	ft_putstr_fd("\033[32mAdded “.rt” extension to the file: \033[1;32m", 0);
 	ft_putstr_fd(file, 0);
-	ft_putstr_fd("\033[0m\n\n", 0);
+	ft_putstr_fd("\033[0m\n", 0);
 }
 
 /*
@@ -58,14 +58,13 @@ int	parser_file_name(char *file)
 		if (fd_tester >= 0)
 			return (print_extnsion_message(file), free(try_rt), close(fd_tester), 1);
 		free(try_rt);
-		try_rt = NULL;
-		try_rt = ft_strjoin("scenes/", try_rt);
+		try_rt = ft_strjoin("scenes/", file);
+		try_rt = ft_strjoin(try_rt, ".rt");
 		fd_tester = open(try_rt, O_RDONLY);
 		if (fd_tester >= 0)
 			return (print_directory_rt_message(file), free(try_rt), close(fd_tester), 2);
 		free(try_rt);
-		close(fd_tester);
-		error_manager("invalid file please check if it exits!");
+		error_manager("invalid file, please check if it exists!");
 	}
 	else
 	{
@@ -78,7 +77,7 @@ int	parser_file_name(char *file)
 			return (print_directory_message(file), free(try_rt), close(fd_tester), 4);
 		free(try_rt);
 		close(fd_tester);
-		error_manager("Failed to open the file.");
+		error_manager("invalid file, please check if it exits!");
 	}
 	return (0);
 }
@@ -528,24 +527,19 @@ static void	object_parser(void *actual_elem, void *list_to_add)
 }
 
 /*
-** Assigns parsed elements to the parse_primitive_t structure.
+** Assigns parsed elements to the t_parse_prim structure.
 ** Parses ambient light, camera, lights and objects. Returns 0 on success.
 */
-static int	primitive_parse_t_asignation(t_list **element_to_conver,
-		parse_primitive_t *struct_to_assignate)
+static int	primitive_parse_t_asignation(t_list **element_to_conver, t_parse_prim *struct_to_assignate)
 {
-	struct_to_assignate->al = general_parser(element_to_conver,
-			ambient_light_parser);
+	struct_to_assignate->al = general_parser(element_to_conver, ambient_light_parser);
 	if (!struct_to_assignate->al)
 		return (-1);
-	struct_to_assignate->camera = general_parser(element_to_conver,
-			camera_parser);
+	struct_to_assignate->camera = general_parser(element_to_conver, camera_parser);
 	if (!struct_to_assignate->camera)
 		return (-1);
-	struct_to_assignate->light = general_parser(element_to_conver,
-			light_parser);
-	struct_to_assignate->object = general_parser(element_to_conver,
-			object_parser);
+	struct_to_assignate->light = general_parser(element_to_conver, light_parser);
+	struct_to_assignate->object = general_parser(element_to_conver, object_parser);
 	return (0);
 }
 
@@ -595,9 +589,9 @@ static void	free_list_recursive(t_list *list)
 }
 
 /*
-** Destructor for parse_primitive_t. Frees all allocated memory.
+** Destructor for t_parse_prim. Frees all allocated memory.
 */
-void	*parse_primiteve_destructor(parse_primitive_t *parse)
+void	*parse_primiteve_destructor(t_parse_prim *parse)
 {
 	if (!parse)
 		return (NULL);
@@ -624,12 +618,12 @@ void	*parse_primiteve_destructor(parse_primitive_t *parse)
 /*
 ** Main parser constructor. Reads and parses the .rt scene file.
 */
-parse_primitive_t	*parse_primiteve_contructor(char *file)
+t_parse_prim	*parse_primiteve_contructor(char *file)
 {
-	parse_primitive_t	*temp;
+	t_parse_prim	*temp;
 
 	parser_file_name(file);
-	temp = ft_calloc(1, sizeof(parse_primitive_t));
+	temp = ft_calloc(1, sizeof(t_parse_prim));
 	if (!temp)
 		return (NULL);
 	if (primitive_parse_t_asignation(get_file_content(file), temp) < 0)

@@ -4,8 +4,9 @@
 .claude
 CLAUDE.md
 
-## Repos and Binaries
+## Repos, Binaries & Screenshots
 docs/repos
+screenshots/*
 minirtObjects
 miniRT
 

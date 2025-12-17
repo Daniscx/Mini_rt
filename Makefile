@@ -104,7 +104,7 @@ re:
 	@echo -e "———"
 	@$(MAKE) -s all
 
-run:
+test:
 	@$(MAKE) re
 	@$(MAKE) clean
 	@echo -e "———"

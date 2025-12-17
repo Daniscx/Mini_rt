@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/15 21:00:00 by ravazque          #+#    #+#             */
-/*   Updated: 2025/12/16 10:44:01 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/17 22:06:42 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -295,6 +295,7 @@ int	scene_load(t_scene *scene, char *filename, int route)
 		free(to_open);
 		error_manager("Failed to load scene file.");
 	}
+	ft_putstr_fd("\n", 0);
 	line = get_next_line(fd);
 	while (line)
 	{

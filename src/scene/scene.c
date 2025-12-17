@@ -17,25 +17,25 @@
 ** Parameters:
 **   - file: path to the .rt scene file
 ** Returns:
-**   - Pointer to scene_t with all parsed data
+**   - Pointer to t_scene_leg with all parsed data
 **   - NULL on error
 ** Behavior:
 **   1. Parses the .rt file with parse_primiteve_contructor
-**   2. Creates scene_t structure
+**   2. Creates t_scene_leg structure
 **   3. Transfers pointers from parsed to scene
 **   4. Frees temporary parsed structure (not its content)
 ** NOTE: Pointers (object, light, al, camera) are transferred from parsed
 **       to scene without copying data, so they must not be freed twice.
 */
-scene_t	*scene_constructor(char *file)
+t_scene_leg	*scene_constructor(char *file)
 {
-	scene_t				*scene;
-	parse_primitive_t	*parsed;
+	t_scene_leg				*scene;
+	t_parse_prim	*parsed;
 
 	parsed = parse_primiteve_contructor(file);
 	if (!parsed)
 		return (NULL);
-	scene = malloc(sizeof(scene_t));
+	scene = malloc(sizeof(t_scene_leg));
 	if (!scene)
 	{
 		parse_primiteve_destructor(parsed);
@@ -75,7 +75,7 @@ static void	free_list_deep(t_list *list)
 }
 
 /*
-** Destructor for the scene_t structure.
+** Destructor for the t_scene_leg structure.
 ** Frees all allocated memory for the scene.
 ** Parameters:
 **   - scene: scene structure to destroy
@@ -84,10 +84,10 @@ static void	free_list_deep(t_list *list)
 **   - Frees light lists
 **   - Frees ambient light
 **   - Frees camera data
-**   - Frees the scene_t structure itself
+**   - Frees the t_scene_leg structure itself
 ** NOTE: Must be called before program termination to avoid memory leaks.
 */
-void	scene_destructor(scene_t *scene)
+void	scene_destructor(t_scene_leg *scene)
 {
 	if (!scene)
 		return ;
@@ -137,7 +137,7 @@ void	scene_free(t_scene *scene)
 ** NOTE: Currently unused - the program works directly with parsed structures.
 **       This function is reserved for future refactoring if needed.
 */
-int	scene_from_parse(t_scene *scene, parse_primitive_t *parsed)
+int	scene_from_parse(t_scene *scene, t_parse_prim *parsed)
 {
 	(void)scene;
 	(void)parsed;

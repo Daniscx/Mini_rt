@@ -6,36 +6,63 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 21:30:47 by ravazque          #+#    #+#             */
-/*   Updated: 2025/12/16 10:45:37 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/17 22:14:56 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minirt.h"
 
-/*
-** Prints error message to stderr and exits the program with failure status.
-*/
 void	error_manager(char *error_message)
 {
 	if (!error_message)
 		exit(1);
-	ft_putstr_fd("\033[36mminiRT\033[0m: \033[1m\033[31mError\033[0m: ", STDERR_FILENO);
+	ft_putstr_fd("\033[1;36mminiRT: \033[1;31mError: \033[0m", STDERR_FILENO);
 	ft_putendl_fd(error_message, STDERR_FILENO);
 	exit(1);
 }
 
-/*
-** Program entry point. Loads scene, initializes graphics and starts loop.
-*/
+static void	parse_window_size(t_minirt *rt, int argc, char **argv)
+{
+	rt->win_w = WIDTH_LOW;
+	rt->win_h = HEIGHT_LOW;
+	if (argc >= 4)
+	{
+		rt->win_w = ft_atoi(argv[2]);
+		rt->win_h = ft_atoi(argv[3]);
+		if (rt->win_w < 426 || rt->win_w > 4096)
+		{
+			printf("\033[0;31mWidth not valid.\033[0m Using default value for the width: %i\n", WIDTH_LOW);
+			rt->win_w = WIDTH_LOW;
+		}
+		if (rt->win_h < 240 || rt->win_h > 2160)
+		{
+			printf("\033[0;31mHeight not valid.\033[0m Using default value for the height: %i\n", HEIGHT_LOW);
+			rt->win_h = HEIGHT_LOW;
+		}
+	}
+}
+
+static void	print_usage(void)
+{
+	ft_putstr_fd("Usage: ./miniRT <scene.rt> [width] [height]\n", 1);
+	ft_putstr_fd("  scene.rt  - Scene file to load\n", 1);
+	ft_putstr_fd("  width     - Window width (426-4096, optional)\n", 1);
+	ft_putstr_fd("  height    - Window height (240-2160, optional)\n", 1);
+}
+
 int	main(int argc, char **argv)
 {
 	t_minirt	rt;
 	int			route;
 
-	if (argc != 2)
-		error_manager("Please do \"./miniRT <scene.rt>\"!");
+	if (argc < 2 || argc > 4)
+	{
+		print_usage();
+		return (1);
+	}
 	route = parser_file_name(argv[1]);
 	ft_bzero(&rt, sizeof(t_minirt));
+	parse_window_size(&rt, argc, argv);
 	if (scene_load(&rt.scene, argv[1], route) < 0)
 		error_manager("Failed to load scene file.");
 	minirt_init(&rt);
