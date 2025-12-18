@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/15 20:00:00 by ravazque          #+#    #+#             */
-/*   Updated: 2025/12/18 01:48:32 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/18 12:26:59 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,20 +168,41 @@ t_hit	intersect_cylinder(t_ray ray, t_cylinder *cy)
 	return (caps_hit);
 }
 
-t_hit	intersect_cone(t_ray ray, t_cone *co)
+static t_hit	cone_body_hit(t_ray ray, t_cone *co, double t, t_vec3 tip, double cos2)
 {
 	t_hit	hit;
+	double	h;
+
+	hit = hit_new();
+	if (t < EPSILON)
+		return (hit);
+	hit.point = ray_at(ray, t);
+	h = vec3_dot(vec3_sub(hit.point, tip), co->axis);
+	if (h > 0 || h < -co->height)
+		return (hit);
+	hit.hit = true;
+	hit.t = t;
+	hit.normal = vec3_sub(hit.point, tip);
+	hit.normal = vec3_sub(hit.normal, vec3_scale(co->axis, vec3_dot(hit.normal, co->axis) / cos2));
+	hit.normal = vec3_normalize(hit.normal);
+	hit.color = co->color;
+	hit.specular = 1.0;
+	return (hit);
+}
+
+static t_hit	intersect_cone_body(t_ray ray, t_cone *co)
+{
 	t_vec3	tip;
 	t_vec3	oc;
 	double	cos2;
 	double	coef[3];
 	double	disc;
-	double	t;
-	double	h;
+	double	t[2];
 	double	dv;
 	double	ocv;
+	t_hit	hit1;
+	t_hit	hit2;
 
-	hit = hit_new();
 	tip = vec3_add(co->apex, vec3_scale(co->axis, co->height));
 	cos2 = cos(co->angle * M_PI / 180.0);
 	cos2 = cos2 * cos2;
@@ -193,24 +214,53 @@ t_hit	intersect_cone(t_ray ray, t_cone *co)
 	coef[2] = ocv * ocv - cos2 * vec3_dot(oc, oc);
 	disc = coef[1] * coef[1] - 4.0 * coef[0] * coef[2];
 	if (disc < 0)
-		return (hit);
-	t = (-coef[1] - sqrt(disc)) / (2.0 * coef[0]);
-	if (t < EPSILON)
-		t = (-coef[1] + sqrt(disc)) / (2.0 * coef[0]);
-	if (t < EPSILON)
-		return (hit);
-	hit.point = ray_at(ray, t);
-	h = vec3_dot(vec3_sub(hit.point, tip), co->axis);
-	if (h > 0 || h < -co->height)
 		return (hit_new());
-	hit.hit = true;
-	hit.t = t;
-	hit.normal = vec3_sub(hit.point, tip);
-	hit.normal = vec3_sub(hit.normal, vec3_scale(co->axis, vec3_dot(hit.normal, co->axis) / cos2));
-	hit.normal = vec3_normalize(hit.normal);
-	hit.color = co->color;
-	hit.specular = 1.0;
+	t[0] = (-coef[1] - sqrt(disc)) / (2.0 * coef[0]);
+	t[1] = (-coef[1] + sqrt(disc)) / (2.0 * coef[0]);
+	hit1 = cone_body_hit(ray, co, t[0], tip, cos2);
+	hit2 = cone_body_hit(ray, co, t[1], tip, cos2);
+	if (hit1.hit && (!hit2.hit || hit1.t < hit2.t))
+		return (hit1);
+	if (hit2.hit)
+		return (hit2);
+	return (hit_new());
+}
+
+static t_hit	intersect_cone_cap(t_ray ray, t_cone *co)
+{
+	t_hit	hit;
+	t_hit	cap_hit;
+	t_plane	cap;
+	double	dist;
+	double	radius;
+
+	hit = hit_new();
+	radius = co->height * tan(co->angle * M_PI / 180.0);
+	cap.normal = co->axis;
+	cap.point = co->apex;
+	cap.color = co->color;
+	cap_hit = intersect_plane(ray, &cap);
+	if (cap_hit.hit)
+	{
+		dist = vec3_length(vec3_sub(cap_hit.point, co->apex));
+		if (dist <= radius)
+			hit = cap_hit;
+	}
 	return (hit);
+}
+
+t_hit	intersect_cone(t_ray ray, t_cone *co)
+{
+	t_hit	body_hit;
+	t_hit	cap_hit;
+
+	body_hit = intersect_cone_body(ray, co);
+	cap_hit = intersect_cone_cap(ray, co);
+	if (!body_hit.hit && !cap_hit.hit)
+		return (hit_new());
+	if (body_hit.hit && (!cap_hit.hit || body_hit.t < cap_hit.t))
+		return (body_hit);
+	return (cap_hit);
 }
 
 t_hit	find_closest_hit(t_ray ray, t_scene *scene)

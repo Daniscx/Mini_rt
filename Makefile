@@ -104,11 +104,17 @@ re:
 	@echo -e "———"
 	@$(MAKE) -s all
 
-test:
+test_mandatory:
 	@$(MAKE) re
 	@$(MAKE) clean
 	@echo -e "———"
-	@./$(NAME) test
+	@./$(NAME) test_mandatory
+
+test_bonus:
+	@$(MAKE) re
+	@$(MAKE) clean
+	@echo -e "———"
+	@./$(NAME) test_bonus
 
 .PHONY: all clean fclean re
 
