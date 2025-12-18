@@ -17,7 +17,7 @@ SRCS	= ft_isalpha.c ft_isdigit.c ft_isalnum.c ft_isascii.c \
 
 OBJS	= $(SRCS:.c=.o)
 
-BSRCS	= ft_lstnew_bonus.c ft_lstadd_front_bonus.c ft_lstsize_bonus.c\
+BSRCS	= ft_lstnew_bonus.c ft_lstadd_front_bonus.c ft_lstsize_bonus.c \
 		ft_lstlast_bonus.c ft_lstadd_back_bonus.c 
 
 BOBJS	= $(BSRCS:.c=.o)
@@ -39,5 +39,3 @@ bonus: $(BOBJS) $(NAME)
 	ar -rcs $(NAME) $(BOBJS)
 
 .PHONY: re clean fclean all bonus
-
-# If you see "-e" before the loading messages, etc., when compiling, it's a problem with the terminal; try using Bash!

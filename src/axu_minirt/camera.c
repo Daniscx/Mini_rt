@@ -6,16 +6,12 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 17:00:00 by ravazque          #+#    #+#             */
-/*   Updated: 2025/12/16 10:43:15 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/18 12:14:22 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minirt.h"
 
-/*
-** Initializes camera with default position, direction and field of view.
-** Sets up initial orientation vectors for rendering calculations.
-*/
 void	camera_init(t_camera *camera)
 {
 	camera->position = vec3_new(0.0, 0.0, -5.0);
@@ -28,10 +24,6 @@ void	camera_init(t_camera *camera)
 	camera->pitch = 0.0;
 }
 
-/*
-** Recalculates camera right and up vectors from current direction.
-** Uses world up vector, with fallback when looking straight up/down.
-*/
 void	camera_update_vectors(t_camera *camera)
 {
 	t_vec3	world_up;
@@ -43,18 +35,11 @@ void	camera_update_vectors(t_camera *camera)
 	camera->up = vec3_normalize(vec3_cross(camera->right, camera->direction));
 }
 
-/*
-** Translates camera position by the given offset vector.
-*/
 void	camera_move(t_camera *camera, t_vec3 offset)
 {
 	camera->position = vec3_add(camera->position, offset);
 }
 
-/*
-** Rotates camera by yaw and pitch deltas. Pitch is clamped to avoid gimbal
-** lock. Recalculates direction vector from spherical to cartesian coords.
-*/
 void	camera_rotate(t_camera *camera, double yaw_delta, double pitch_delta)
 {
 	double	cos_pitch;

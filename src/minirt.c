@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 21:30:47 by ravazque          #+#    #+#             */
-/*   Updated: 2025/12/17 22:14:56 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/18 12:09:05 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,12 @@ static void	parse_window_size(t_minirt *rt, int argc, char **argv)
 		rt->win_h = ft_atoi(argv[3]);
 		if (rt->win_w < 426 || rt->win_w > 4096)
 		{
-			printf("\033[0;31mWidth not valid.\033[0m Using default value for the width: %i\n", WIDTH_LOW);
+			printf("\033[0;31mInvalid width.\033[0m Using default: %i\n", WIDTH_LOW);
 			rt->win_w = WIDTH_LOW;
 		}
 		if (rt->win_h < 240 || rt->win_h > 2160)
 		{
-			printf("\033[0;31mHeight not valid.\033[0m Using default value for the height: %i\n", HEIGHT_LOW);
+			printf("\033[0;31mInvalid height.\033[0m Using default: %i\n", HEIGHT_LOW);
 			rt->win_h = HEIGHT_LOW;
 		}
 	}
@@ -65,6 +65,7 @@ int	main(int argc, char **argv)
 	parse_window_size(&rt, argc, argv);
 	if (scene_load(&rt.scene, argv[1], route) < 0)
 		error_manager("Failed to load scene file.");
+	ft_putstr_fd("\n", 0);
 	minirt_init(&rt);
 	render_scene(&rt);
 	mlx_loop(rt.mlx);

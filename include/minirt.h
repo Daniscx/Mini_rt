@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 10:01:26 by ravazque          #+#    #+#             */
-/*   Updated: 2025/12/17 21:31:07 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/18 12:13:03 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,16 +22,6 @@
 #  define M_PI 3.14159265358979323846
 # endif
 
-/* =[ Advanced Features (Optional) ]======================================== */
-/*
-** Uncomment the line below to enable color bleeding (indirect lighting).
-** This adds bounced light that takes on the color of reflecting objects,
-** creating more realistic color interactions (e.g., red sphere tints nearby
-** objects with red light). Increases rendering time.
-*/
-
-// # define ENABLE_COLOR_BLEEDING
-
 /* =[ Defines ]============================================================= */
 
 # define WIN_TITLE "miniRT"
@@ -45,11 +35,14 @@
 # define EPSILON 0.0001
 # define MOVE_SPEED 0.3
 # define ROT_SPEED 0.05
-# define MOUSE_SENS 0.005
+# define MOUSE_SENS 0.001
 
 # define CHECKER_SCALE 2.0
 # define SPECULAR_EXP 32.0
 # define SPECULAR_STRENGTH 0.5
+# define BUMP_STRENGTH 0.8
+
+# define SCREENSHOT_DIR "screenshots"
 
 /* =[ Key State Indices ]=================================================== */
 
@@ -92,6 +85,16 @@ typedef enum e_obj_type
 	OBJ_CONE
 }					t_obj_type;
 
+/* =[ Texture ]============================================================= */
+
+typedef struct s_texture
+{
+	unsigned char	*data;
+	int				width;
+	int				height;
+	int				channels;
+}					t_texture;
+
 /* =[ Sphere ]============================================================== */
 
 typedef struct s_sphere
@@ -99,6 +102,8 @@ typedef struct s_sphere
 	t_vec3			center;
 	double			diameter;
 	t_vec3			color;
+	t_texture		*texture;
+	t_texture		*bump_map;
 }					t_sphere;
 
 /* =[ Plane ]=============================================================== */
@@ -155,6 +160,10 @@ typedef struct s_hit
 	t_vec3			color;
 	double			specular;
 	int				checkerboard;
+	double			u;
+	double			v;
+	t_texture		*texture;
+	t_texture		*bump_map;
 }					t_hit;
 
 /* =[ Ambient Light ]======================================================= */
@@ -332,21 +341,29 @@ t_vec3				apply_checkerboard(t_hit *hit);
 /* =[ Scene Management ]==================================================== */
 
 int					scene_load(t_scene *scene, char *filename, int route);
-int					scene_from_parse(t_scene *scene, t_parse_prim *parsed);
 void				scene_free(t_scene *scene);
 
 /* =[ Parser (Legacy) ]===================================================== */
 
 t_scene_leg			*scene_constructor(char *file);
 void				scene_destructor(t_scene_leg *scene);
-t_parse_prim		*parse_primiteve_contructor(char *file);
-void				*parse_primiteve_destructor(t_parse_prim *parse);
+t_parse_prim		*parse_primitive_constructor(char *file);
+void				*parse_primitive_destructor(t_parse_prim *parse);
 int					parser_file_name(char *file);
-bool				if_betwen_values(float elem, float min, float max);
+bool				if_between_values(float elem, float min, float max);
 void				ambient_light_parser(void *elem, void *list);
 void				light_parser(void *elem, void *list);
 void				camera_parser(void *elem, void *list);
 t_list				**general_parser(t_list **list, void (*f)(void *, void *));
+
+/* =[ Texture Functions ]=================================================== */
+
+t_texture			*texture_load_ppm(const char *filename);
+void				texture_free(t_texture *tex);
+t_vec3				texture_sample(t_texture *tex, double u, double v);
+void				sphere_get_uv(t_vec3 point, t_vec3 center, double *u, double *v);
+t_vec3				apply_bump_map(t_hit *hit);
+t_vec3				apply_texture(t_hit *hit);
 
 /* ========================================================================= */
 

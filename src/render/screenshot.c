@@ -6,16 +6,11 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/17 16:00:00 by ravazque          #+#    #+#             */
-/*   Updated: 2025/12/17 20:47:12 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/18 01:48:53 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minirt_internal.h"
-#include <fcntl.h>
-#include <time.h>
-#include <sys/stat.h>
-
-#define SCREENSHOT_DIR "screenshots"
 
 static void	write_bmp_headers(int fd, int width, int height)
 {

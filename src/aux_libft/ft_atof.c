@@ -6,12 +6,11 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/27 18:44:16 by dmaestro          #+#    #+#             */
-/*   Updated: 2025/12/10 15:56:43 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/18 01:18:48 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include "math.h"
 
 float ft_atof(char *number)
 {

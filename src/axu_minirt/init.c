@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 17:00:00 by ravazque          #+#    #+#             */
-/*   Updated: 2025/12/17 16:00:00 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/18 12:13:57 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,7 @@ static void	events_init(t_minirt *rt)
 	mlx_hook(rt->win, KeyPress, KeyPressMask, key_press_handler, rt);
 	mlx_hook(rt->win, KeyRelease, KeyReleaseMask, key_release_handler, rt);
 	mlx_hook(rt->win, ButtonPress, ButtonPressMask, mouse_press_handler, rt);
-	mlx_hook(rt->win, ButtonRelease, ButtonReleaseMask,
-		mouse_release_handler, rt);
+	mlx_hook(rt->win, ButtonRelease, ButtonReleaseMask, mouse_release_handler, rt);
 	mlx_hook(rt->win, MotionNotify, PointerMotionMask, mouse_move_handler, rt);
 	mlx_hook(rt->win, Expose, ExposureMask, expose_handler, rt);
 	mlx_hook(rt->win, DestroyNotify, StructureNotifyMask, close_handler, rt);

@@ -1,11 +1,5 @@
-
-## VScode & Claude
-.vscode
-.claude
-CLAUDE.md
-
 ## Repos, Binaries & Screenshots
-docs/repos
+docs/ravazque_git
 screenshots/*
 minirtObjects
 miniRT
@@ -74,3 +68,8 @@ linux-minilibx/modules.order
 linux-minilibx/Module.symvers
 linux-minilibx/Mkfile.old
 linux-minilibx/dkms.conf
+
+## VScode & Claude
+.vscode
+.claude
+CLAUDE.md

@@ -6,15 +6,12 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/15 21:00:00 by ravazque          #+#    #+#             */
-/*   Updated: 2025/12/17 22:06:42 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/18 12:08:52 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minirt.h"
 
-/*
-** Parses a comma-separated string into a 3D vector.
-*/
 static t_vec3	parse_vec3(char *str)
 {
 	char	**split;
@@ -33,9 +30,6 @@ static t_vec3	parse_vec3(char *str)
 	return (v);
 }
 
-/*
-** Parses RGB color string (0-255) and converts to normalized (0-1) vector.
-*/
 static t_vec3	parse_color(char *str)
 {
 	t_vec3	c;
@@ -47,9 +41,6 @@ static t_vec3	parse_color(char *str)
 	return (c);
 }
 
-/*
-** Loads ambient light from parsed arguments into scene structure.
-*/
 static void	load_ambient(t_scene *scene, char **args)
 {
 	if (!args[1] || !args[2])
@@ -58,9 +49,6 @@ static void	load_ambient(t_scene *scene, char **args)
 	scene->ambient.color = parse_color(args[2]);
 }
 
-/*
-** Loads camera from parsed arguments. Calculates orientation vectors.
-*/
 static void	load_camera(t_scene *scene, char **args)
 {
 	t_vec3	up;
@@ -71,20 +59,15 @@ static void	load_camera(t_scene *scene, char **args)
 	scene->camera.direction = vec3_normalize(parse_vec3(args[2]));
 	scene->camera.fov = ft_atof(args[3]);
 	scene->camera.aspect_ratio = (double)WIDTH_LOW / (double)HEIGHT_LOW;
-	scene->camera.yaw = atan2(scene->camera.direction.x,
-			scene->camera.direction.z);
+	scene->camera.yaw = atan2(scene->camera.direction.x, scene->camera.direction.z);
 	scene->camera.pitch = asin(scene->camera.direction.y);
 	up = vec3_new(0, 1, 0);
 	if (fabs(vec3_dot(scene->camera.direction, up)) > 0.99)
 		up = vec3_new(0, 0, 1);
-	scene->camera.right = vec3_normalize(vec3_cross(scene->camera.direction,
-				up));
+	scene->camera.right = vec3_normalize(vec3_cross(scene->camera.direction, up));
 	scene->camera.up = vec3_cross(scene->camera.right, scene->camera.direction);
 }
 
-/*
-** Loads a point light into the scene. Reallocates lights array.
-*/
 static void	load_light(t_scene *scene, char **args)
 {
 	t_light	*new_lights;
@@ -113,9 +96,6 @@ static void	load_light(t_scene *scene, char **args)
 	scene->light_count++;
 }
 
-/*
-** Loads a sphere object into the scene. Reallocates objects array.
-*/
 static void	load_sphere(t_scene *scene, char **args)
 {
 	t_object	*new_objs;
@@ -133,6 +113,8 @@ static void	load_sphere(t_scene *scene, char **args)
 	new_objs[i].sphere.center = parse_vec3(args[1]);
 	new_objs[i].sphere.diameter = ft_atof(args[2]);
 	new_objs[i].sphere.color = parse_color(args[3]);
+	new_objs[i].sphere.texture = NULL;
+	new_objs[i].sphere.bump_map = NULL;
 	new_objs[i].checkerboard = 0;
 	if (scene->objects)
 		free(scene->objects);
@@ -140,9 +122,35 @@ static void	load_sphere(t_scene *scene, char **args)
 	scene->object_count++;
 }
 
-/*
-** Loads a plane object with optional checkerboard pattern.
-*/
+static void	load_sphere_textured(t_scene *scene, char **args)
+{
+	t_object	*new_objs;
+	int			i;
+
+	if (!args[1] || !args[2] || !args[3] || !args[4])
+		return ;
+	new_objs = malloc(sizeof(t_object) * (scene->object_count + 1));
+	if (!new_objs)
+		return ;
+	i = -1;
+	while (++i < scene->object_count)
+		new_objs[i] = scene->objects[i];
+	new_objs[i].type = OBJ_SPHERE;
+	new_objs[i].sphere.center = parse_vec3(args[1]);
+	new_objs[i].sphere.diameter = ft_atof(args[2]);
+	new_objs[i].sphere.color = parse_color(args[3]);
+	new_objs[i].sphere.texture = texture_load_ppm(args[4]);
+	if (args[5])
+		new_objs[i].sphere.bump_map = texture_load_ppm(args[5]);
+	else
+		new_objs[i].sphere.bump_map = NULL;
+	new_objs[i].checkerboard = 0;
+	if (scene->objects)
+		free(scene->objects);
+	scene->objects = new_objs;
+	scene->object_count++;
+}
+
 static void	load_plane_ex(t_scene *scene, char **args, int checker)
 {
 	t_object	*new_objs;
@@ -167,17 +175,11 @@ static void	load_plane_ex(t_scene *scene, char **args, int checker)
 	scene->object_count++;
 }
 
-/*
-** Wrapper for load_plane_ex without checkerboard pattern.
-*/
 static void	load_plane(t_scene *scene, char **args)
 {
 	load_plane_ex(scene, args, 0);
 }
 
-/*
-** Loads a cylinder object into the scene.
-*/
 static void	load_cylinder(t_scene *scene, char **args)
 {
 	t_object	*new_objs;
@@ -204,9 +206,6 @@ static void	load_cylinder(t_scene *scene, char **args)
 	scene->object_count++;
 }
 
-/*
-** Loads a cone object into the scene.
-*/
 static void	load_cone(t_scene *scene, char **args)
 {
 	t_object	*new_objs;
@@ -233,9 +232,6 @@ static void	load_cone(t_scene *scene, char **args)
 	scene->object_count++;
 }
 
-/*
-** Processes a single line from .rt file and delegates to appropriate loader.
-*/
 static void	process_line(t_scene *scene, char *line)
 {
 	char	**args;
@@ -252,6 +248,8 @@ static void	process_line(t_scene *scene, char *line)
 		load_camera(scene, args);
 	else if (ft_strncmp(args[0], "L", 2) == 0)
 		load_light(scene, args);
+	else if (ft_strncmp(args[0], "spt", 4) == 0)
+		load_sphere_textured(scene, args);
 	else if (ft_strncmp(args[0], "sp", 3) == 0)
 		load_sphere(scene, args);
 	else if (ft_strncmp(args[0], "plc", 4) == 0)
@@ -265,9 +263,25 @@ static void	process_line(t_scene *scene, char *line)
 	free_double_pointer(args);
 }
 
-/*
-** Main scene loader. Opens file based on route code, parses all lines.
-*/
+static char	*get_file_path(char *filename, int route, char **in_open)
+{
+	char	*to_open;
+
+	*in_open = NULL;
+	if (route == 1)
+		to_open = ft_strjoin(filename, ".rt");
+	else if (route == 2)
+	{
+		*in_open = ft_strjoin(filename, ".rt");
+		to_open = ft_strjoin("scenes/", *in_open);
+	}
+	else if (route == 3)
+		to_open = ft_strdup(filename);
+	else
+		to_open = ft_strjoin("scenes/", filename);
+	return (to_open);
+}
+
 int	scene_load(t_scene *scene, char *filename, int route)
 {
 	int		fd;
@@ -276,17 +290,7 @@ int	scene_load(t_scene *scene, char *filename, int route)
 	char	*in_open;
 
 	ft_bzero(scene, sizeof(t_scene));
-	if (route == 1)
-		to_open = ft_strjoin(filename, ".rt");
-	else if (route == 2)
-	{
-		in_open = ft_strjoin(filename, ".rt");
-		to_open = ft_strjoin("scenes/", in_open);
-	}
-	else if (route == 3)
-		to_open = ft_strdup(filename);
-	else if (route == 4)
-		to_open = ft_strjoin("scenes/", filename);
+	to_open = get_file_path(filename, route, &in_open);
 	fd = open(to_open, O_RDONLY);
 	if (fd < 0)
 	{
@@ -295,7 +299,6 @@ int	scene_load(t_scene *scene, char *filename, int route)
 		free(to_open);
 		error_manager("Failed to load scene file.");
 	}
-	ft_putstr_fd("\n", 0);
 	line = get_next_line(fd);
 	while (line)
 	{
@@ -304,13 +307,10 @@ int	scene_load(t_scene *scene, char *filename, int route)
 		line = get_next_line(fd);
 	}
 	close(fd);
-	if (scene->light_count == 0 || scene->object_count == 0)
-	{
-		if (route == 2)
-			free(in_open);
-		return (free(to_open), -1);
-	}
 	if (route == 2)
 		free(in_open);
-	return (free(to_open), 0);
+	free(to_open);
+	if (scene->light_count == 0 || scene->object_count == 0)
+		return (-1);
+	return (0);
 }

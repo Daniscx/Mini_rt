@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 16:13:33 by dmaestro          #+#    #+#             */
-/*   Updated: 2025/12/16 19:26:06 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/18 01:19:05 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,17 @@
 
 # include <fcntl.h>
 # include <stdarg.h>
+# include "math.h"
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
 # include <X11/X.h>
 # include <X11/Xlib.h>
 # include <X11/keysym.h>
-# include <math.h>
 # include <stdbool.h>
 # include <string.h>
+# include <time.h>
+# include <sys/stat.h>
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 1024
