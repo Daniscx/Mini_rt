@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 17:00:00 by ravazque          #+#    #+#             */
-/*   Updated: 2025/12/19 15:03:35 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/19 22:21:11 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,7 @@ static int	create_image(t_minirt *rt, t_img *img, int w, int h)
 	img->img_ptr = mlx_new_image(rt->mlx, w, h);
 	if (!img->img_ptr)
 		return (-1);
-	img->pixels_ptr = mlx_get_data_addr(img->img_ptr, &img->bpp,
-			&img->line_len, &img->endian);
+	img->pixels_ptr = mlx_get_data_addr(img->img_ptr, &img->bpp, &img->line_len, &img->endian);
 	img->width = w;
 	img->height = h;
 	return (0);

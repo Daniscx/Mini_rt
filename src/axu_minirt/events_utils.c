@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/17 16:00:00 by ravazque          #+#    #+#             */
-/*   Updated: 2025/12/19 15:03:35 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/19 22:20:38 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,7 @@ int	is_autorepeat_release(t_minirt *rt, int keycode)
 	if (XPending(display))
 	{
 		XPeekEvent(display, &next);
-		if (next.type == KeyPress
-			&& next.xkey.keycode == (unsigned int)keycode)
+		if (next.type == KeyPress && next.xkey.keycode == (unsigned int)keycode)
 			return (1);
 	}
 	return (0);

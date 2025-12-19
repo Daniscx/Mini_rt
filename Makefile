@@ -20,8 +20,14 @@ APP_OBJ_DIR     = $(OBJ_ROOT)/miniRT
 LIBFT_OBJ_DIR   = $(OBJ_ROOT)/aux_libft
 
 CC			= cc
-CFLAGS		= -Wall -Wextra -Werror -I$(INC_DIR) -I$(LIBFT_DIR) -I$(MLX_DIR)
-CFLAGS_CB   = -Wall -Wextra -Werror -D COLOR_BLEEDING=1 -I$(INC_DIR) -I$(LIBFT_DIR) -I$(MLX_DIR)
+# CFLAGS		= -Wall -Wextra -Werror -I$(INC_DIR) -I$(LIBFT_DIR) -I$(MLX_DIR)
+# CFLAGS_CB   = -Wall -Wextra -Werror -D COLOR_BLEEDING=1 -I$(INC_DIR) -I$(LIBFT_DIR) -I$(MLX_DIR)
+
+# CFLAGS		= -Wall -Wextra -Werror -I$(INC_DIR) -I$(LIBFT_DIR) -O3 -I$(MLX_DIR)
+# CFLAGS_CB   = -Wall -Wextra -Werror -D COLOR_BLEEDING=1 -I$(INC_DIR) -O3 -I$(LIBFT_DIR) -I$(MLX_DIR)
+
+CFLAGS   = -Wall -Wextra -Werror -Wno-error=incompatible-pointer-types -O3 -I$(INC_DIR) -I$(LIBFT_DIR) -I$(MLX_DIR)
+CFLAGS_CB   = -Wall -Wextra -Werror -Wno-error=incompatible-pointer-types -D COLOR_BLEEDING=1 -O3 -I$(INC_DIR) -I$(LIBFT_DIR) -I$(MLX_DIR)
 
 LDFLAGS  = -L$(MLX_DIR) -lmlx -L/usr/lib -lXext -lX11 -lm -lz
 AR       = ar
@@ -40,6 +46,7 @@ DARK_BLUE       = \033[0;34m
 LIGHT_GREEN     = \033[1;32m
 LIGHT_RED       = \033[1;91m
 ORANGE			= \033[38;5;208m
+ORANGE_BOLD		= \033[1;38;5;208m
 
 TOTAL_STEPS = $(words $(SRCS) $(LIBFT_SRCS))
 COMPILED = 0
@@ -67,7 +74,7 @@ endef
 all: $(NAME)
 
 cb:
-	@echo -e "$(ORANGE)Compiling with COLOR BLEEDING enabled:$(RESET)"
+	@echo -e "$(ORANGE_BOLD)Compiling with COLOR BLEEDING enabled:$(RESET)"
 	@$(MAKE) fclean > /dev/null
 	@$(MAKE) ENABLE_CB=1 all
 
@@ -159,5 +166,10 @@ test_bonus:
 # code when files are modified or deleted from libft. Despite this, the makefile works perfectly,
 # avoiding relinks, etc. It is just a visual loading error!
 # Try running make in miniRT, make fclean in libft, and make again in miniRT. You'll see the bug when loading!
+
+# Running  "make" cb causes relink because it attempts to overwrite files, thus generating relink to switch
+# between <normal mode> and color <bleeding mode>.
+
+# Remove the "-O3" flag during correction, as it fixes possible errors but greatly improves performance!
 
 # If you see "-e" before the loading messages, etc., when compiling, it's a problem with the terminal; try using Bash!

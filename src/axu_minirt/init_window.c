@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/17 16:00:00 by ravazque          #+#    #+#             */
-/*   Updated: 2025/12/19 15:03:35 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/19 22:21:02 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,7 @@ void	center_window_on_screen(t_minirt *rt)
 	display = ((t_xvar *)rt->mlx)->display;
 	window = ((t_winlist *)rt->win)->window;
 	mlx_get_screen_size(rt->mlx, &screen_w, &screen_h);
-	XMoveWindow(display, window,
-		(screen_w - rt->win_w) / 2, (screen_h - rt->win_h) / 2);
+	XMoveWindow(display, window, (screen_w - rt->win_w) / 2, (screen_h - rt->win_h) / 2);
 	XFlush(display);
 }
 

@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 10:01:26 by ravazque          #+#    #+#             */
-/*   Updated: 2025/12/19 20:52:24 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/19 21:16:04 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -291,7 +291,7 @@ typedef struct s_winlist
 
 /* Screenshot functions */
 void				generate_filename(char *filename);
-int								save_bmp(t_img *img, char *filename);
+int					save_bmp(t_img *img, char *filename);
 
 /* Key autorepeat detection */
 int					is_autorepeat_release(t_minirt *rt, int keycode);

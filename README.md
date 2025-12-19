@@ -67,15 +67,15 @@ The goal is to implement a program that can parse scene description files and re
 ## Build
 
 ```bash
-make                    # Compile project without “color bleeding” mode
-make cb                 # Compile with “color bleeding” mode
-make re                 # Recompile from scratch without “color bleeding” mode
-make test_mandatory     # Compile project without “color bleeding” mode and run the mandatory test scene
-make test_bonus         # Compile project without “color bleeding” mode and run the bonus test scene
-make clean              # Remove object files
-make fclean             # Full cleanup
-make clean_screenshots  # Delete all screenshots from <./screenshots/>
-make fclean_screenshots # Delete all screenshots from <./screenshots/> and the <./screenshots/> directory
+make                    	# Compile project without “color bleeding” mode
+make cb                 	# Compile with “color bleeding” mode
+make re                 	# Recompile from scratch without “color bleeding” mode
+make test_mandatory     	# Compile project without “color bleeding” mode and run the mandatory test scene
+make test_bonus         	# Compile project without “color bleeding” mode and run the bonus test scene
+make clean              	# Remove object files
+make fclean             	# Full cleanup
+make clean_screenshots  	# Delete all screenshots from <./screenshots/>
+make fclean_screenshots 	# Delete all screenshots from <./screenshots/> and the <./screenshots/> directory
 ```
 
 ## Usage
@@ -93,9 +93,9 @@ make fclean_screenshots # Delete all screenshots from <./screenshots/> and the <
 | `Space` / `Shift` | Move camera up/down |
 | `Arrow Keys` | Rotate camera view |
 | `Mouse` | Look around (when captured) |
-| `Left Click` | Select object / Capture mouse |
-| `Right Click` | Release mouse |
+| `Left Click` | Select object |
 | `P` | Take high-resolution screenshot |
+| `M` | Enter mouse capture mode |
 | `ESC` | Exit program |
 
 ## Scene File Format (.rt)
@@ -156,18 +156,64 @@ cy -3,0,0 0,1,0 1 3 100,255,100  # Green cylinder
 </details>
 
 <details>
-<summary><strong>📁 Project Structure</strong></summary>
+<summary><strong>📁 Project Structure [Pre-Norminette]</strong></summary>
 
 <br>
 
 ```
-miniRT/						# Project structure still to be defined
+miniRT/
 ├── include/
-├── linux-minilibx/
+│   └── minirt.h              # Main header with all structures and prototypes
 ├── src/
+│   ├── minirt.c              # Entry point and error handling
+│   ├── axu_minirt/           # Auxiliary miniRT functions
+│   │   ├── camera.c          # Camera initialization and movement
+│   │   ├── events_drag.c     # Object dragging logic
+│   │   ├── events_key.c      # Keyboard input handling
+│   │   ├── events_loop.c     # Main event loop
+│   │   ├── events_mouse.c    # Mouse input handling
+│   │   ├── events_print.c    # Console output for events
+│   │   ├── events_select.c   # Object selection logic
+│   │   ├── events_utils.c    # Event utility functions
+│   │   ├── init.c            # MLX and scene initialization
+│   │   └── init_window.c     # Window setup and centering
+│   ├── light/
+│   │   └── lighting.c        # Phong lighting, shadows, color bleeding
+│   ├── math/
+│   │   ├── vec3.c            # Basic vector operations
+│   │   └── vec3_utils.c      # Advanced vector utilities
+│   ├── parse/
+│   │   └── parse.c           # Scene file parser and validation
+│   ├── ray/
+│   │   ├── ray.c             # Ray creation and camera rays
+│   │   └── intersect.c       # Ray-object intersection algorithms
+│   ├── render/
+│   │   ├── render.c          # Low-resolution real-time rendering
+│   │   ├── render_high.c     # High-resolution screenshot rendering
+│   │   └── screenshot.c      # BMP file generation
+│   ├── scene/
+│   │   ├── scene.c           # Scene memory management
+│   │   └── scene_load.c      # Scene file loading and parsing
+│   ├── texture/
+│   │   └── texture.c         # PPM texture loading and bump mapping
+│   └── aux_libft/            # Custom libft implementation
+│       ├── include/
+│       │   └── libft.h
+│       └── src/
+│           └── *.c           # Libft source files
+├── linux-minilibx/           # MiniLibX graphics library
 ├── scenes/
-├── Makefile
-└── README.md
+│   ├── textures/             # PPM texture files
+│   │   ├── earth.ppm
+│   │   └── earth_bump.ppm
+│   ├── showcase.rt           # Demo scene
+│   ├── complex.rt            # Complex scene example
+│   ├── test_mandatory.rt     # Mandatory test scene
+│   └── test_bonus.rt         # Bonus features test scene
+├── docs/
+│   └── miniRT.md             # Technical documentation
+├── Makefile                  # Build system
+└── README.md                 # This file
 ```
 
 <br>

@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/12 19:37:14 by dmaestro          #+#    #+#             */
-/*   Updated: 2025/12/19 15:12:53 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/19 21:18:10 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	free_double_pointer(char **dbpt)
 	y--;
 	while (y >= 0)
 	{
-		if(dbpt[y])
+		if (dbpt[y])
 			free(dbpt[y]);
 		y--;
 	}
