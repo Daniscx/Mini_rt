@@ -124,7 +124,7 @@ test_bonus:
 
 # The makefile works fine, both for miniRT and libft, but there is a visual bug with already compiled
 # code when files are modified or deleted from libft. Despite this, the makefile works perfectly,
-# avoiding relinks, etc. It is just a visual loading error! 
+# avoiding relinks, etc. It is just a visual loading error!
 # Try running make in miniRT, make fclean in libft, and make again in miniRT. You'll see the bug when loading!
 
 # If you see "-e" before the loading messages, etc., when compiling, it's a problem with the terminal; try using Bash!
