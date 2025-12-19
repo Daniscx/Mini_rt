@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/27 17:54:21 by dmaestro          #+#    #+#             */
-/*   Updated: 2025/12/18 12:00:00 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/19 14:24:26 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,10 @@ static void	print_extension_message(char *file)
 static int	try_file_no_rt(char *file)
 {
 	char	*try_rt;
+	char	*try_scene;
 	int		fd_tester;
 
+	try_scene = NULL;
 	try_rt = ft_strjoin(file, ".rt");
 	fd_tester = open(try_rt, O_RDONLY);
 	if (fd_tester >= 0)
@@ -50,16 +52,18 @@ static int	try_file_no_rt(char *file)
 	}
 	free(try_rt);
 	try_rt = ft_strjoin("scenes/", file);
-	try_rt = ft_strjoin(try_rt, ".rt");
-	fd_tester = open(try_rt, O_RDONLY);
+	try_scene = ft_strjoin(try_rt, ".rt");
+	fd_tester = open(try_scene, O_RDONLY);
 	if (fd_tester >= 0)
 	{
 		print_directory_rt_message(file);
 		free(try_rt);
+		free(try_scene);
 		close(fd_tester);
 		return (2);
 	}
 	free(try_rt);
+	free(try_scene);
 	error_manager("Invalid file, please check if it exists!");
 	return (0);
 }

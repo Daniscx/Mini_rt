@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 10:01:26 by ravazque          #+#    #+#             */
-/*   Updated: 2025/12/18 12:13:03 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/19 15:16:43 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define MINIRT_H
 
 # include "../linux-minilibx/mlx.h"
-# include "../src/aux_libft/libft.h"
+# include "../src/aux_libft/include/libft.h"
 
 /* =[ Math Constants ]====================================================== */
 
@@ -267,6 +267,42 @@ typedef struct s_scene_legacy
 	void			*al;
 	void			*camera;
 }					t_scene_leg;
+
+/* =[ miniRT internal ]===================================================== */
+
+typedef struct s_xvar
+{
+	Display		*display;
+	Window		root;
+	int			screen;
+}				t_xvar;
+
+typedef struct s_winlist
+{
+	Window		window;
+}				t_winlist;
+
+/* Screenshot functions */
+void	generate_filename(char *filename);
+int		save_bmp(t_img *img, char *filename);
+
+/* Key autorepeat detection */
+int		is_autorepeat_release(t_minirt *rt, int keycode);
+
+/* Object manipulation */
+t_vec3	get_object_center(t_object *obj);
+void	move_object(t_object *obj, t_vec3 new_center);
+
+/* Mouse look */
+void	handle_mouse_look(t_minirt *rt, int x, int y);
+void	handle_object_drag(t_minirt *rt, int x, int y);
+
+/* Window functions */
+void	center_window_on_screen(t_minirt *rt);
+
+/* Print functions */
+void	print_grab_msg(t_object *obj, t_vec3 pos);
+void	print_drop_msg(t_object *obj, t_vec3 pos);
 
 /* =[ Error Management ]==================================================== */
 

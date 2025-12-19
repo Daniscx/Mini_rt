@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 21:30:47 by ravazque          #+#    #+#             */
-/*   Updated: 2025/12/18 12:09:05 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/19 14:53:20 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,6 @@ int	main(int argc, char **argv)
 	parse_window_size(&rt, argc, argv);
 	if (scene_load(&rt.scene, argv[1], route) < 0)
 		error_manager("Failed to load scene file.");
-	ft_putstr_fd("\n", 0);
 	minirt_init(&rt);
 	render_scene(&rt);
 	mlx_loop(rt.mlx);

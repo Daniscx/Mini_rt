@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minirt_internal.h"
+#include "../../include/minirt.h"
 
 static const char	*get_type_name(t_obj_type type)
 {

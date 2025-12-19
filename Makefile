@@ -19,6 +19,7 @@ LIBFT_OBJ_DIR   = $(OBJ_ROOT)/aux_libft
 
 CC       = cc
 # CFLAGS   = -Wall -Wextra -Werror -I$(INC_DIR) -I$(LIBFT_DIR) -I$(MLX_DIR)
+
 CFLAGS   = -Wall -Wextra -Werror -Wno-error=incompatible-pointer-types -I$(INC_DIR) -I$(LIBFT_DIR) -I$(MLX_DIR)
 
 LDFLAGS  = -L$(MLX_DIR) -lmlx -L/usr/lib -lXext -lX11 -lm -lz
@@ -31,19 +32,20 @@ OBJS = $(SRCS:$(SRC_DIR)/%.c=$(APP_OBJ_DIR)/%.o)
 LIBFT_SRCS = $(shell find $(LIBFT_DIR) -type f -name '*.c')
 LIBFT_OBJS = $(LIBFT_SRCS:$(LIBFT_DIR)/%.c=$(LIBFT_OBJ_DIR)/%.o)
 
-RESET           = \001\033[0m\002
-TURQUOISE       = \001\033[0;36m\002
-LIGHT_TURQUOISE = \001\033[1;36m\002
-DARK_BLUE		= \001\033[0;34m\002
-LIGHT_GREEN     = \001\033[1;32m\002
-LIGHT_RED       = \001\033[1;91m\002
+RESET           = \033[0m
+TURQUOISE       = \033[0;36m
+LIGHT_TURQUOISE = \033[1;36m
+DARK_BLUE       = \033[0;34m
+LIGHT_GREEN     = \033[1;32m
+LIGHT_RED       = \033[1;91m
 
 TOTAL_STEPS = $(words $(SRCS) $(LIBFT_SRCS))
+COMPILED = 0
 
 define show_progress
+	$(eval COMPILED := $(shell echo $$(($(COMPILED) + 1))))
 	@total=$(TOTAL_STEPS); \
-	[ "$$total" -gt 0 ] || total=1; \
-	curr=$$(find "$(OBJ_ROOT)" -type f -name "*.o" 2>/dev/null | wc -l); \
+	curr=$(COMPILED); \
 	width=60; \
 	hashes=$$(( curr * width / total )); \
 	[ "$$hashes" -ge 0 ] || hashes=0; \
@@ -64,7 +66,9 @@ all: $(NAME)
 
 $(NAME): $(MLX_A) $(LIBFT_A) $(OBJS)
 	@$(CC) $(CFLAGS) $(OBJS) $(LIBFT_A) $(LDFLAGS) -o $@
-	@echo -e "$(LIGHT_TURQUOISE)miniRT ready!$(RESET)"
+	@if [ $(COMPILED) -gt 0 ]; then \
+		echo -e "$(LIGHT_TURQUOISE)miniRT ready!$(RESET)"; \
+	fi
 
 $(MLX_A):
 	@echo -e "$(DARK_BLUE)Compiling minilibx...$(RESET)"
@@ -116,6 +120,11 @@ test_bonus:
 	@echo -e "———"
 	@./$(NAME) test_bonus
 
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re test_mandatory test_bonus
+
+# The makefile works fine, both for miniRT and libft, but there is a visual bug with already compiled
+# code when files are modified or deleted from libft. Despite this, the makefile works perfectly,
+# avoiding relinks, etc. It is just a visual loading error! 
+# Try running make in miniRT, make fclean in libft, and make again in miniRT. You'll see the bug when loading!
 
 # If you see "-e" before the loading messages, etc., when compiling, it's a problem with the terminal; try using Bash!

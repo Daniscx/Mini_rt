@@ -6,11 +6,11 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/17 16:00:00 by ravazque          #+#    #+#             */
-/*   Updated: 2025/12/17 16:30:00 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/19 15:03:35 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minirt_internal.h"
+#include "../../include/minirt.h"
 
 static int	ft_abs(int n)
 {

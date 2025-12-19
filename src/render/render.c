@@ -6,11 +6,11 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 17:00:00 by ravazque          #+#    #+#             */
-/*   Updated: 2025/12/18 12:00:00 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/19 15:03:35 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minirt_internal.h"
+#include "../../include/minirt.h"
 
 static void	put_pixel(t_img *img, int x, int y, int color)
 {
