@@ -19,10 +19,9 @@ OBJ_ROOT        = minirtObjects
 APP_OBJ_DIR     = $(OBJ_ROOT)/miniRT
 LIBFT_OBJ_DIR   = $(OBJ_ROOT)/aux_libft
 
-CC       = cc
-# CFLAGS   = -Wall -Wextra -Werror -I$(INC_DIR) -I$(LIBFT_DIR) -I$(MLX_DIR)
-
-CFLAGS   = -Wall -Wextra -Werror -Wno-error=incompatible-pointer-types -I$(INC_DIR) -I$(LIBFT_DIR) -I$(MLX_DIR)
+CC			= cc
+CFLAGS		= -Wall -Wextra -Werror -I$(INC_DIR) -I$(LIBFT_DIR) -I$(MLX_DIR)
+CFLAGS_CB   = -Wall -Wextra -Werror -D COLOR_BLEEDING=1 -I$(INC_DIR) -I$(LIBFT_DIR) -I$(MLX_DIR)
 
 LDFLAGS  = -L$(MLX_DIR) -lmlx -L/usr/lib -lXext -lX11 -lm -lz
 AR       = ar
@@ -40,6 +39,7 @@ LIGHT_TURQUOISE = \033[1;36m
 DARK_BLUE       = \033[0;34m
 LIGHT_GREEN     = \033[1;32m
 LIGHT_RED       = \033[1;91m
+ORANGE			= \033[38;5;208m
 
 TOTAL_STEPS = $(words $(SRCS) $(LIBFT_SRCS))
 COMPILED = 0
@@ -66,8 +66,17 @@ endef
 
 all: $(NAME)
 
+cb:
+	@echo -e "$(ORANGE)Compiling with COLOR BLEEDING enabled:$(RESET)"
+	@$(MAKE) fclean > /dev/null
+	@$(MAKE) ENABLE_CB=1 all
+
 $(NAME): $(MLX_A) $(LIBFT_A) $(OBJS)
+ifdef ENABLE_CB
+	@$(CC) $(CFLAGS_CB) $(OBJS) $(LIBFT_A) $(LDFLAGS) -o $@
+else
 	@$(CC) $(CFLAGS) $(OBJS) $(LIBFT_A) $(LDFLAGS) -o $@
+endif
 	@if [ $(COMPILED) -gt 0 ]; then \
 		echo -e "$(LIGHT_TURQUOISE)miniRT ready!$(RESET)"; \
 	fi
@@ -86,7 +95,11 @@ $(LIBFT_OBJ_DIR)/%.o: $(LIBFT_DIR)/%.c | $(LIBFT_OBJ_DIR)
 
 $(APP_OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(APP_OBJ_DIR)
 	@mkdir -p $(dir $@)
+ifdef ENABLE_CB
+	@$(CC) $(CFLAGS_CB) -c $< -o $@
+else
 	@$(CC) $(CFLAGS) -c $< -o $@
+endif
 	$(call show_progress)
 
 $(OBJ_ROOT) $(APP_OBJ_DIR) $(LIBFT_OBJ_DIR):
@@ -106,14 +119,22 @@ fclean:
 	@echo -e "$(TURQUOISE)Full cleaning finished!$(RESET)"
 
 clean_screenshots:
-	@echo -e "$(LIGHT_RED)Running a screenshots cleanup...$(RESET)"
-	@rm -rf $(SCRSHT_DIR)/*
-	@echo -e "$(LIGHT_GREEN)Screenshots cleanup completed!$(RESET)"
+	@if [ ! -d "./screenshots" ]; then \
+		echo -e "$(LIGHT_RED)The directory \"./screenshots/\" does not exist!$(RESET)"; \
+	else \
+		echo -e "$(LIGHT_RED)Running a screenshots cleanup...$(RESET)"; \
+		rm -rf $(SCRSHT_DIR)/*; \
+		echo -e "$(LIGHT_GREEN)Screenshots cleanup completed!$(RESET)"; \
+	fi
 
 fclean_screenshots:
-	@echo -e "$(LIGHT_RED)Running a screenshots full cleanup...$(RESET)"
-	@rm -rf "$(SCRSHT_DIR)"
-	@echo -e "$(LIGHT_GREEN)Screenshots full cleanup completed!$(RESET)"
+	@if [ ! -d "./screenshots" ]; then \
+		echo -e "$(LIGHT_RED)The directory \"./screenshots/\" does not exist!$(RESET)"; \
+	else \
+		echo -e "$(LIGHT_RED)Running a screenshots full cleanup...$(RESET)"; \
+		rm -rf "$(SCRSHT_DIR)"; \
+		echo -e "$(LIGHT_GREEN)Screenshots full cleanup completed!$(RESET)"; \
+	fi
 
 re:
 	@$(MAKE) fclean
@@ -132,7 +153,7 @@ test_bonus:
 	@echo -e "———"
 	@./$(NAME) test_bonus
 
-.PHONY: all clean fclean re test_mandatory test_bonus
+.PHONY: all cb clean fclean re test_mandatory test_bonus
 
 # The makefile works fine, both for miniRT and libft, but there is a visual bug with already compiled
 # code when files are modified or deleted from libft. Despite this, the makefile works perfectly,

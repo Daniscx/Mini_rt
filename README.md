@@ -67,16 +67,21 @@ The goal is to implement a program that can parse scene description files and re
 ## Build
 
 ```bash
-make        # Compile project
-make clean  # Remove object files
-make fclean # Full cleanup
-make re     # Recompile from scratch
+make                    # Compile project without “color bleeding” mode
+make cb                 # Compile with “color bleeding” mode
+make re                 # Recompile from scratch without “color bleeding” mode
+make test_mandatory     # Compile project without “color bleeding” mode and run the mandatory test scene
+make test_bonus         # Compile project without “color bleeding” mode and run the bonus test scene
+make clean              # Remove object files
+make fclean             # Full cleanup
+make clean_screenshots  # Delete all screenshots from <./screenshots/>
+make fclean_screenshots # Delete all screenshots from <./screenshots/> and the <./screenshots/> directory
 ```
 
 ## Usage
 
 ```bash
-./miniRT <scene_file.rt>
+./miniRT <scene_file>
 ./miniRT scenes/showcase.rt
 ```
 

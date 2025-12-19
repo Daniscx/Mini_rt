@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 21:30:47 by ravazque          #+#    #+#             */
-/*   Updated: 2025/12/19 14:53:20 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/19 19:50:27 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,12 @@ static void	parse_window_size(t_minirt *rt, int argc, char **argv)
 
 static void	print_usage(void)
 {
+	ft_putstr_fd("make <mode>", 1);
 	ft_putstr_fd("Usage: ./miniRT <scene.rt> [width] [height]\n", 1);
-	ft_putstr_fd("  scene.rt  - Scene file to load\n", 1);
-	ft_putstr_fd("  width     - Window width (426-4096, optional)\n", 1);
-	ft_putstr_fd("  height    - Window height (240-2160, optional)\n", 1);
+	ft_putstr_fd("  scene.rt		- Scene file to load\n", 1);
+	ft_putstr_fd("  width			- Window width (426-4096) [optional]\n", 1);
+	ft_putstr_fd("  height			- Window height (240-2160) [optional]\n", 1);
+	ft_putstr_fd("  color bleeding	- Compile using \"make cb\" to use color bleeding mode. [optional]\n", 1);
 }
 
 int	main(int argc, char **argv)
@@ -55,7 +57,7 @@ int	main(int argc, char **argv)
 	t_minirt	rt;
 	int			route;
 
-	if (argc < 2 || argc > 4)
+	if (argc < 2 || argc > 4 || (COLOR_BLEEDING != 0 && COLOR_BLEEDING != 1))
 	{
 		print_usage();
 		return (1);

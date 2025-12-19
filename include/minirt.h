@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 10:01:26 by ravazque          #+#    #+#             */
-/*   Updated: 2025/12/19 15:16:43 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/19 20:52:24 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,15 @@
 # include "../linux-minilibx/mlx.h"
 # include "../src/aux_libft/include/libft.h"
 
-/* =[ Math Constants ]====================================================== */
+/* =[ Advanced Features (Optional) ]======================================== */
 
-# ifndef M_PI
-#  define M_PI 3.14159265358979323846
+// Change the value to 1 to enable color bleeding (indirect lighting).
+// This adds bounced light that takes on the color of reflecting objects,
+// creating more realistic color interactions (e.g., red sphere tints nearby
+// objects with red light). Increases rendering time.
+
+# ifndef COLOR_BLEEDING
+#  define COLOR_BLEEDING 0
 # endif
 
 /* =[ Defines ]============================================================= */
@@ -36,6 +41,8 @@
 # define MOVE_SPEED 0.3
 # define ROT_SPEED 0.05
 # define MOUSE_SENS 0.001
+
+# define M_PI 3.14159265358979323846
 
 # define CHECKER_SCALE 2.0
 # define SPECULAR_EXP 32.0
@@ -283,26 +290,26 @@ typedef struct s_winlist
 }				t_winlist;
 
 /* Screenshot functions */
-void	generate_filename(char *filename);
-int		save_bmp(t_img *img, char *filename);
+void				generate_filename(char *filename);
+int								save_bmp(t_img *img, char *filename);
 
 /* Key autorepeat detection */
-int		is_autorepeat_release(t_minirt *rt, int keycode);
+int					is_autorepeat_release(t_minirt *rt, int keycode);
 
 /* Object manipulation */
-t_vec3	get_object_center(t_object *obj);
-void	move_object(t_object *obj, t_vec3 new_center);
+t_vec3				get_object_center(t_object *obj);
+void				move_object(t_object *obj, t_vec3 new_center);
 
 /* Mouse look */
-void	handle_mouse_look(t_minirt *rt, int x, int y);
-void	handle_object_drag(t_minirt *rt, int x, int y);
+void				handle_mouse_look(t_minirt *rt, int x, int y);
+void				handle_object_drag(t_minirt *rt, int x, int y);
 
 /* Window functions */
-void	center_window_on_screen(t_minirt *rt);
+void				center_window_on_screen(t_minirt *rt);
 
 /* Print functions */
-void	print_grab_msg(t_object *obj, t_vec3 pos);
-void	print_drop_msg(t_object *obj, t_vec3 pos);
+void				print_grab_msg(t_object *obj, t_vec3 pos);
+void				print_drop_msg(t_object *obj, t_vec3 pos);
 
 /* =[ Error Management ]==================================================== */
 
