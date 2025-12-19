@@ -7,6 +7,8 @@ NAME        = miniRT
 SRC_DIR     = src
 INC_DIR     = include
 
+SCRSHT_DIR  = screenshots
+
 LIBFT_DIR   = src/aux_libft
 LIBFT_A     = $(LIBFT_DIR)/libft.a
 
@@ -91,7 +93,7 @@ $(OBJ_ROOT) $(APP_OBJ_DIR) $(LIBFT_OBJ_DIR):
 	@mkdir -p $@
 
 clean:
-	@echo -e "$(LIGHT_RED)Running object cleanup...$(RESET)"
+	@echo -e "$(LIGHT_RED)Running a objects cleanup...$(RESET)"
 	@rm -rf "$(OBJ_ROOT)"
 	@$(MAKE) -C $(MLX_DIR) clean > /dev/null 2>&1
 	@echo -e "$(TURQUOISE)Cleaning of objects completed!$(RESET)"
@@ -102,6 +104,16 @@ fclean:
 	@rm -f "$(NAME)" "$(LIBFT_A)"
 	@$(MAKE) -C $(MLX_DIR) clean > /dev/null 2>&1
 	@echo -e "$(TURQUOISE)Full cleaning finished!$(RESET)"
+
+clean_screenshots:
+	@echo -e "$(LIGHT_RED)Running a screenshots cleanup...$(RESET)"
+	@rm -rf $(SCRSHT_DIR)/*
+	@echo -e "$(LIGHT_GREEN)Screenshots cleanup completed!$(RESET)"
+
+fclean_screenshots:
+	@echo -e "$(LIGHT_RED)Running a screenshots full cleanup...$(RESET)"
+	@rm -rf "$(SCRSHT_DIR)"
+	@echo -e "$(LIGHT_GREEN)Screenshots full cleanup completed!$(RESET)"
 
 re:
 	@$(MAKE) fclean

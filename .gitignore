@@ -1,14 +1,13 @@
-## Repos, Binaries & Screenshots
+## Directories, Binaries & Screenshots
 docs/ravazque_git
-screenshots/*
+screenshots
 minirtObjects
 miniRT
+src/aux_libft/libft.a
+.vscode
 
 ## DS_STORE
 .DS_STORE
-
-src/aux_libft/libft.a
-src/aux_libft/*.o
 
 ## Mlx
 linux-minilibx/libmlx.a
@@ -68,8 +67,3 @@ linux-minilibx/modules.order
 linux-minilibx/Module.symvers
 linux-minilibx/Mkfile.old
 linux-minilibx/dkms.conf
-
-## VScode & Claude
-.vscode
-.claude
-CLAUDE.md
