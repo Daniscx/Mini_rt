@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/20 03:07:23 by ravazque          #+#    #+#             */
-/*   Updated: 2025/12/20 03:07:28 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/20 17:19:06 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,13 @@ static void	parse_window_size(t_minirt *rt, int argc, char **argv)
 {
 	rt->win_w = WIDTH_LOW;
 	rt->win_h = HEIGHT_LOW;
+	rt->frame_rate = TARGET_FPS;
 	if (argc >= 4)
 	{
 		rt->win_w = ft_atoi(argv[2]);
 		rt->win_h = ft_atoi(argv[3]);
+		if (argc >= 5)
+			rt->frame_rate = ft_atoi(argv[4]);
 		if (rt->win_w < 426 || rt->win_w > 4096)
 		{
 			printf("\033[0;31mInvalid width.\033[0m Using default: %i\n", WIDTH_LOW);
@@ -39,16 +42,25 @@ static void	parse_window_size(t_minirt *rt, int argc, char **argv)
 			printf("\033[0;31mInvalid height.\033[0m Using default: %i\n", HEIGHT_LOW);
 			rt->win_h = HEIGHT_LOW;
 		}
+		if (rt->frame_rate < 24 || rt->frame_rate > 60)
+		{
+			printf("\033[0;31mInvalid frame rate.\033[0m Using default: %i\n", TARGET_FPS);
+			rt->frame_rate = TARGET_FPS;
+		}
 	}
 }
 
 static void	print_usage(void)
 {
-	ft_putstr_fd("Compile with: \"make cb\" to use the color bleeding mode.\n", 1);
-	ft_putstr_fd("Usage: ./miniRT <scene.rt> [width] [height]\n", 1);
+	ft_putstr_fd("\n\033[38;5;208mCompile with: \033[0m\"make cb\" to use the color bleeding mode.\n", 1);
+	ft_putstr_fd("\033[36mUsage: \033[0m./miniRT <scene.rt> [width] [height] [fps]\n", 1);
 	ft_putstr_fd("  scene.rt        - Scene file to load.\n", 1);
-	ft_putstr_fd("  width           - Window width. (426-4096) [optional]\n", 1);
-	ft_putstr_fd("  height          - Window height. (240-2160) [optional]\n", 1);
+	ft_putstr_fd("  width           - Window width.      (426-4096) [optional]\n", 1);
+	ft_putstr_fd("  height          - Window height.     (240-2160) [optional]\n", 1);
+	ft_putstr_fd("  maximum FPS     - Frames per second. (24-60)    [optional]\n", 1);
+	ft_putstr_fd("\033[92m\n// - If you want to define the width and height of the window, you must\n// enter at least those two parameters.", 1);
+	ft_putstr_fd("\n// - Only once the width and height have been defined can the maximum FPS\n// be defined.", 1);
+	ft_putstr_fd("\n// - If you want to leave a value as default but must specify a value,\n// you can use 0 or any other number in an invalid range.\033[0m\n\n", 1);
 }
 
 int	main(int argc, char **argv)
@@ -56,7 +68,7 @@ int	main(int argc, char **argv)
 	t_minirt	rt;
 	int			route;
 
-	if (argc < 2 || argc > 4 || (COLOR_BLEEDING != 0 && COLOR_BLEEDING != 1))
+	if (argc < 2 || argc > 5)
 	{
 		print_usage();
 		return (1);

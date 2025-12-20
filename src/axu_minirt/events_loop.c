@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/17 16:00:00 by ravazque          #+#    #+#             */
-/*   Updated: 2025/12/20 15:12:06 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/20 17:21:58 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,9 @@ static long	get_time_us(void)
 	return (tv.tv_sec * 1000000 + tv.tv_usec);
 }
 
-static void	process_movement(t_minirt *rt)
+static t_vec3	get_movement_input(t_minirt *rt)
 {
 	t_vec3	move;
-	t_vec3	new_pos;
 
 	move = vec3_new(0, 0, 0);
 	if (rt->input.keys[KEY_W])
@@ -38,6 +37,15 @@ static void	process_movement(t_minirt *rt)
 		move = vec3_add(move, rt->scene.camera.up);
 	if (rt->input.keys[KEY_SHIFT])
 		move = vec3_sub(move, rt->scene.camera.up);
+	return (move);
+}
+
+static void	process_movement(t_minirt *rt)
+{
+	t_vec3	move;
+	t_vec3	new_pos;
+
+	move = get_movement_input(rt);
 	if (vec3_length(move) > EPSILON)
 	{
 		move = vec3_scale(vec3_normalize(move), MOVE_SPEED);
@@ -81,7 +89,7 @@ int	loop_handler(t_minirt *rt)
 		return (0);
 	current_time = get_time_us();
 	elapsed = current_time - rt->last_frame_time;
-	if (elapsed < FRAME_TIME_US)
+	if (elapsed < (1000000 / rt->frame_rate))
 		return (0);
 	rt->last_frame_time = current_time;
 	process_movement(rt);

@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 10:01:26 by ravazque          #+#    #+#             */
-/*   Updated: 2025/12/20 16:23:32 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/20 17:17:54 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,65 +18,46 @@
 
 /* =[ Advanced Features (Optional) ]======================================== */
 
-// Change the value to 1 to enable color bleeding (indirect lighting).
-// This adds bounced light that takes on the color of reflecting objects,
-// creating more realistic color interactions (e.g., red sphere tints nearby
-// objects with red light). Increases rendering time.
-
 # ifndef COLOR_BLEEDING
 #  define COLOR_BLEEDING 0
 # endif
 
 /* =[ Defines ]============================================================= */
 
-// Titulo de la ventana
 # define WIN_TITLE "miniRT"
-
-// Directorio donde se guardan los screenshots (tecla P)
 # define SCREENSHOT_DIR "screenshots"
 
-// Resolucion baja: modo interactivo (rapido para moverte por la escena)
 # define WIDTH_LOW 426
 # define HEIGHT_LOW 240
 
-// Resolucion alta: modo screenshot (tecla P, renderiza a 4K)
 # define WIDTH_HIGH 4096
 # define HEIGHT_HIGH 2160
 
-// Tolerancia para comparaciones de punto flotante (evita errores de precision)
-# define EPSILON 0.0001
-
-// Velocidad de movimiento de la camara (unidades por frame con WASD/Space/Shift)
-# define MOVE_SPEED 0.3
-
-// Velocidad de rotacion de la camara (radianes por frame con flechas)
-# define ROT_SPEED 0.05
-
-// Sensibilidad del raton en modo mouse look (radianes por pixel)
-# define MOUSE_SENS 0.001
-
-// Limite de FPS: el loop principal no procesara mas de TARGET_FPS por segundo
-# define TARGET_FPS 60
-
-// Tiempo minimo entre frames en microsegundos (1000000us = 1s / XFPS = Xus)
-# define FRAME_TIME_US (1000000 / TARGET_FPS)
-
-// Radio de colision de la camara: distancia minima a objetos antes de bloquearse
+# define TARGET_FPS 24
 # define CAMERA_RADIUS 0.3
 
-// Constante PI para calculos trigonometricos
+# define MOVE_SPEED 0.3
+# define ROT_SPEED 0.05
+# define MOUSE_SENS 0.001
+
+/* =[ Defines ]=( With explanation )======================================== */
+
+// Tolerance for floating point comparisons (avoids precision errors)
+# define EPSILON 0.0001
+
+// Constant PI for trigonometric calculations
 # define M_PI 3.14159265358979323846
 
-// Escala del patron de tablero de ajedrez en planos (mayor = cuadros mas grandes)
+// Scale of the chessboard pattern in plans (larger = larger squares)
 # define CHECKER_SCALE 2.0
 
-// Exponente especular (Phong): mayor = reflejos mas concentrados y brillantes
+// Specular exponent (Phong): higher = more concentrated & brighter reflections
 # define SPECULAR_EXP 32.0
 
-// Intensidad del brillo especular (0.0 = sin brillo, 1.0 = maximo)
+// Specular brightness intensity (0.0 = no brightness, 1.0 = maximum)
 # define SPECULAR_STRENGTH 0.5
 
-// Intensidad del bump mapping en texturas (mayor = relieve mas pronunciado)
+// Intensity of bump mapping in textures (higher = more pronounced relief)
 # define BUMP_STRENGTH 0.8
 
 /* =[ Key State Indices ]=================================================== */
@@ -294,6 +275,7 @@ typedef struct s_minirt
 	void			*win;
 	int				win_w;
 	int				win_h;
+	int				frame_rate;
 	t_img			img;
 	t_img			img_high;
 	t_scene			scene;
