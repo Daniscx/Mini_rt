@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/20 02:45:00 by ravazque          #+#    #+#             */
-/*   Updated: 2025/12/20 03:10:18 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/20 03:44:54 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,20 +26,16 @@ static void	calc_cylinder_coeffs(t_ray ray, t_cylinder *cy, double *coef)
 	coef[2] = vec3_dot(oc_perp, oc_perp) - (cy->diameter / 2.0) * (cy->diameter / 2.0);
 }
 
-static double	solve_cylinder_t(double *coef)
+static int	solve_cylinder_t(double *coef, double *t)
 {
 	double	disc;
-	double	t;
 
 	disc = coef[1] * coef[1] - 4.0 * coef[0] * coef[2];
 	if (disc < 0)
-		return (-1.0);
-	t = (-coef[1] - sqrt(disc)) / (2.0 * coef[0]);
-	if (t < EPSILON)
-		t = (-coef[1] + sqrt(disc)) / (2.0 * coef[0]);
-	if (t < EPSILON)
-		return (-1.0);
-	return (t);
+		return (0);
+	t[0] = (-coef[1] - sqrt(disc)) / (2.0 * coef[0]);
+	t[1] = (-coef[1] + sqrt(disc)) / (2.0 * coef[0]);
+	return (1);
 }
 
 static t_hit	build_cylinder_hit(t_ray ray, t_cylinder *cy, double t)
@@ -48,6 +44,8 @@ static t_hit	build_cylinder_hit(t_ray ray, t_cylinder *cy, double t)
 	double	h;
 
 	hit = hit_new();
+	if (t < EPSILON)
+		return (hit);
 	hit.point = ray_at(ray, t);
 	h = vec3_dot(vec3_sub(hit.point, cy->center), cy->axis);
 	if (h < 0 || h > cy->height)
@@ -55,6 +53,8 @@ static t_hit	build_cylinder_hit(t_ray ray, t_cylinder *cy, double t)
 	hit.hit = true;
 	hit.t = t;
 	hit.normal = vec3_normalize(vec3_sub(vec3_sub(hit.point, cy->center), vec3_scale(cy->axis, h)));
+	if (vec3_dot(ray.direction, hit.normal) > 0)
+		hit.normal = vec3_negate(hit.normal);
 	hit.color = cy->color;
 	hit.specular = 1.0;
 	return (hit);
@@ -63,13 +63,23 @@ static t_hit	build_cylinder_hit(t_ray ray, t_cylinder *cy, double t)
 static t_hit	intersect_cylinder_body(t_ray ray, t_cylinder *cy)
 {
 	double	coef[3];
-	double	t;
+	double	t[2];
+	t_hit	hits[2];
 
 	calc_cylinder_coeffs(ray, cy, coef);
-	t = solve_cylinder_t(coef);
-	if (t < 0)
+	if (!solve_cylinder_t(coef, t))
 		return (hit_new());
-	return (build_cylinder_hit(ray, cy, t));
+	hits[0] = build_cylinder_hit(ray, cy, t[0]);
+	hits[1] = build_cylinder_hit(ray, cy, t[1]);
+	if (hits[0].hit && hits[1].hit)
+	{
+		if (hits[0].t < hits[1].t)
+			return (hits[0]);
+		return (hits[1]);
+	}
+	if (hits[0].hit)
+		return (hits[0]);
+	return (hits[1]);
 }
 
 t_hit	intersect_cylinder(t_ray ray, t_cylinder *cy)

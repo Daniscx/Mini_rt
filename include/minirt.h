@@ -66,6 +66,7 @@
 # define KEY_COUNT 10
 
 /* =[ 3D Vector ]=========================================================== */
+// Represents a 3D point or direction with x, y, z components
 
 typedef struct s_vec3
 {
@@ -75,6 +76,7 @@ typedef struct s_vec3
 }					t_vec3;
 
 /* =[ Ray ]================================================================= */
+// Represents a ray with origin point and normalized direction vector
 
 typedef struct s_ray
 {
@@ -83,6 +85,7 @@ typedef struct s_ray
 }					t_ray;
 
 /* =[ Object Types ]======================================================== */
+// Enumeration of supported 3D primitive types for scene objects
 
 typedef enum e_obj_type
 {
@@ -93,6 +96,7 @@ typedef enum e_obj_type
 }					t_obj_type;
 
 /* =[ Texture ]============================================================= */
+// Stores loaded PPM image data for texture mapping on surfaces
 
 typedef struct s_texture
 {
@@ -103,6 +107,7 @@ typedef struct s_texture
 }					t_texture;
 
 /* =[ Sphere ]============================================================== */
+// Sphere primitive defined by center, diameter, and optional textures
 
 typedef struct s_sphere
 {
@@ -114,6 +119,7 @@ typedef struct s_sphere
 }					t_sphere;
 
 /* =[ Plane ]=============================================================== */
+// Infinite plane defined by a point on the surface and normal vector
 
 typedef struct s_plane
 {
@@ -123,6 +129,7 @@ typedef struct s_plane
 }					t_plane;
 
 /* =[ Cylinder ]============================================================ */
+// Cylinder primitive with center base, axis direction, diameter and height
 
 typedef struct s_cylinder
 {
@@ -134,6 +141,7 @@ typedef struct s_cylinder
 }					t_cylinder;
 
 /* =[ Cone ]================================================================ */
+// Cone primitive with apex point, axis direction, opening angle and height
 
 typedef struct s_cone
 {
@@ -145,6 +153,7 @@ typedef struct s_cone
 }					t_cone;
 
 /* =[ Generic Object ]====================================================== */
+// Union-like container for any scene object type with shared properties
 
 typedef struct s_object
 {
@@ -157,6 +166,7 @@ typedef struct s_object
 }					t_object;
 
 /* =[ Hit Record ]========================================================== */
+// Stores ray-object intersection data: position, normal, color and effects
 
 typedef struct s_hit
 {
@@ -174,6 +184,7 @@ typedef struct s_hit
 }					t_hit;
 
 /* =[ Ambient Light ]======================================================= */
+// Global ambient illumination with intensity ratio and RGB color
 
 typedef struct s_ambient
 {
@@ -182,6 +193,7 @@ typedef struct s_ambient
 }					t_ambient;
 
 /* =[ Point Light ]========================================================= */
+// Point light source with 3D position, brightness intensity and RGB color
 
 typedef struct s_light
 {
@@ -191,6 +203,7 @@ typedef struct s_light
 }					t_light;
 
 /* =[ Camera ]============================================================== */
+// Virtual camera with position, orientation vectors, FOV and rotation angles
 
 typedef struct s_camera
 {
@@ -205,6 +218,7 @@ typedef struct s_camera
 }					t_camera;
 
 /* =[ Scene ]=============================================================== */
+// Complete scene with camera, lighting setup, and all renderable objects
 
 typedef struct s_scene
 {
@@ -217,6 +231,7 @@ typedef struct s_scene
 }					t_scene;
 
 /* =[ MLX Image ]=========================================================== */
+// MiniLibX image buffer with pixel data and rendering metadata
 
 typedef struct s_img
 {
@@ -230,6 +245,7 @@ typedef struct s_img
 }					t_img;
 
 /* =[ Input State ]========================================================= */
+// Tracks keyboard, mouse states and object selection/dragging info
 
 typedef struct s_input
 {
@@ -242,6 +258,7 @@ typedef struct s_input
 }					t_input;
 
 /* =[ Main Program State ]================================================== */
+// Core application state: MLX context, window, images, scene and input
 
 typedef struct s_minirt
 {
@@ -258,6 +275,7 @@ typedef struct s_minirt
 }					t_minirt;
 
 /* =[ Legacy Parser Structures ]============================================ */
+// Deprecated parser structs maintained for compatibility with old code
 
 typedef struct s_parse_primitive
 {
@@ -276,6 +294,7 @@ typedef struct s_scene_legacy
 }					t_scene_leg;
 
 /* =[ miniRT internal ]===================================================== */
+// X11 display and window structures for low-level window management
 
 typedef struct s_xvar
 {
