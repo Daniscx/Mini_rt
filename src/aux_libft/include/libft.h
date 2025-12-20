@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 16:13:33 by dmaestro          #+#    #+#             */
-/*   Updated: 2025/12/20 03:33:16 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/20 15:12:38 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 # include <time.h>
 # include <sys/stat.h>
 # include <limits.h>
+# include <sys/time.h>
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 1024

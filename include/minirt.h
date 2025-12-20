@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 10:01:26 by ravazque          #+#    #+#             */
-/*   Updated: 2025/12/20 03:14:03 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/20 16:23:32 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,27 +29,55 @@
 
 /* =[ Defines ]============================================================= */
 
+// Titulo de la ventana
 # define WIN_TITLE "miniRT"
 
+// Directorio donde se guardan los screenshots (tecla P)
+# define SCREENSHOT_DIR "screenshots"
+
+// Resolucion baja: modo interactivo (rapido para moverte por la escena)
 # define WIDTH_LOW 426
 # define HEIGHT_LOW 240
 
+// Resolucion alta: modo screenshot (tecla P, renderiza a 4K)
 # define WIDTH_HIGH 4096
 # define HEIGHT_HIGH 2160
 
+// Tolerancia para comparaciones de punto flotante (evita errores de precision)
 # define EPSILON 0.0001
+
+// Velocidad de movimiento de la camara (unidades por frame con WASD/Space/Shift)
 # define MOVE_SPEED 0.3
+
+// Velocidad de rotacion de la camara (radianes por frame con flechas)
 # define ROT_SPEED 0.05
+
+// Sensibilidad del raton en modo mouse look (radianes por pixel)
 # define MOUSE_SENS 0.001
 
+// Limite de FPS: el loop principal no procesara mas de TARGET_FPS por segundo
+# define TARGET_FPS 60
+
+// Tiempo minimo entre frames en microsegundos (1000000us = 1s / XFPS = Xus)
+# define FRAME_TIME_US (1000000 / TARGET_FPS)
+
+// Radio de colision de la camara: distancia minima a objetos antes de bloquearse
+# define CAMERA_RADIUS 0.3
+
+// Constante PI para calculos trigonometricos
 # define M_PI 3.14159265358979323846
 
+// Escala del patron de tablero de ajedrez en planos (mayor = cuadros mas grandes)
 # define CHECKER_SCALE 2.0
-# define SPECULAR_EXP 32.0
-# define SPECULAR_STRENGTH 0.5
-# define BUMP_STRENGTH 0.8
 
-# define SCREENSHOT_DIR "screenshots"
+// Exponente especular (Phong): mayor = reflejos mas concentrados y brillantes
+# define SPECULAR_EXP 32.0
+
+// Intensidad del brillo especular (0.0 = sin brillo, 1.0 = maximo)
+# define SPECULAR_STRENGTH 0.5
+
+// Intensidad del bump mapping en texturas (mayor = relieve mas pronunciado)
+# define BUMP_STRENGTH 0.8
 
 /* =[ Key State Indices ]=================================================== */
 
@@ -272,6 +300,7 @@ typedef struct s_minirt
 	t_input			input;
 	bool			high_res_mode;
 	bool			needs_render;
+	long			last_frame_time;
 }					t_minirt;
 
 /* =[ Legacy Parser Structures ]============================================ */
@@ -364,6 +393,7 @@ void				camera_init(t_camera *camera);
 void				camera_move(t_camera *camera, t_vec3 offset);
 void				camera_rotate(t_camera *camera, double yaw, double pitch);
 void				camera_update_vectors(t_camera *camera);
+bool				camera_collides(t_vec3 pos, t_scene *scene);
 
 /* =[ Rendering ]=========================================================== */
 
