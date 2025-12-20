@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/20 03:07:23 by ravazque          #+#    #+#             */
-/*   Updated: 2025/12/20 17:19:06 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/20 19:15:29 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,33 +34,20 @@ static void	parse_window_size(t_minirt *rt, int argc, char **argv)
 			rt->frame_rate = ft_atoi(argv[4]);
 		if (rt->win_w < 426 || rt->win_w > 4096)
 		{
-			printf("\033[0;31mInvalid width.\033[0m Using default: %i\n", WIDTH_LOW);
+			printf("%s %i\n", DEF_W, WIDTH_LOW);
 			rt->win_w = WIDTH_LOW;
 		}
 		if (rt->win_h < 240 || rt->win_h > 2160)
 		{
-			printf("\033[0;31mInvalid height.\033[0m Using default: %i\n", HEIGHT_LOW);
+			printf("%s %i\n", DEF_H, HEIGHT_LOW);
 			rt->win_h = HEIGHT_LOW;
 		}
 		if (rt->frame_rate < 24 || rt->frame_rate > 60)
 		{
-			printf("\033[0;31mInvalid frame rate.\033[0m Using default: %i\n", TARGET_FPS);
+			printf("%s %i\n", DEF_FPS, TARGET_FPS);
 			rt->frame_rate = TARGET_FPS;
 		}
 	}
-}
-
-static void	print_usage(void)
-{
-	ft_putstr_fd("\n\033[38;5;208mCompile with: \033[0m\"make cb\" to use the color bleeding mode.\n", 1);
-	ft_putstr_fd("\033[36mUsage: \033[0m./miniRT <scene.rt> [width] [height] [fps]\n", 1);
-	ft_putstr_fd("  scene.rt        - Scene file to load.\n", 1);
-	ft_putstr_fd("  width           - Window width.      (426-4096) [optional]\n", 1);
-	ft_putstr_fd("  height          - Window height.     (240-2160) [optional]\n", 1);
-	ft_putstr_fd("  maximum FPS     - Frames per second. (24-60)    [optional]\n", 1);
-	ft_putstr_fd("\033[92m\n// - If you want to define the width and height of the window, you must\n// enter at least those two parameters.", 1);
-	ft_putstr_fd("\n// - Only once the width and height have been defined can the maximum FPS\n// be defined.", 1);
-	ft_putstr_fd("\n// - If you want to leave a value as default but must specify a value,\n// you can use 0 or any other number in an invalid range.\033[0m\n\n", 1);
 }
 
 int	main(int argc, char **argv)
@@ -70,18 +57,18 @@ int	main(int argc, char **argv)
 
 	if (argc < 2 || argc > 5)
 	{
-		print_usage();
+		ft_putstr_fd(PRINT_USAGE, STDERR_FILENO);
 		return (1);
 	}
 	route = parser_file_name(argv[1]);
 	ft_bzero(&rt, sizeof(t_minirt));
-	parse_window_size(&rt, argc, argv);
 	if (scene_load(&rt.scene, argv[1], route) < 0)
 	{
 		scene_free(&rt.scene);
-		error_manager("Invalid number of lights and/or objects. There must be at least one object and one light.");
+		error_manager(INVALID_OBJECTS);
 	}
 	route_msg(route, argv[1]);
+	parse_window_size(&rt, argc, argv);
 	minirt_init(&rt);
 	render_scene(&rt);
 	mlx_loop(rt.mlx);

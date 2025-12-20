@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/20 02:40:00 by ravazque          #+#    #+#             */
-/*   Updated: 2025/12/20 03:07:45 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/20 19:23:59 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,10 @@ static void	calculate_bump_gradients(t_hit *hit, double *du, double *dv)
 	color_c = texture_sample(hit->bump_map, hit->u, hit->v);
 	color_u = texture_sample(hit->bump_map, hit->u + delta, hit->v);
 	color_v = texture_sample(hit->bump_map, hit->u, hit->v + delta);
-	*du = (color_u.x + color_u.y + color_u.z) / 3.0 - (color_c.x + color_c.y + color_c.z) / 3.0;
-	*dv = (color_v.x + color_v.y + color_v.z) / 3.0 - (color_c.x + color_c.y + color_c.z) / 3.0;
+	*du = (color_u.x + color_u.y + color_u.z)
+		/ 3.0 - (color_c.x + color_c.y + color_c.z) / 3.0;
+	*dv = (color_v.x + color_v.y + color_v.z)
+		/ 3.0 - (color_c.x + color_c.y + color_c.z) / 3.0;
 }
 
 t_vec3	apply_bump_map(t_hit *hit)
@@ -70,7 +72,9 @@ t_vec3	apply_bump_map(t_hit *hit)
 	calculate_bump_gradients(hit, &du, &dv);
 	tangent = get_bump_tangent(hit->normal);
 	bitangent = vec3_cross(hit->normal, tangent);
-	perturbed = vec3_add(hit->normal, vec3_scale(tangent, -du * BUMP_STRENGTH * 10.0));
-	perturbed = vec3_add(perturbed, vec3_scale(bitangent, -dv * BUMP_STRENGTH * 10.0));
+	perturbed = vec3_add(hit->normal,
+			vec3_scale(tangent, -du * BUMP_STRENGTH * 10.0));
+	perturbed = vec3_add(perturbed,
+			vec3_scale(bitangent, -dv * BUMP_STRENGTH * 10.0));
 	return (vec3_normalize(perturbed));
 }

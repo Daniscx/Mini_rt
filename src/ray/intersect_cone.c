@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/20 02:45:00 by ravazque          #+#    #+#             */
-/*   Updated: 2025/12/20 03:31:54 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/20 19:20:25 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,8 @@ static t_hit	cone_body_hit(t_ray ray, t_cone *co, double t, double cos2)
 	hit.hit = true;
 	hit.t = t;
 	hit.normal = vec3_sub(hit.point, tip);
-	hit.normal = vec3_sub(hit.normal, vec3_scale(co->axis, vec3_dot(hit.normal, co->axis) / cos2));
+	hit.normal = vec3_sub(hit.normal, vec3_scale(co->axis,
+				vec3_dot(hit.normal, co->axis) / cos2));
 	hit.normal = vec3_normalize(hit.normal);
 	if (vec3_dot(ray.direction, hit.normal) > 0)
 		hit.normal = vec3_negate(hit.normal);

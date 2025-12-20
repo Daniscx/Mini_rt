@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/15 20:00:00 by ravazque          #+#    #+#             */
-/*   Updated: 2025/12/20 03:10:49 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/20 19:28:26 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,8 @@ t_vec3	apply_checkerboard(t_hit *hit)
 	return (dark);
 }
 
-bool	is_in_shadow(t_vec3 point, t_vec3 light_dir, double light_dist, t_scene *scene)
+bool	is_in_shadow(t_vec3 point, t_vec3 light_dir, double light_dist,
+		t_scene *scene)
 {
 	t_ray	shadow_ray;
 	t_hit	hit;
@@ -93,11 +94,14 @@ t_vec3	calculate_lighting(t_hit hit, t_scene *scene, t_vec3 view_dir)
 	i = 0;
 	while (i < scene->light_count)
 	{
-		result = vec3_add(result, calculate_diffuse(hit, &scene->lights[i], scene));
-		result = vec3_add(result, calculate_specular(hit, &scene->lights[i], view_dir));
+		result = vec3_add(result, calculate_diffuse(hit,
+					&scene->lights[i], scene));
+		result = vec3_add(result, calculate_specular(hit,
+					&scene->lights[i], view_dir));
 		i++;
 	}
 	if (COLOR_BLEEDING == 1)
-		result = vec3_add(result, vec3_mult(hit.color, calculate_color_bleeding(hit, scene)));
+		result = vec3_add(result, vec3_mult(hit.color,
+					calculate_color_bleeding(hit, scene)));
 	return (result);
 }

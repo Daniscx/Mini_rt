@@ -6,21 +6,21 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 13:26:06 by dmaestro          #+#    #+#             */
-/*   Updated: 2025/12/20 03:08:49 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/20 19:25:40 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/libft.h"
 
-char	*ft_strnstr(const char *big, const char *little, size_t len)
+char	*ft_strnstr(const char *big, const char *litt, size_t len)
 {
 	char	*found;
 	size_t	n;
 	size_t	i;
 
-	if (*little == '\0')
+	if (*litt == '\0')
 		return ((char *)big);
-	found = (char *)little;
+	found = (char *)litt;
 	i = 0;
 	while ((i < len) && big[i])
 	{

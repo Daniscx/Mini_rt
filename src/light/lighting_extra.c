@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/20 02:35:00 by ravazque          #+#    #+#             */
-/*   Updated: 2025/12/20 03:10:51 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/20 19:28:47 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,27 +39,26 @@ static t_vec3	trace_bounce(t_hit hit, t_scene *scene, int i)
 	t_vec3	sample_dir;
 
 	sample_dir = get_sample_direction(hit.normal, i);
-	bounce_ray.origin = vec3_add(hit.point, vec3_scale(hit.normal, EPSILON * 10));
+	bounce_ray.origin = vec3_add(hit.point,
+			vec3_scale(hit.normal, EPSILON * 10));
 	bounce_ray.direction = sample_dir;
 	bounce_hit = find_closest_hit(bounce_ray, scene);
 	if (bounce_hit.hit)
-		return (vec3_scale(bounce_hit.color, 0.2));
+		return (vec3_scale(bounce_hit.color, GI_INTENSITY));
 	return (vec3_new(0, 0, 0));
 }
 
 t_vec3	calculate_color_bleeding(t_hit hit, t_scene *scene)
 {
 	t_vec3	result;
-	int		samples;
 	int		i;
 
 	result = vec3_new(0, 0, 0);
-	samples = 8;
 	i = 0;
-	while (i < samples)
+	while (i < GI_SAMPLES)
 	{
 		result = vec3_add(result, trace_bounce(hit, scene, i));
 		i++;
 	}
-	return (vec3_scale(result, 1.0 / samples));
+	return (vec3_scale(result, 1.0 / GI_SAMPLES));
 }

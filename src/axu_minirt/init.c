@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 17:00:00 by ravazque          #+#    #+#             */
-/*   Updated: 2025/12/20 03:11:08 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/20 19:33:12 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@ static void	events_init(t_minirt *rt)
 	mlx_hook(rt->win, KeyPress, KeyPressMask, key_press_handler, rt);
 	mlx_hook(rt->win, KeyRelease, KeyReleaseMask, key_release_handler, rt);
 	mlx_hook(rt->win, ButtonPress, ButtonPressMask, mouse_press_handler, rt);
-	mlx_hook(rt->win, ButtonRelease, ButtonReleaseMask, mouse_release_handler, rt);
+	mlx_hook(rt->win, ButtonRelease, ButtonReleaseMask, mouse_release_handler,
+		rt);
 	mlx_hook(rt->win, MotionNotify, PointerMotionMask, mouse_move_handler, rt);
 	mlx_hook(rt->win, Expose, ExposureMask, expose_handler, rt);
 	mlx_hook(rt->win, DestroyNotify, StructureNotifyMask, close_handler, rt);
@@ -45,7 +46,8 @@ static int	create_image(t_minirt *rt, t_img *img, int w, int h)
 	img->img_ptr = mlx_new_image(rt->mlx, w, h);
 	if (!img->img_ptr)
 		return (-1);
-	img->pixels_ptr = mlx_get_data_addr(img->img_ptr, &img->bpp, &img->line_len, &img->endian);
+	img->pixels_ptr = mlx_get_data_addr(img->img_ptr, &img->bpp,
+			&img->line_len, &img->endian);
 	img->width = w;
 	img->height = h;
 	return (0);

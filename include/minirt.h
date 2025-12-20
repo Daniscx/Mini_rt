@@ -6,13 +6,14 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 10:01:26 by ravazque          #+#    #+#             */
-/*   Updated: 2025/12/20 17:17:54 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/20 19:50:14 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINIRT_H
 # define MINIRT_H
 
+# include "messages.h"
 # include "../linux-minilibx/mlx.h"
 # include "../src/aux_libft/include/libft.h"
 
@@ -59,6 +60,14 @@
 
 // Intensity of bump mapping in textures (higher = more pronounced relief)
 # define BUMP_STRENGTH 0.8
+
+// Color bleeding intensity: how much color transfers between surfaces
+// Range 0.0-1.0 (0.2 = subtle, 0.5 = visible, 0.8+ = very strong)
+# define GI_INTENSITY 0.4
+
+// Color bleeding samples: rays cast per pixel to gather indirect light
+// More samples = smoother result (8 = fast, 16 = balanced, 32 = slower)
+# define GI_SAMPLES 4
 
 /* =[ Key State Indices ]=================================================== */
 
@@ -418,7 +427,7 @@ t_hit				find_closest_hit(t_ray ray, t_scene *scene);
 t_vec3				calculate_lighting(t_hit hit, t_scene *scene, t_vec3 vdir);
 t_vec3				calculate_color_bleeding(t_hit hit, t_scene *scene);
 void				apply_hit_effects(t_hit *hit);
-bool				is_in_shadow(t_vec3 pt, t_vec3 ldir, double ldist, t_scene *scene);
+bool				is_in_shadow(t_vec3 pt, t_vec3 ldir, double ldist, t_scene *scene);		// line break to pass norminette - [ 42 ]
 t_vec3				apply_checkerboard(t_hit *hit);
 
 /* =[ Scene Management ]==================================================== */
@@ -461,7 +470,7 @@ void				route_msg(int route, char *file);
 t_texture			*texture_load_ppm(const char *filename);
 void				texture_free(t_texture *tex);
 t_vec3				texture_sample(t_texture *tex, double u, double v);
-void				sphere_get_uv(t_vec3 point, t_vec3 center, double *u, double *v);
+void				sphere_get_uv(t_vec3 point, t_vec3 center, double *u, double *v);		// line break to pass norminette - [ 42 ]
 t_vec3				apply_bump_map(t_hit *hit);
 t_vec3				apply_texture(t_hit *hit);
 

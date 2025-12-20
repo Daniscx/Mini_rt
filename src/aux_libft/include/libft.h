@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 16:13:33 by dmaestro          #+#    #+#             */
-/*   Updated: 2025/12/20 15:12:38 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/20 19:25:26 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ size_t				ft_strlcpy(char *dst, const char *src, size_t size);
 size_t				ft_strlcat(char *dst, const char *src, size_t size);
 char				*ft_strchr(const char *s, int c);
 char				*ft_strrchr(const char *s, int c);
-char				*ft_strnstr(const char *big, const char *little, size_t len);
+char				*ft_strnstr(const char *big, const char *litt, size_t len);
 char				*ft_strdup(const char *s);
 int					ft_isalpha(int c);
 int					ft_isdigit(int c);

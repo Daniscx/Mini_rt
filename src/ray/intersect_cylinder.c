@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/20 02:45:00 by ravazque          #+#    #+#             */
-/*   Updated: 2025/12/20 03:44:54 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/20 19:21:51 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,13 @@ static void	calc_cylinder_coeffs(t_ray ray, t_cylinder *cy, double *coef)
 	t_vec3	oc_perp;
 
 	oc = vec3_sub(ray.origin, cy->center);
-	d_perp = vec3_sub(ray.direction, vec3_scale(cy->axis, vec3_dot(ray.direction, cy->axis)));
+	d_perp = vec3_sub(ray.direction, vec3_scale(cy->axis,
+				vec3_dot(ray.direction, cy->axis)));
 	oc_perp = vec3_sub(oc, vec3_scale(cy->axis, vec3_dot(oc, cy->axis)));
 	coef[0] = vec3_dot(d_perp, d_perp);
 	coef[1] = 2.0 * vec3_dot(d_perp, oc_perp);
-	coef[2] = vec3_dot(oc_perp, oc_perp) - (cy->diameter / 2.0) * (cy->diameter / 2.0);
+	coef[2] = vec3_dot(oc_perp, oc_perp) - (cy->diameter / 2.0)
+		* (cy->diameter / 2.0);
 }
 
 static int	solve_cylinder_t(double *coef, double *t)
@@ -52,7 +54,8 @@ static t_hit	build_cylinder_hit(t_ray ray, t_cylinder *cy, double t)
 		return (hit);
 	hit.hit = true;
 	hit.t = t;
-	hit.normal = vec3_normalize(vec3_sub(vec3_sub(hit.point, cy->center), vec3_scale(cy->axis, h)));
+	hit.normal = vec3_normalize(vec3_sub(vec3_sub(hit.point, cy->center),
+				vec3_scale(cy->axis, h)));
 	if (vec3_dot(ray.direction, hit.normal) > 0)
 		hit.normal = vec3_negate(hit.normal);
 	hit.color = cy->color;

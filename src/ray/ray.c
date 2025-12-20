@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/15 20:00:00 by ravazque          #+#    #+#             */
-/*   Updated: 2025/12/20 03:10:13 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/20 19:20:43 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,8 @@ t_ray	ray_from_camera(t_camera *cam, int x, int y, t_img *img)
 	t_vec3	dir;
 
 	fov_scale = tan((cam->fov * M_PI / 180.0) / 2.0);
-	u = (2.0 * ((double)x + 0.5) / (double)img->width - 1.0) * cam->aspect_ratio;
+	u = (2.0 * ((double)x + 0.5) / (double)img->width - 1.0)
+		* cam->aspect_ratio;
 	v = 1.0 - 2.0 * ((double)y + 0.5) / (double)img->height;
 	u *= fov_scale;
 	v *= fov_scale;

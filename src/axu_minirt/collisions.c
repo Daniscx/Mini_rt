@@ -47,14 +47,18 @@ static bool	collides_cone(t_vec3 pos, t_cone *co)
 	double	cone_radius;
 	t_vec3	closest;
 	double	dist;
+	double	h;
 
 	to_pos = vec3_sub(pos, co->apex);
 	proj = vec3_dot(to_pos, co->axis);
 	if (proj < -CAMERA_RADIUS || proj > co->height + CAMERA_RADIUS)
 		return (false);
-	cone_radius = proj * tan(co->angle * M_PI / 180.0);
-	if (cone_radius < 0)
-		cone_radius = 0;
+	h = co->height - proj;
+	if (h < 0)
+		h = 0;
+	else if (h > co->height)
+		h = co->height;
+	cone_radius = h * tan(co->angle * M_PI / 180.0);
 	closest = vec3_add(co->apex, vec3_scale(co->axis, proj));
 	dist = vec3_length(vec3_sub(pos, closest));
 	return (dist < cone_radius + CAMERA_RADIUS);

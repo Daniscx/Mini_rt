@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/20 02:30:00 by ravazque          #+#    #+#             */
-/*   Updated: 2025/12/20 03:06:14 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/20 19:27:30 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,12 +59,14 @@ void	load_camera(t_scene *scene, char **args)
 	scene->camera.direction = vec3_normalize(parse_vec3(args[2]));
 	scene->camera.fov = ft_atof(args[3]);
 	scene->camera.aspect_ratio = (double)WIDTH_LOW / (double)HEIGHT_LOW;
-	scene->camera.yaw = atan2(scene->camera.direction.x, scene->camera.direction.z);
+	scene->camera.yaw = atan2(scene->camera.direction.x,
+			scene->camera.direction.z);
 	scene->camera.pitch = asin(scene->camera.direction.y);
 	up = vec3_new(0, 1, 0);
 	if (fabs(vec3_dot(scene->camera.direction, up)) > 0.99)
 		up = vec3_new(0, 0, 1);
-	scene->camera.right = vec3_normalize(vec3_cross(scene->camera.direction, up));
+	scene->camera.right = vec3_normalize(vec3_cross(scene->camera.direction,
+				up));
 	scene->camera.up = vec3_cross(scene->camera.right, scene->camera.direction);
 }
 
