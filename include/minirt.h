@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 10:01:26 by ravazque          #+#    #+#             */
-/*   Updated: 2025/12/19 21:16:04 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/20 02:04:36 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -398,6 +398,7 @@ void				ambient_light_parser(void *elem, void *list);
 void				light_parser(void *elem, void *list);
 void				camera_parser(void *elem, void *list);
 t_list				**general_parser(t_list **list, void (*f)(void *, void *));
+void				route_msg(int route, char *file);
 
 /* =[ Texture Functions ]=================================================== */
 

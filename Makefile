@@ -168,7 +168,7 @@ test_bonus:
 # Try running make in miniRT, make fclean in libft, and make again in miniRT. You'll see the bug when loading!
 
 # Running  "make" cb causes relink because it attempts to overwrite files, thus generating relink to switch
-# between <normal mode> and color <bleeding mode>.
+# between <normal mode> and <color bleeding mode>.
 
 # Remove the "-O3" flag during correction, as it fixes possible errors but greatly improves performance!
 

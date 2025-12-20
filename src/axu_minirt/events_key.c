@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/17 16:00:00 by ravazque          #+#    #+#             */
-/*   Updated: 2025/12/19 22:17:18 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/20 01:38:49 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,13 +42,13 @@ static void	toggle_mouse_mode(t_minirt *rt)
 	rt->input.mouse_captured = !rt->input.mouse_captured;
 	if (rt->input.mouse_captured)
 	{
-		ft_printf("\033[1;33m[MOUSE MODE]\033[0;0m Enabled - Move mouse to look around\n");
+		ft_printf("\n\033[1;33m[MOUSE MODE]\033[0;0m Enabled - Move mouse to look around\n");
 		mlx_mouse_hide(rt->mlx, rt->win);
 		mlx_mouse_move(rt->mlx, rt->win, rt->img.width / 2, rt->img.height / 2);
 	}
 	else
 	{
-		ft_printf("\033[1;33m[MOUSE MODE]\033[0;0m Disabled\n\n");
+		ft_printf("\033[1;33m[MOUSE MODE]\033[0;0m Disabled\n");
 		mlx_mouse_show(rt->mlx, rt->win);
 	}
 }

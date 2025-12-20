@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/17 16:00:00 by ravazque          #+#    #+#             */
-/*   Updated: 2025/12/19 15:03:35 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/20 01:41:08 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void	render_high_res(t_minirt *rt)
 	int		y;
 	char	filename[256];
 
-	ft_printf("\033[1;35m[SCREENSHOT]\033[0m Rendering at %dx%d...\n",
+	ft_printf("\n\033[1;35m[SCREENSHOT]\033[0m Rendering at %dx%d...\n",
 		rt->img_high.width, rt->img_high.height);
 	rt->scene.camera.aspect_ratio = (double)rt->img_high.width
 		/ rt->img_high.height;
@@ -76,8 +76,8 @@ void	render_high_res(t_minirt *rt)
 	printf("\r - Progress: 100%%\n");
 	generate_filename(filename);
 	if (save_bmp(&rt->img_high, filename))
-		ft_printf("\033[1;35m[SAVED]\033[0m %s\n\n", filename);
+		ft_printf("\033[1;35m[SAVED]\033[0m %s\n", filename);
 	else
-		ft_printf("\033[1;35m[ERROR]\033[0m Failed to save screenshot\n\n");
+		ft_printf("\033[1;35m[ERROR]\033[0m Failed to save screenshot\n");
 	rt->scene.camera.aspect_ratio = (double)rt->img.width / rt->img.height;
 }

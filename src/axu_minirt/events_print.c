@@ -27,12 +27,12 @@ static const char	*get_type_name(t_obj_type type)
 
 void	print_grab_msg(t_object *obj, t_vec3 pos)
 {
-	printf("\033[1;34m[TAKEN]\033[0;0m %s at (%.2f, %.2f, %.2f)\n",
+	printf("\n\033[1;34m[TAKEN]\033[0;0m %s at (%.2f, %.2f, %.2f)\n",
 		get_type_name(obj->type), pos.x, pos.y, pos.z);
 }
 
 void	print_drop_msg(t_object *obj, t_vec3 pos)
 {
-	printf("\033[1;32m[DROPPED]\033[0;0m %s at (%.2f, %.2f, %.2f)\n\n",
+	printf("\033[1;32m[DROPPED]\033[0;0m %s at (%.2f, %.2f, %.2f)\n",
 		get_type_name(obj->type), pos.x, pos.y, pos.z);
 }

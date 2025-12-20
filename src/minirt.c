@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 21:30:47 by ravazque          #+#    #+#             */
-/*   Updated: 2025/12/19 19:50:27 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/20 02:18:29 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,12 +44,11 @@ static void	parse_window_size(t_minirt *rt, int argc, char **argv)
 
 static void	print_usage(void)
 {
-	ft_putstr_fd("make <mode>", 1);
+	ft_putstr_fd("Compile with: \"make cb\" to use the color bleeding mode.\n", 1);
 	ft_putstr_fd("Usage: ./miniRT <scene.rt> [width] [height]\n", 1);
-	ft_putstr_fd("  scene.rt		- Scene file to load\n", 1);
-	ft_putstr_fd("  width			- Window width (426-4096) [optional]\n", 1);
-	ft_putstr_fd("  height			- Window height (240-2160) [optional]\n", 1);
-	ft_putstr_fd("  color bleeding	- Compile using \"make cb\" to use color bleeding mode. [optional]\n", 1);
+	ft_putstr_fd("  scene.rt        - Scene file to load.\n", 1);
+	ft_putstr_fd("  width           - Window width. (426-4096) [optional]\n", 1);
+	ft_putstr_fd("  height          - Window height. (240-2160) [optional]\n", 1);
 }
 
 int	main(int argc, char **argv)
@@ -66,7 +65,11 @@ int	main(int argc, char **argv)
 	ft_bzero(&rt, sizeof(t_minirt));
 	parse_window_size(&rt, argc, argv);
 	if (scene_load(&rt.scene, argv[1], route) < 0)
-		error_manager("Failed to load scene file.");
+	{
+		scene_free(&rt.scene);
+		error_manager("Invalid number of lights and/or objects. There must be at least one object and one light.");
+	}
+	route_msg(route, argv[1]);
 	minirt_init(&rt);
 	render_scene(&rt);
 	mlx_loop(rt.mlx);
