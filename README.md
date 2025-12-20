@@ -161,68 +161,6 @@ cy -3,0,0 0,1,0 1 3 100,255,100  # Green cylinder
 
 ```
 miniRT/
-├── include/
-│   └── minirt.h                  # Main header with all structures and prototypes
-├── src/
-│   ├── minirt.c                  # Entry point and error handling
-│   ├── axu_minirt/               # Auxiliary miniRT functions
-│   │   ├── camera.c              # Camera initialization and movement
-│   │   ├── events_drag.c         # Object dragging logic
-│   │   ├── events_key.c          # Keyboard input handling
-│   │   ├── events_loop.c         # Main event loop
-│   │   ├── events_mouse.c        # Mouse input handling
-│   │   ├── events_print.c        # Console output for events
-│   │   ├── events_select.c       # Object selection logic
-│   │   ├── events_utils.c        # Event utility functions
-│   │   ├── init.c                # MLX and scene initialization
-│   │   └── init_window.c         # Window setup and centering
-│   ├── light/
-│   │   ├── lighting.c            # Phong lighting and shadows
-│   │   └── lighting_extra.c      # Color bleeding and extra effects
-│   ├── math/
-│   │   ├── vec3.c                # Basic vector operations
-│   │   ├── vec3_color.c          # Vector to color conversion
-│   │   └── vec3_utils.c          # Advanced vector utilities
-│   ├── parse/
-│   │   ├── parse.c               # Scene file parser and validation
-│   │   └── scene_complete.c      # Parser completion and verification
-│   ├── ray/
-│   │   ├── ray.c                 # Ray creation and camera rays
-│   │   ├── hit.c                 # Hit record initialization
-│   │   ├── intersect.c           # Sphere and plane intersections
-│   │   ├── intersect_cylinder.c  # Cylinder body intersection
-│   │   ├── intersect_cy_caps.c   # Cylinder caps intersection
-│   │   └── intersect_cone.c      # Cone body and cap intersection
-│   ├── render/
-│   │   ├── render.c              # Low-resolution real-time rendering
-│   │   ├── render_high.c         # High-resolution screenshot rendering
-│   │   └── screenshot.c          # BMP file generation
-│   ├── scene/
-│   │   ├── scene.c               # Scene memory management
-│   │   ├── scene_load.c          # Scene file loading and parsing
-│   │   ├── scene_load_utils.c    # Scene loading utilities
-│   │   ├── scene_object_helper.c # Object allocation helpers
-│   │   ├── scene_object_sp_pl.c  # Sphere and plane loading
-│   │   └── scene_object_cy_co.c  # Cylinder and cone loading
-│   ├── texture/
-│   │   ├── texture.c             # PPM texture loading
-│   │   └── texture_effects.c     # Bump mapping and texture sampling
-│   └── aux_libft/                # Custom libft implementation
-│       ├── include/
-│       │   └── libft.h
-│       └── src/
-│           └── *.c               # Libft source files
-├── linux-minilibx/               # MiniLibX graphics library
-├── scenes/
-│   ├── textures/                 # PPM texture files
-│   │   ├── earth.ppm
-│   │   └── earth_bump.ppm
-│   ├── other_scenes/             # Additional test scenes
-│   ├── showcase.rt               # Demo scene
-│   ├── test_mandatory.rt         # Mandatory test scene
-│   └── test_bonus.rt             # Bonus features test scene
-├── Makefile                      # Build system
-└── README.md                     # This file
 ```
 
 <br>
