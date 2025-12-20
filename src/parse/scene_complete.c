@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/20 01:59:11 by ravazque          #+#    #+#             */
-/*   Updated: 2025/12/20 02:07:46 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/20 03:10:33 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,9 @@ static void	print_extension_message(char *file)
 	ft_putstr_fd("\033[0m\n", 0);
 }
 
-void route_msg(int route, char *file)
+void	route_msg(int route, char *file)
 {
-	if(route == 1)
+	if (route == 1)
 		print_extension_message(file);
 	else if (route == 2)
 		print_directory_rt_message(file);

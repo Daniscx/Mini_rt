@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 17:00:00 by ravazque          #+#    #+#             */
-/*   Updated: 2025/12/18 12:00:00 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/20 03:10:43 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,25 +45,4 @@ t_vec3	vec3_mult(t_vec3 a, t_vec3 b)
 t_vec3	vec3_negate(t_vec3 v)
 {
 	return (vec3_new(-v.x, -v.y, -v.z));
-}
-
-double	vec3_clamp(double value, double min, double max)
-{
-	if (value < min)
-		return (min);
-	if (value > max)
-		return (max);
-	return (value);
-}
-
-int	vec3_to_color(t_vec3 color)
-{
-	int	r;
-	int	g;
-	int	b;
-
-	r = (int)(vec3_clamp(color.x, 0.0, 1.0) * 255.0);
-	g = (int)(vec3_clamp(color.y, 0.0, 1.0) * 255.0);
-	b = (int)(vec3_clamp(color.z, 0.0, 1.0) * 255.0);
-	return ((r << 16) | (g << 8) | b);
 }

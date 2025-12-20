@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 10:01:26 by ravazque          #+#    #+#             */
-/*   Updated: 2025/12/20 02:04:36 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/20 03:14:03 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -257,7 +257,7 @@ typedef struct s_minirt
 	bool			needs_render;
 }					t_minirt;
 
-/* =[ Legacy Parser Structures ]=( Change )================================= */
+/* =[ Legacy Parser Structures ]============================================ */
 
 typedef struct s_parse_primitive
 {
@@ -289,25 +289,31 @@ typedef struct s_winlist
 	Window		window;
 }				t_winlist;
 
-/* Screenshot functions */
+/* =[ Screenshot functions ]================================================ */
+
 void				generate_filename(char *filename);
 int					save_bmp(t_img *img, char *filename);
 
-/* Key autorepeat detection */
+/* =[ Key autorepeat detection ]============================================ */
+
 int					is_autorepeat_release(t_minirt *rt, int keycode);
 
-/* Object manipulation */
+/* =[ Object manipulation ]================================================= */
+
 t_vec3				get_object_center(t_object *obj);
 void				move_object(t_object *obj, t_vec3 new_center);
 
-/* Mouse look */
+/* =[ Mouse look ]========================================================== */
+
 void				handle_mouse_look(t_minirt *rt, int x, int y);
 void				handle_object_drag(t_minirt *rt, int x, int y);
 
-/* Window functions */
+/* =[ Window functions ]==================================================== */
+
 void				center_window_on_screen(t_minirt *rt);
 
-/* Print functions */
+/* =[ Print functions ]===================================================== */
+
 void				print_grab_msg(t_object *obj, t_vec3 pos);
 void				print_drop_msg(t_object *obj, t_vec3 pos);
 
@@ -372,12 +378,15 @@ t_hit				hit_new(void);
 t_hit				intersect_sphere(t_ray ray, t_sphere *sp);
 t_hit				intersect_plane(t_ray ray, t_plane *pl);
 t_hit				intersect_cylinder(t_ray ray, t_cylinder *cy);
+t_hit				intersect_cylinder_caps(t_ray ray, t_cylinder *cy);
 t_hit				intersect_cone(t_ray ray, t_cone *co);
 t_hit				find_closest_hit(t_ray ray, t_scene *scene);
 
 /* =[ Lighting Calculations ]=============================================== */
 
 t_vec3				calculate_lighting(t_hit hit, t_scene *scene, t_vec3 vdir);
+t_vec3				calculate_color_bleeding(t_hit hit, t_scene *scene);
+void				apply_hit_effects(t_hit *hit);
 bool				is_in_shadow(t_vec3 pt, t_vec3 ldir, double ldist, t_scene *scene);
 t_vec3				apply_checkerboard(t_hit *hit);
 
@@ -385,6 +394,22 @@ t_vec3				apply_checkerboard(t_hit *hit);
 
 int					scene_load(t_scene *scene, char *filename, int route);
 void				scene_free(t_scene *scene);
+
+/* =[ Scene Loading Utils ]================================================= */
+
+t_vec3				parse_vec3(char *str);
+t_vec3				parse_color(char *str);
+void				load_ambient(t_scene *scene, char **args);
+void				load_camera(t_scene *scene, char **args);
+void				load_light(t_scene *scene, char **args);
+t_object			*alloc_new_objects(t_scene *scene);
+void				finalize_object(t_scene *scene, t_object *new_objs);
+void				load_sphere(t_scene *scene, char **args);
+void				load_sphere_textured(t_scene *scene, char **args);
+void				load_plane_ex(t_scene *scene, char **args, int checker);
+void				load_plane(t_scene *scene, char **args);
+void				load_cylinder(t_scene *scene, char **args);
+void				load_cone(t_scene *scene, char **args);
 
 /* =[ Parser (Legacy) ]===================================================== */
 

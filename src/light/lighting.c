@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/15 20:00:00 by ravazque          #+#    #+#             */
-/*   Updated: 2025/12/19 19:50:27 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/20 03:10:49 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,55 +80,21 @@ static t_vec3	calculate_diffuse(t_hit hit, t_light *light, t_scene *scene)
 	return (vec3_scale(diffuse, diff * light->brightness));
 }
 
-static t_vec3	calculate_color_bleeding(t_hit hit, t_scene *scene)
-{
-	t_vec3	result;
-	t_vec3	sample_dir;
-	t_ray	bounce_ray;
-	t_hit	bounce_hit;
-	int		samples;
-	int		i;
-
-	result = vec3_new(0, 0, 0);
-	samples = 8;
-	i = 0;
-	while (i < samples)
-	{
-		sample_dir = vec3_normalize(vec3_add(hit.normal, vec3_new((i % 3) * 0.5 - 0.5, ((i / 3) % 3) * 0.5 - 0.5, ((i / 9) % 3) * 0.5 - 0.5)));
-		bounce_ray.origin = vec3_add(hit.point, vec3_scale(hit.normal, EPSILON * 10));
-		bounce_ray.direction = sample_dir;
-		bounce_hit = find_closest_hit(bounce_ray, scene);
-		if (bounce_hit.hit)
-			result = vec3_add(result, vec3_scale(bounce_hit.color, 0.2));
-		i++;
-	}
-	return (vec3_scale(result, 1.0 / samples));
-}
-
 t_vec3	calculate_lighting(t_hit hit, t_scene *scene, t_vec3 view_dir)
 {
 	t_vec3	result;
 	t_vec3	ambient;
-	t_vec3	diffuse;
-	t_vec3	specular;
 	int		i;
 
-	if (hit.bump_map)
-		hit.normal = apply_bump_map(&hit);
-	if (hit.texture)
-		hit.color = apply_texture(&hit);
-	if (hit.checkerboard)
-		hit.color = apply_checkerboard(&hit);
+	apply_hit_effects(&hit);
 	ambient = vec3_mult(hit.color, scene->ambient.color);
 	ambient = vec3_scale(ambient, scene->ambient.ratio);
 	result = ambient;
 	i = 0;
 	while (i < scene->light_count)
 	{
-		diffuse = calculate_diffuse(hit, &scene->lights[i], scene);
-		specular = calculate_specular(hit, &scene->lights[i], view_dir);
-		result = vec3_add(result, diffuse);
-		result = vec3_add(result, specular);
+		result = vec3_add(result, calculate_diffuse(hit, &scene->lights[i], scene));
+		result = vec3_add(result, calculate_specular(hit, &scene->lights[i], view_dir));
 		i++;
 	}
 	if (COLOR_BLEEDING == 1)

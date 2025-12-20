@@ -1,4 +1,3 @@
-
 # miniRT
 
 ## 📖 About
