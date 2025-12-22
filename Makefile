@@ -21,11 +21,11 @@ CC			= cc
 # CFLAGS		= -Wall -Wextra -Werror -I$(INC_DIR) -I$(LIBFT_DIR) -I$(MLX_DIR)
 # CFLAGS_CB   = -Wall -Wextra -Werror -D COLOR_BLEEDING=1 -I$(INC_DIR) -I$(LIBFT_DIR) -I$(MLX_DIR)
 
-# CFLAGS		= -Wall -Wextra -Werror -O3 -I$(INC_DIR) -I$(LIBFT_DIR) -I$(MLX_DIR)
-# CFLAGS_CB   = -Wall -Wextra -Werror -D COLOR_BLEEDING=1 -O3 -I$(INC_DIR) -I$(LIBFT_DIR) -I$(MLX_DIR)
+CFLAGS		= -Wall -Wextra -Werror -O3 -I$(INC_DIR) -I$(LIBFT_DIR) -I$(MLX_DIR)
+CFLAGS_CB   = -Wall -Wextra -Werror -D COLOR_BLEEDING=1 -O3 -I$(INC_DIR) -I$(LIBFT_DIR) -I$(MLX_DIR)
 
-CFLAGS   = -Wall -Wextra -Werror -Wno-error=incompatible-pointer-types -O3 -I$(INC_DIR) -I$(LIBFT_DIR) -I$(MLX_DIR)
-CFLAGS_CB   = -Wall -Wextra -Werror -Wno-error=incompatible-pointer-types -D COLOR_BLEEDING=1 -O3 -I$(INC_DIR) -I$(LIBFT_DIR) -I$(MLX_DIR)
+# CFLAGS   = -Wall -Wextra -Werror -Wno-error=incompatible-pointer-types -O3 -I$(INC_DIR) -I$(LIBFT_DIR) -I$(MLX_DIR)
+# CFLAGS_CB   = -Wall -Wextra -Werror -Wno-error=incompatible-pointer-types -D COLOR_BLEEDING=1 -O3 -I$(INC_DIR) -I$(LIBFT_DIR) -I$(MLX_DIR)
 
 LDFLAGS  = -L$(MLX_DIR) -lmlx -L/usr/lib -lXext -lX11 -lm -lz
 AR       = ar
@@ -262,15 +262,18 @@ test_bonus:
 
 .PHONY: all cb clean fclean re test_mandatory test_bonus
 
-# │⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯‐‐‐ ‐
-# │ Make works based on whether it is compiled or not, but a make clean can sometimes make it seem like
-# │ there is a relink or no recompilation messages appear, such as from libft. This is for aesthetic reasons,
-# │ as I base it on the “.a” files, and it does not affect the compilation, program operation, or relinks.
-# │⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯‐‐‐ ‐
-# │ Running  "make cb" causes relink because it attempts to overwrite files, thus generating relink to switch
-# │ between <normal mode> and <color bleeding mode>.
-# │⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯‐‐‐ ‐
-# │ Remove the "-O3" flag during correction, as it fixes possible errors but greatly improves performance!
-# │⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯‐‐‐ ‐
-# │ If you see "-e" before the loading messages, etc., when compiling, it's a problem with the terminal; try using Bash!
-# │⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯‐‐‐ ‐
+# ----------------------------------------------------------------------------------------------------------------
+
+# "make" works based on whether it is compiled or not, but a make clean can sometimes make it seem like
+# there is a relink or no recompilation messages appear, such as from libft. This is for aesthetic reasons,
+# as I base it on the ".a" files, and it does not affect the compilation, program operation, or relinks.
+
+# Running  "make cb" causes relink because it attempts to overwrite files, thus generating relink to switch
+# between <normal mode> and <color bleeding mode>.
+
+# Remove the "-O3" flag during correction, as it fixes possible errors but greatly improves performance!
+
+# If you see "-e" before the loading messages, etc., when compiling, it's a problem with the terminal;
+# try using Bash or their most current versions!
+
+# ----------------------------------------------------------------------------------------------------------------

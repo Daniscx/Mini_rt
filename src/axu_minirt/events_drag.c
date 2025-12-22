@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/17 16:00:00 by ravazque          #+#    #+#             */
-/*   Updated: 2025/12/20 19:29:35 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/22 18:45:56 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,51 @@ static t_vec3	ray_plane_intersect(t_ray ray, t_vec3 plane_pt, t_vec3 plane_n)
 	return (ray_at(ray, t));
 }
 
+static bool	clamp_mouse(t_minirt *rt, int *new_x, int *new_y, int margin)
+{
+	bool	needs_warp;
+
+	needs_warp = false;
+	if (*new_x < margin)
+	{
+		*new_x = margin;
+		needs_warp = true;
+	}
+	else if (*new_x >= rt->img.width - margin)
+	{
+		*new_x = rt->img.width - margin - 1;
+		needs_warp = true;
+	}
+	if (*new_y < margin)
+	{
+		*new_y = margin;
+		needs_warp = true;
+	}
+	else if (*new_y >= rt->img.height - margin)
+	{
+		*new_y = rt->img.height - margin - 1;
+		needs_warp = true;
+	}
+	return (needs_warp);
+}
+
+static void	clamp_mouse_to_window(t_minirt *rt, int *x, int *y)
+{
+	int		new_x;
+	int		new_y;
+	bool	needs_warp;
+
+	new_x = *x;
+	new_y = *y;
+	needs_warp = clamp_mouse(rt, &new_x, &new_y, 20);
+	if (needs_warp)
+	{
+		mlx_mouse_move(rt->mlx, rt->win, new_x, new_y);
+		*x = new_x;
+		*y = new_y;
+	}
+}
+
 void	handle_object_drag(t_minirt *rt, int x, int y)
 {
 	t_ray		ray;
@@ -36,6 +81,7 @@ void	handle_object_drag(t_minirt *rt, int x, int y)
 
 	if (!rt->input.dragging || rt->input.selected_obj < 0)
 		return ;
+	clamp_mouse_to_window(rt, &x, &y);
 	ray = ray_from_camera(&rt->scene.camera, x, y, &rt->img);
 	new_pos = ray_plane_intersect(ray, rt->input.drag_plane_point,
 			rt->input.drag_plane_normal);

@@ -100,4 +100,5 @@ re: fclean all
 
 .PHONY: all clean fclean re
 
-# If you see "-e" before the loading messages, etc., when compiling, it's a problem with the terminal; try using Bash!
+# If you see "-e" before the loading messages, etc., when compiling, it's a problem with the terminal;
+# try using Bash or their most current versions!
