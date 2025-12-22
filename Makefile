@@ -1,4 +1,3 @@
-SHELL = /bin/bash
 MAKEFLAGS += --no-print-directory
 
 NAME        = miniRT
@@ -22,8 +21,8 @@ CC			= cc
 # CFLAGS		= -Wall -Wextra -Werror -I$(INC_DIR) -I$(LIBFT_DIR) -I$(MLX_DIR)
 # CFLAGS_CB   = -Wall -Wextra -Werror -D COLOR_BLEEDING=1 -I$(INC_DIR) -I$(LIBFT_DIR) -I$(MLX_DIR)
 
-# CFLAGS		= -Wall -Wextra -Werror -I$(INC_DIR) -I$(LIBFT_DIR) -O3 -I$(MLX_DIR)
-# CFLAGS_CB   = -Wall -Wextra -Werror -D COLOR_BLEEDING=1 -I$(INC_DIR) -O3 -I$(LIBFT_DIR) -I$(MLX_DIR)
+# CFLAGS		= -Wall -Wextra -Werror -O3 -I$(INC_DIR) -I$(LIBFT_DIR) -I$(MLX_DIR)
+# CFLAGS_CB   = -Wall -Wextra -Werror -D COLOR_BLEEDING=1 -O3 -I$(INC_DIR) -I$(LIBFT_DIR) -I$(MLX_DIR)
 
 CFLAGS   = -Wall -Wextra -Werror -Wno-error=incompatible-pointer-types -O3 -I$(INC_DIR) -I$(LIBFT_DIR) -I$(MLX_DIR)
 CFLAGS_CB   = -Wall -Wextra -Werror -Wno-error=incompatible-pointer-types -D COLOR_BLEEDING=1 -O3 -I$(INC_DIR) -I$(LIBFT_DIR) -I$(MLX_DIR)
@@ -32,8 +31,108 @@ LDFLAGS  = -L$(MLX_DIR) -lmlx -L/usr/lib -lXext -lX11 -lm -lz
 AR       = ar
 ARFLAGS  = rcs
 
+HEADERS = \
+	$(INC_DIR)/minirt.h \
+	$(INC_DIR)/messages.h
+
+LIBFT_HEADERS = \
+	$(LIBFT_DIR)/include/libft.h
+
+# SRCS = \
+# 	$(SRC_DIR)/minirt.c \
+# 	$(SRC_DIR)/parse/parse.c \
+# 	$(SRC_DIR)/parse/scene_complete.c \
+# 	$(SRC_DIR)/scene/scene.c \
+# 	$(SRC_DIR)/scene/scene_load.c \
+# 	$(SRC_DIR)/scene/scene_load_utils.c \
+# 	$(SRC_DIR)/scene/scene_object_cy_co.c \
+# 	$(SRC_DIR)/scene/scene_object_helper.c \
+# 	$(SRC_DIR)/scene/scene_object_sp_pl.c \
+# 	$(SRC_DIR)/render/render.c \
+# 	$(SRC_DIR)/render/render_high.c \
+# 	$(SRC_DIR)/render/screenshot.c \
+# 	$(SRC_DIR)/ray/hit.c \
+# 	$(SRC_DIR)/ray/intersect.c \
+# 	$(SRC_DIR)/ray/intersect_cone.c \
+# 	$(SRC_DIR)/ray/intersect_cy_caps.c \
+# 	$(SRC_DIR)/ray/intersect_cylinder.c \
+# 	$(SRC_DIR)/ray/ray.c \
+# 	$(SRC_DIR)/math/vec3.c \
+# 	$(SRC_DIR)/math/vec3_color.c \
+# 	$(SRC_DIR)/math/vec3_utils.c \
+# 	$(SRC_DIR)/light/lighting.c \
+# 	$(SRC_DIR)/light/lighting_extra.c \
+# 	$(SRC_DIR)/texture/texture.c \
+# 	$(SRC_DIR)/texture/texture_effects.c \
+# 	$(SRC_DIR)/axu_minirt/camera.c \
+# 	$(SRC_DIR)/axu_minirt/collisions.c \
+# 	$(SRC_DIR)/axu_minirt/events_drag.c \
+# 	$(SRC_DIR)/axu_minirt/events_key.c \
+# 	$(SRC_DIR)/axu_minirt/events_loop.c \
+# 	$(SRC_DIR)/axu_minirt/events_mouse.c \
+# 	$(SRC_DIR)/axu_minirt/events_print.c \
+# 	$(SRC_DIR)/axu_minirt/events_select.c \
+# 	$(SRC_DIR)/axu_minirt/events_utils.c \
+# 	$(SRC_DIR)/axu_minirt/init.c \
+# 	$(SRC_DIR)/axu_minirt/init_window.c
+
 SRCS = $(shell find $(SRC_DIR) -type f -name '*.c' -not -path '$(LIBFT_DIR)/*' -not -path '$(MLX_DIR)/*')
 OBJS = $(SRCS:$(SRC_DIR)/%.c=$(APP_OBJ_DIR)/%.o)
+
+# LIBFT_SRCS = \
+# 	$(LIBFT_DIR)/src/ft_atof.c \
+# 	$(LIBFT_DIR)/src/ft_atoi.c \
+# 	$(LIBFT_DIR)/src/ft_atol.c \
+# 	$(LIBFT_DIR)/src/ft_bzero.c \
+# 	$(LIBFT_DIR)/src/ft_calloc.c \
+# 	$(LIBFT_DIR)/src/ft_dbpt_free.c \
+# 	$(LIBFT_DIR)/src/ft_isalnum.c \
+# 	$(LIBFT_DIR)/src/ft_isalpha.c \
+# 	$(LIBFT_DIR)/src/ft_isascii.c \
+# 	$(LIBFT_DIR)/src/ft_isdigit.c \
+# 	$(LIBFT_DIR)/src/ft_isprint.c \
+# 	$(LIBFT_DIR)/src/ft_itoa.c \
+# 	$(LIBFT_DIR)/src/ft_lstadd_back.c \
+# 	$(LIBFT_DIR)/src/ft_lstadd_front.c \
+# 	$(LIBFT_DIR)/src/ft_lstlast.c \
+# 	$(LIBFT_DIR)/src/ft_lstnew.c \
+# 	$(LIBFT_DIR)/src/ft_lstsize.c \
+# 	$(LIBFT_DIR)/src/ft_memchr.c \
+# 	$(LIBFT_DIR)/src/ft_memcmp.c \
+# 	$(LIBFT_DIR)/src/ft_memcpy.c \
+# 	$(LIBFT_DIR)/src/ft_memmove.c \
+# 	$(LIBFT_DIR)/src/ft_memset.c \
+# 	$(LIBFT_DIR)/src/ft_printf.c \
+# 	$(LIBFT_DIR)/src/ft_putchar.c \
+# 	$(LIBFT_DIR)/src/ft_putchar_fd.c \
+# 	$(LIBFT_DIR)/src/ft_putendl_fd.c \
+# 	$(LIBFT_DIR)/src/ft_puthexnum.c \
+# 	$(LIBFT_DIR)/src/ft_puthexnumax.c \
+# 	$(LIBFT_DIR)/src/ft_putnb.c \
+# 	$(LIBFT_DIR)/src/ft_putnbr_fd.c \
+# 	$(LIBFT_DIR)/src/ft_putpointer.c \
+# 	$(LIBFT_DIR)/src/ft_putstr.c \
+# 	$(LIBFT_DIR)/src/ft_putstr_fd.c \
+# 	$(LIBFT_DIR)/src/ft_putunmath.c \
+# 	$(LIBFT_DIR)/src/ft_selector.c \
+# 	$(LIBFT_DIR)/src/ft_split.c \
+# 	$(LIBFT_DIR)/src/ft_strchr.c \
+# 	$(LIBFT_DIR)/src/ft_strdup.c \
+# 	$(LIBFT_DIR)/src/ft_striteri.c \
+# 	$(LIBFT_DIR)/src/ft_strjoin.c \
+# 	$(LIBFT_DIR)/src/ft_strlcat.c \
+# 	$(LIBFT_DIR)/src/ft_strlcpy.c \
+# 	$(LIBFT_DIR)/src/ft_strlen.c \
+# 	$(LIBFT_DIR)/src/ft_strmapi.c \
+# 	$(LIBFT_DIR)/src/ft_strncmp.c \
+# 	$(LIBFT_DIR)/src/ft_strnstr.c \
+# 	$(LIBFT_DIR)/src/ft_strrchr.c \
+# 	$(LIBFT_DIR)/src/ft_strtrim.c \
+# 	$(LIBFT_DIR)/src/ft_substr.c \
+# 	$(LIBFT_DIR)/src/ft_tolower.c \
+# 	$(LIBFT_DIR)/src/ft_toupper.c \
+# 	$(LIBFT_DIR)/src/get_next_line.c \
+# 	$(LIBFT_DIR)/src/get_next_line_utils.c
 
 LIBFT_SRCS = $(shell find $(LIBFT_DIR) -type f -name '*.c')
 LIBFT_OBJS = $(LIBFT_SRCS:$(LIBFT_DIR)/%.c=$(LIBFT_OBJ_DIR)/%.o)
@@ -47,30 +146,37 @@ LIGHT_RED       = \033[1;91m
 ORANGE			= \033[38;5;208m
 ORANGE_BOLD		= \033[1;38;5;208m
 
-TOTAL_STEPS = $(words $(SRCS) $(LIBFT_SRCS))
-COMPILED = 0
-
-define show_progress
-	$(eval COMPILED := $(shell echo $$(($(COMPILED) + 1))))
-	@total=$(TOTAL_STEPS); \
-	curr=$(COMPILED); \
-	width=60; \
-	hashes=$$(( curr * width / total )); \
-	[ "$$hashes" -ge 0 ] || hashes=0; \
-	dots=$$(( width - hashes )); \
-	[ "$$dots" -ge 0 ] || dots=0; \
-	green=$$(printf "\033[1;32m"); \
-	reset=$$(printf "\033[0m"); \
-	printf "\rCompiling miniRT: ["; \
-	bar=$$(printf "%*s" "$$hashes" ""); bar=$${bar// /#}; \
-	printf "%s" "$$green$$bar$$reset"; \
-	dot=$$(printf "%*s" "$$dots" ""); dot=$${dot// /.}; \
-	printf "%s" "$$dot"; \
-	printf "] %d/%d" "$$curr" "$$total"; \
-	if [ "$$curr" -ge "$$total" ]; then printf " ✓\n"; fi;
-endef
-
-all: $(NAME)
+all:
+	@if $(MAKE) -q $(NAME) 2>/dev/null; then \
+		echo "make: Nothing to be done for 'all'."; \
+	else \
+		msg=""; \
+		if [ ! -f "$(MLX_A)" ]; then \
+			msg="minilibx"; \
+		fi; \
+		if [ ! -f "$(LIBFT_A)" ] || [ -n "$$(find $(LIBFT_DIR) -name '*.c' -newer $(LIBFT_A) 2>/dev/null)" ]; then \
+			if [ -n "$$msg" ]; then msg="$$msg, "; fi; \
+			msg="$${msg}libft"; \
+		fi; \
+		needs_minirt=0; \
+		if [ ! -f "$(NAME)" ]; then \
+			needs_minirt=1; \
+		elif [ -n "$$(find $(SRC_DIR) -name '*.c' -not -path '$(LIBFT_DIR)/*' -newer $(NAME) 2>/dev/null)" ]; then \
+			needs_minirt=1; \
+		elif [ -n "$$(find $(INC_DIR) -name '*.h' -newer $(NAME) 2>/dev/null)" ]; then \
+			needs_minirt=1; \
+		elif [ ! -f "$(MLX_A)" ] || [ ! -f "$(LIBFT_A)" ]; then \
+			needs_minirt=1; \
+		fi; \
+		if [ $$needs_minirt -eq 1 ]; then \
+			if [ -n "$$msg" ]; then msg="$$msg & "; fi; \
+			msg="$${msg}miniRT"; \
+		fi; \
+		if [ -n "$$msg" ]; then \
+			echo -e "$(DARK_BLUE)Compiling $$msg...$(RESET)"; \
+		fi; \
+		$(MAKE) $(NAME); \
+	fi
 
 cb:
 	@echo -e "$(ORANGE_BOLD)Compiling with COLOR BLEEDING enabled:$(RESET)"
@@ -83,30 +189,25 @@ ifdef ENABLE_CB
 else
 	@$(CC) $(CFLAGS) $(OBJS) $(LIBFT_A) $(LDFLAGS) -o $@
 endif
-	@if [ $(COMPILED) -gt 0 ]; then \
-		echo -e "$(LIGHT_TURQUOISE)miniRT ready!$(RESET)"; \
-	fi
+	@echo -e "$(LIGHT_TURQUOISE)miniRT ready!$(RESET)"
 
 $(MLX_A):
-	@echo -e "$(DARK_BLUE)Compiling minilibx...$(RESET)"
 	@$(MAKE) -C $(MLX_DIR) > /dev/null 2>&1
 
 $(LIBFT_A): $(LIBFT_OBJS)
 	@$(AR) $(ARFLAGS) $@ $^
 
-$(LIBFT_OBJ_DIR)/%.o: $(LIBFT_DIR)/%.c | $(LIBFT_OBJ_DIR)
+$(LIBFT_OBJ_DIR)/%.o: $(LIBFT_DIR)/%.c $(LIBFT_HEADERS) | $(LIBFT_OBJ_DIR)
 	@mkdir -p $(dir $@)
 	@$(CC) $(CFLAGS) -c $< -o $@
-	$(call show_progress)
 
-$(APP_OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(APP_OBJ_DIR)
+$(APP_OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(HEADERS) $(LIBFT_HEADERS) | $(APP_OBJ_DIR)
 	@mkdir -p $(dir $@)
 ifdef ENABLE_CB
 	@$(CC) $(CFLAGS_CB) -c $< -o $@
 else
 	@$(CC) $(CFLAGS) -c $< -o $@
 endif
-	$(call show_progress)
 
 $(OBJ_ROOT) $(APP_OBJ_DIR) $(LIBFT_OBJ_DIR):
 	@mkdir -p $@
@@ -161,14 +262,15 @@ test_bonus:
 
 .PHONY: all cb clean fclean re test_mandatory test_bonus
 
-# The makefile works fine, both for miniRT and libft, but there is a visual bug with already compiled
-# code when files are modified or deleted from libft. Despite this, the makefile works perfectly,
-# avoiding relinks, etc. It is just a visual loading error!
-# Try running make in miniRT, make fclean in libft, and make again in miniRT. You'll see the bug when loading!
-
-# Running  "make" cb causes relink because it attempts to overwrite files, thus generating relink to switch
-# between <normal mode> and <color bleeding mode>.
-
-# Remove the "-O3" flag during correction, as it fixes possible errors but greatly improves performance!
-
-# If you see "-e" before the loading messages, etc., when compiling, it's a problem with the terminal; try using Bash!
+# │⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯‐‐‐ ‐
+# │ Make works based on whether it is compiled or not, but a make clean can sometimes make it seem like
+# │ there is a relink or no recompilation messages appear, such as from libft. This is for aesthetic reasons,
+# │ as I base it on the “.a” files, and it does not affect the compilation, program operation, or relinks.
+# │⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯‐‐‐ ‐
+# │ Running  "make cb" causes relink because it attempts to overwrite files, thus generating relink to switch
+# │ between <normal mode> and <color bleeding mode>.
+# │⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯‐‐‐ ‐
+# │ Remove the "-O3" flag during correction, as it fixes possible errors but greatly improves performance!
+# │⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯‐‐‐ ‐
+# │ If you see "-e" before the loading messages, etc., when compiling, it's a problem with the terminal; try using Bash!
+# │⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯‐‐‐ ‐
