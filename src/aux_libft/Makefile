@@ -9,7 +9,7 @@ ARFLAGS = rcs
 
 SRC_DIR = src
 INC_DIR = include
-OBJ_DIR = ../../minirtObjects/aux_libft
+OBJ_DIR = ../../miniRT_objects/aux_libft
 
 RESET = \033[0m
 GREEN = \033[1;32m
@@ -87,8 +87,8 @@ $(OBJ_DIR):
 	@mkdir -p $@
 
 clean:
-	@if [ ! -d "../../minirtObjects/miniRT" ]; then \
-		rm -rf "../../minirtObjects"; \
+	@if [ ! -d "../../miniRT_objects/miniRT" ]; then \
+		rm -rf "../../miniRT_objects"; \
 	else \
 		rm -rf $(OBJ_DIR); \
 	fi

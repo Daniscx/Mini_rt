@@ -14,7 +14,7 @@ LIBFT_A     = $(LIBFT_DIR)/libft.a
 MLX_DIR     = linux-minilibx
 MLX_A       = $(MLX_DIR)/libmlx.a
 
-OBJ_ROOT        = minirtObjects
+OBJ_ROOT        = miniRT_objects
 APP_OBJ_DIR     = $(OBJ_ROOT)/miniRT
 LIBFT_OBJ_DIR   = $(OBJ_ROOT)/aux_libft
 

@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/20 18:41:42 by ravazque          #+#    #+#             */
-/*   Updated: 2025/12/20 19:32:51 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/22 16:34:35 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@
 \033[38;5;208mCompile with: \033[0m\"make cb\" to use the color bleeding mode.\n\033[36m\
 Usage: \033[0m./miniRT <scene.rt> [width] [height] [fps]\n\
   scene.rt        - Scene file to load.\n\
-  width           - Window width.        (426-4096) [optional]\n\
-  height          - Window height.       (240-2160) [optional]\n\
-  maximum FPS     - Frames per second.   (24-60)    [optional]\n\033[92m\n\
+  width           - Window width.        (426-4096) [optional] ┐\n\
+  height          - Window height.       (240-2160) [optional] ┘\n\
+  maximum FPS     - Frames per second.   (24-60)    [optional] ┘\n\033[92m\n\
 // - If you want to define the width and height of the window, you must\n\
 // enter at least those two parameters.\n\
 // - Only once the width and height have been defined can the maximum FPS\n\
