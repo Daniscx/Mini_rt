@@ -6,7 +6,7 @@
 /*   By: dmaestro <dmaestro@student.42madrid.con    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/15 14:10:51 by dmaestro          #+#    #+#             */
-/*   Updated: 2025/12/22 14:48:12 by dmaestro         ###   ########.fr       */
+/*   Updated: 2025/12/22 20:29:56 by dmaestro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,14 @@ typedef void (*t_move_funct)(void *, t_vec3);   /* Move callback */
 typedef bool (*t_collision)(t_vec3, void *);    /* Collision test callback */
 
 /* Generic object wrapper with function pointers */
+typedef struct s_paraboid 
+{
+	t_vec3			vertex;    /* Vertex position */
+	t_vec3			axis;      /* Axis direction */
+	double			a;         /* Paraboloid curve */
+	t_vec3			color;     /* RGB color */
+} t_paraboid;
+
 typedef struct s_object
 {
     enum objects identificator;     /* Object type */
