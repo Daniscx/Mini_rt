@@ -6,7 +6,7 @@
 /*   By: dmaestro <dmaestro@student.42madrid.con    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 12:30:00 by dmaestro          #+#    #+#             */
-/*   Updated: 2025/12/22 14:41:10 by dmaestro         ###   ########.fr       */
+/*   Updated: 2025/12/22 18:54:47 by dmaestro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,17 +27,18 @@ int ambient_light_parser(char **actual_element, t_list **list_to_add_element)
     int i;
     char **rgb_to_split;
     float *actual_float;
+    t_list **list_float;
     
     i = 1;
     if(ft_strncmp(actual_element[0],"A", ft_strlen(actual_element[0])) == 0 && *list_to_add_element) 
-       return (ft_printf("%s\n","multiple ambient light declaration detected please check"), -1);
+       return (error_manager("multiple ambient light declaration detected please check\n", false), -1);
     else if(ft_strncmp(actual_element[0],"A", ft_strlen(actual_element[0])) != 0 )
         return (0); 
     while(actual_element[1][i])
     {
         if(ft_isdigit(actual_element[1][i]) == 0 && actual_element[1][i] != '.')
         {
-            ft_printf("%s\n","no valid parametter find in ambient light ratio");
+            error_manager("no valid parametter find in ambient light ratio\n", false);
             free(list_to_add_element);
             return (-1);
         }
@@ -46,10 +47,13 @@ int ambient_light_parser(char **actual_element, t_list **list_to_add_element)
     actual_float = ft_calloc(1, sizeof(float)); 
     *actual_float = ft_float(actual_element[1]);
      if(if_betwen_values(*actual_float, 0,  1) == false)
-            return(ft_printf("%s\n","no valid parametter find in ambient light ratio") ,-1);
+            return(error_manager("no valid parametter find in ambient light ratio\n", false), -1);
     ft_lstadd_back(list_to_add_element, ft_lstnew(actual_float));
     rgb_to_split = ft_split(actual_element[2], ',');
-    ft_lstadd_back(list_to_add_element, ft_lstnew(list_of_float_checker(rgb_to_split, 255 , 0, true)));
+    list_float = list_of_float_checker(rgb_to_split, 255 , 0, true);
+    if(!list_float)
+        return(ft_putstr_fd("ambient light element\n", 2), -1);
+    ft_lstadd_back(list_to_add_element, ft_lstnew(list_float));
     return(0);
 }
 
@@ -65,6 +69,7 @@ int ambient_light_parser(char **actual_element, t_list **list_to_add_element)
 int light_parser(char **actual_element, t_list **list_to_add_element)
 {
     t_list **new_light_element;
+    t_list **list_float;
     char **splited_element;
     int i;
     float *actual_float;
@@ -77,26 +82,33 @@ int light_parser(char **actual_element, t_list **list_to_add_element)
     splited_element = ft_split(actual_element[1], ',');
     if(!splited_element || *splited_element == NULL)
         return (-1);
-    ft_lstadd_front(new_light_element, ft_lstnew(list_of_float_checker(splited_element, 0, 0, false)));
+    list_float  = list_of_float_checker(splited_element, 0, 0, false);
+    if(!list_float)
+        return(ft_putstr_fd("light element\n", 2), -1);
+    ft_lstadd_front(new_light_element, ft_lstnew(list_float));
     while(actual_element[2][i])
     {
         if(ft_isdigit(actual_element[2][i]) == 0 && actual_element[2][i] != '.')
         {
-            ft_printf("%s\n","no valid parametter find in light ratio");
-            free(list_to_add_element);
+            error_manager("no valid parametter find in light ratio\n", false);
             return (-1);
         }
         i++;
     }
     actual_float = ft_calloc(1, sizeof(float));
     *actual_float = ft_float(actual_element[2]);
+    if(if_betwen_values(*actual_float, 0, 1) == false)
+        return(error_manager("no valid parametter find in light ratio\n", false), -1);
     ft_lstadd_back(new_light_element, ft_lstnew(actual_float));
     if(!actual_element[3])
         actual_element[3] = ft_strdup("255,255,255"); 
     splited_element = ft_split(actual_element[3], ',');
     if(!splited_element || *splited_element == NULL)
-        return(free(list_to_add_element), -1);
-    ft_lstadd_back(new_light_element, ft_lstnew(list_of_float_checker(splited_element, 255 , 0, true)));
+        return(-1);
+    list_float = list_of_float_checker(splited_element, 255 , 0, true);
+    if(!list_float)
+        return(ft_putstr_fd("light element\n", 2), -1);
+    ft_lstadd_back(new_light_element, ft_lstnew(list_float));
     ft_lstadd_back(list_to_add_element, ft_lstnew(new_light_element));
     return(0);    
 }
@@ -120,23 +132,23 @@ int camera_parser(char **actual_element, t_list **list_to_add_element)
     
     i = 0;
     if(ft_strncmp(actual_element[0],"C", ft_strlen(actual_element[0])) == 0 && *list_to_add_element) 
-        return(ft_printf("%s\n","multiple Camaera declaration detected please check"), -1);
+        return(error_manager("multiple Camaera declaration detected please check\n", false), -1);
     else if(ft_strncmp(actual_element[0],"C", ft_strlen(actual_element[0])) != 0 )
         return (0);
     x_y_z_to_split = ft_split(actual_element[1], ',');
     list_float = list_of_float_checker(x_y_z_to_split, 0 , 0, false);
     if(!list_float)
     {
-        ft_printf("%s\n", "camera_element");
-        return(free(list_to_add_element), -1);
+        ft_putstr_fd("camera_element\n", 2);
+        return(-1);
     }
     ft_lstadd_back(list_to_add_element, ft_lstnew(list_float));
     x_y_z_to_split = ft_split(actual_element[2], ',');
     list_float = list_of_float_checker(x_y_z_to_split, 0 , 0, false);
     if(!list_float)
     {
-        ft_printf("%s\n", "camera_element");
-        return(free(list_to_add_element), -1);
+        ft_putstr_fd("camera_element\n", 2);
+        return(-1);
     }
     ft_lstadd_back(list_to_add_element, ft_lstnew(list_float));
     i = 0;
@@ -146,8 +158,7 @@ int camera_parser(char **actual_element, t_list **list_to_add_element)
     {
         if(ft_isdigit(actual_element[3][i]) == 0 && actual_element[3][i] != '.')
         {
-            ft_printf("%s\n","no valid parametter find in ambient light ratio");
-            free(list_to_add_element);
+            error_manager("no valid parametter find in camera fov\n", false);
             return(-1); 
         }
         i++;
@@ -155,7 +166,7 @@ int camera_parser(char **actual_element, t_list **list_to_add_element)
     actual_float = ft_calloc(1, sizeof(float *));
     *actual_float = ft_float(actual_element[3]);
     if(if_betwen_values(*actual_float, 0, 180) == false)
-        return(ft_printf("%s\n","no valid parametter find in camera vector"), free(list_to_add_element), -1);
+        return(error_manager("no valid parametter find in camera fov\n", false), -1);
     ft_lstadd_back(list_to_add_element, ft_lstnew(actual_float));
     return (0);
 }
@@ -176,6 +187,7 @@ static t_list **sphere_parser(char **actual_element)
     char **element_splited;
     int i;
     float   *actual_float;
+    char *texture;
 
     
     
@@ -186,7 +198,7 @@ static t_list **sphere_parser(char **actual_element)
     free_double_pointer(element_splited);
      if(!float_list)
     {
-        ft_printf("%s\n", "sphere element");
+        ft_putstr_fd("sphere element\n", 2);
         return(free(result),NULL);
     }
      ft_lstadd_back(result, ft_lstnew(float_list));
@@ -197,7 +209,7 @@ static t_list **sphere_parser(char **actual_element)
     {
         if(ft_isdigit(actual_element[2][i]) == 0 && actual_element[2][i] != '.')
         {
-            ft_printf("%s\n","no valid parametter find in sphere diametre");
+            error_manager("no valid parametter find in sphere diametre\n", false);
             free(result);
             return (NULL);
         }
@@ -211,24 +223,22 @@ static t_list **sphere_parser(char **actual_element)
     free_double_pointer(element_splited);
     if(!float_list)
     {
-        ft_printf("%s\n", "sphere element");
+        ft_putstr_fd("sphere element\n", 2);
         return(free(result),NULL);
     }
     ft_lstadd_back(result, ft_lstnew(float_list));
     if(actual_element[4])
     {
-        i = open(actual_element[4], O_RDONLY);
-        if(i < 0)
-            return(ft_printf("%s\n","the texture file dont exist please check the path"), free(result),NULL);
-        close(i);
-        ft_lstadd_back(result, ft_lstnew(ft_strdup(actual_element[4])));
+        texture = parser_texture_name(actual_element[4]);
+        if(texture == NULL)
+            return(error_manager("the texture file dont exist please check the path\n", false), free(result),NULL);
+        ft_lstadd_back(result, ft_lstnew(texture));
         if(actual_element[5])
         {
-            i = open(actual_element[5], O_RDONLY);
-            if(i < 0)
-                return(ft_printf("%s\n","the texture file dont exist please check the path"), free(result),NULL);
-            close(i);
-            ft_lstadd_back(result, ft_lstnew(ft_strdup(actual_element[5])));
+            texture = parser_texture_name(actual_element[5]);
+            if(texture == NULL)
+                return(error_manager("the texture file dont exist please check the path\n", false), free(result),NULL);
+            ft_lstadd_back(result, ft_lstnew(texture));
         }
     }
     return(result);
@@ -256,7 +266,7 @@ static t_list **plane_parser(char **actual_element)
     free_double_pointer(element_splited);
      if(!float_list)
     {
-        ft_printf("%s\n", "plane position");
+        ft_putstr_fd("plane position\n", 2);
         return(free(result),NULL);
     }
     ft_lstadd_back(result, ft_lstnew(float_list));
@@ -265,7 +275,7 @@ static t_list **plane_parser(char **actual_element)
     free_double_pointer(element_splited);
       if(!float_list)
     {
-        ft_printf("%s\n", "plane vector");
+        ft_putstr_fd("plane vector\n", 2);
         return(free(result),NULL);
     }
     ft_lstadd_back(result, ft_lstnew(float_list));
@@ -274,7 +284,7 @@ static t_list **plane_parser(char **actual_element)
     free_double_pointer(element_splited);
       if(!float_list)
     {
-        ft_printf("%s\n", "plane color");
+        ft_putstr_fd("plane color\n", 2);
         return(free(result),NULL);
     }
     ft_lstadd_back(result, ft_lstnew(float_list));
@@ -306,13 +316,13 @@ static t_list **cylindrer_parser(char **actual_element)
     float_list = list_of_float_checker(element_splited, 0, 0, false);
     free_double_pointer(element_splited);
     if(!float_list)
-        return(ft_printf("%s\n","cylindrer position"), free(result),NULL);
+        return(ft_putstr_fd("cylindrer position\n", 2), free(result),NULL);
     ft_lstadd_back(result, ft_lstnew(float_list));
     element_splited = ft_split(actual_element[2], ',');
     float_list = list_of_float_checker(element_splited, 1, -1, true);
     free_double_pointer(element_splited);
     if(!float_list)
-        return(ft_printf("%s\n","cylindrer vector"), free(result),NULL);     
+        return(ft_putstr_fd("cylindrer vector\n", 2), free(result),NULL);     
     ft_lstadd_back(result, ft_lstnew(float_list));
     i = 0;
     if(actual_element[3][i] == '-')
@@ -321,7 +331,7 @@ static t_list **cylindrer_parser(char **actual_element)
     {
         if(ft_isdigit(actual_element[3][i]) == 0 && actual_element[3][i] != '.')
         {
-            ft_printf("%s\n","no valid parametter find in cylindrer diametre");
+            error_manager("no valid parametter find in cylindrer diametre\n", false);
             free(result);
             return (NULL);
         }
@@ -337,7 +347,7 @@ static t_list **cylindrer_parser(char **actual_element)
     {
         if(ft_isdigit(actual_element[4][i]) == 0 && actual_element[4][i] != '.')
         {
-            ft_printf("%s\n","no valid parametter find in cylindrer hight");
+            error_manager("no valid parametter find in cylinder high\n", false);
             free(result);
             return (NULL);
         }
@@ -350,7 +360,7 @@ static t_list **cylindrer_parser(char **actual_element)
     float_list = list_of_float_checker(element_splited, 255, 0, true);
     free_double_pointer(element_splited);
     if(!float_list)
-       return(ft_printf("%s\n","cylindrer rgb"), free(result),NULL);
+       return(ft_putstr_fd("cylindrer rgb\n", 2), free(result),NULL);
     ft_lstadd_back(result, ft_lstnew(float_list));
     return(result);
 }
@@ -373,21 +383,21 @@ int object_parser(char **actual_element, t_list **list_to_add_element)
     {
         result = sphere_parser(actual_element);
         if(!result)
-            return(free(list_to_add_element), -1);
+            return(-1);
         ft_lstadd_back(list_to_add_element, ft_lstnew(result));
     }
         if(ft_strncmp(actual_element[0], "pl", len) == 0 || ft_strncmp(actual_element[0], "plc", len) == 0 )
     {
         result = plane_parser(actual_element);
         if(!result)
-            return(free(list_to_add_element), -1);
+            return(-1);
         ft_lstadd_back(list_to_add_element, ft_lstnew(result));
     }
         if(ft_strncmp(actual_element[0], "cy", len) == 0 || ft_strncmp(actual_element[0], "co", len) == 0)
     {
         result = cylindrer_parser(actual_element);
         if(!result)
-            return(free(list_to_add_element), -1);
+            return(-1);
         ft_lstadd_back(list_to_add_element, ft_lstnew(result));
     }
     return(0);

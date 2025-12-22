@@ -6,7 +6,7 @@
 /*   By: dmaestro <dmaestro@student.42madrid.con    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 16:51:58 by dmaestro          #+#    #+#             */
-/*   Updated: 2025/12/22 14:48:12 by dmaestro         ###   ########.fr       */
+/*   Updated: 2025/12/22 18:13:41 by dmaestro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ t_scene *escene_constructor(char *file)
     result->object = object_list_Constructor(get_list_of_elements(primitive_escene, OB));
     result->light = light_list_constructor(get_list_of_elements(primitive_escene, L));
    // print_escene(result);
-    escene_primitive_destructor(primitive_escene);
+   // escene_primitive_destructor(primitive_escene);
     return(result);
     
 }

@@ -6,7 +6,7 @@
 /*   By: dmaestro <dmaestro@student.42madrid.con    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/27 17:49:37 by dmaestro          #+#    #+#             */
-/*   Updated: 2025/12/22 13:47:18 by dmaestro         ###   ########.fr       */
+/*   Updated: 2025/12/22 17:55:06 by dmaestro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,14 @@
 #include "../includes/messages.h"
 //funcion inicial para gestionar error es precaria 
 //TO DO: gestionar la liberacion de memoria en cada caso luego añadir el Error|\n
-void	error_manager(char *error_message)
+void	error_manager(char *error_message, bool exit_code)
 {
-	if (!error_message)
+	if (!error_message && exit_code == true)
 		exit(1);
 	ft_putstr_fd("\033[1;36mminiRT: \033[1;31mError: \033[0m", STDERR_FILENO);
 	ft_putendl_fd(error_message, STDERR_FILENO);
-	exit(1);
+	if(exit_code == true)
+		exit(1);
 }
 
 /*static void	parse_window_size(t_minirt *rt, int argc, char **argv)
@@ -92,7 +93,7 @@ int	main(int argc, char **argv)
 	rt = ft_calloc(1, sizeof(t_minirt));
     rt->scene = escene_constructor(argv[1]);
 	if(rt->scene == NULL)
-		error_manager("Scene construction failed");
+		error_manager("Scene construction failed", true);
 	//if (rt.scene == NULL)
 	//{
 		//scene_free(&rt.scene);

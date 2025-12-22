@@ -6,7 +6,7 @@
 /*   By: dmaestro <dmaestro@student.42madrid.con    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/15 14:25:50 by dmaestro          #+#    #+#             */
-/*   Updated: 2025/12/22 14:18:29 by dmaestro         ###   ########.fr       */
+/*   Updated: 2025/12/22 18:41:28 by dmaestro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ t_list  **object_list_Constructor(t_list **components)
     t_list *aux;
     t_list **result;
     t_object *obj;
-    int count = 0;
 
     result = ft_calloc(1, sizeof(t_list *));
     if (!components || !*components)
@@ -31,8 +30,6 @@ t_list  **object_list_Constructor(t_list **components)
             ft_lstadd_back(result, ft_lstnew(obj));
         aux = aux->next;
     }
-    if (count >= 100)
-        printf("ERROR: More than 100 objects, stopping to prevent infinite loop\n");
     return (result);
 }
 static  enum  objects get_identificator(char *name)

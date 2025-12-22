@@ -6,7 +6,7 @@
 /*   By: dmaestro <dmaestro@student.42madrid.con    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/27 18:00:48 by dmaestro          #+#    #+#             */
-/*   Updated: 2025/12/22 14:48:12 by dmaestro         ###   ########.fr       */
+/*   Updated: 2025/12/22 17:55:49 by dmaestro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ typedef struct s_minirt
 # define TARGET_FPS 24
 
 /* Error handling and setup */
-void error_manager(char *error_message); /* Print error message and exit */
+void error_manager(char *error_message, bool exit_code); /* Print error message and exit */
 void minirt_init(t_minirt *rt); /* Initialize raytracer application */
 void minirt_cleanup(t_minirt *rt); /* Cleanup and free all resources */
 

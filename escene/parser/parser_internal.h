@@ -6,7 +6,7 @@
 /*   By: dmaestro <dmaestro@student.42madrid.con    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 17:15:12 by dmaestro          #+#    #+#             */
-/*   Updated: 2025/12/22 14:47:03 by dmaestro         ###   ########.fr       */
+/*   Updated: 2025/12/22 18:50:53 by dmaestro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ t_list **general_parser(t_list **list__to_track, int f(char **, t_list **)); /* 
 /* parser_file.c - File handling functions */
 char *parser_file_name(char *file); /* Resolve .rt filename from user input */
 t_primitive_escene *escene_primiteve_contructor(char *file); /* Load and parse entire scene file */
+char 	*parser_texture_name(char *file);
 
 /* parser_assignment.c - Data organization functions */
 int primitive_escene_t_asignation(t_list **element_to_conver, t_primitive_escene *struct_to_assignate); /* Organize parsed lists into scene struct */

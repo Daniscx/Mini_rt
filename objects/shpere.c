@@ -6,7 +6,7 @@
 /*   By: dmaestro <dmaestro@student.42madrid.con    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 15:49:11 by dmaestro          #+#    #+#             */
-/*   Updated: 2025/12/22 14:05:54 by dmaestro         ###   ########.fr       */
+/*   Updated: 2025/12/22 18:28:34 by dmaestro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,6 @@ t_sphere *sphere_constructor(t_list **components, t_object *object, bool texture
 	if(texture == true)
 	{
 		aux = aux->next;
-		printf("Loading texture...\n");
 		result->texture = texture_load_ppm(aux->content);
 		aux = aux->next;
 		result->bump_map = texture_load_ppm(aux->content);

@@ -6,7 +6,7 @@
 /*   By: dmaestro <dmaestro@student.42madrid.con    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 12:30:00 by dmaestro          #+#    #+#             */
-/*   Updated: 2025/12/22 13:07:04 by dmaestro         ###   ########.fr       */
+/*   Updated: 2025/12/22 18:57:54 by dmaestro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static char 	*try_file_no_rt(char *file)
 	}
 	free(try_rt);
 	free(try_scene);
-	error_manager("Invalid file, please check if it exists!");
+	error_manager("Invalid file, please check if it exists!", false);
 	return (0);
 }
 
@@ -78,7 +78,7 @@ static char 	*try_file_with_rt(char *file)
 	}
 	free(try_rt);
 	close(fd_tester);
-	error_manager("Invalid file, please check if it exists!");
+	error_manager("Invalid file, please check if it exists!", false);
 	return (NULL);
 }
 
@@ -96,6 +96,82 @@ char 	*parser_file_name(char *file)
 	else
 		return (try_file_with_rt(file));
 }
+static char 	*try_file_no_ppm(char *file)
+{
+	char	*try_rt;
+	char	*try_scene;
+	int		fd_tester;
+
+	try_scene = NULL;
+	try_rt = ft_strjoin(file, ".ppm");
+	fd_tester = open(try_rt, O_RDONLY);
+	if (fd_tester >= 0)
+	{
+		close(fd_tester);
+		return (try_rt);
+	}
+	free(try_rt);
+	try_rt = ft_strjoin("scenes/textures/", file);
+	try_scene = ft_strjoin(try_rt, ".ppm");
+	fd_tester = open(try_scene, O_RDONLY);
+	if (fd_tester >= 0)
+	{
+		free(try_rt);
+		close(fd_tester);
+		return (try_scene);
+	}
+	free(try_rt);
+	free(try_scene);
+	error_manager("Invalid texture, please check if it exists!", false);
+	return (0);
+}
+
+/**
+ * Tries to open a .rt file with .rt extension
+ * First tries: file as given
+ * Then tries: "scenes/" + file
+ * @param file Filename with .rt extension
+ * @return Duplicate of valid path, or NULL if not found (prints error)
+ */
+static char 	*try_file_with_ppm(char *file)
+{
+	char	*try_rt;
+	int		fd_tester;
+
+	fd_tester = open(file, O_RDONLY);
+	if (fd_tester >= 0)
+	{
+		close(fd_tester);
+		return(ft_strdup(file));
+	}
+	try_rt = ft_strjoin("scenes/textures/", file);
+	fd_tester = open(try_rt, O_RDONLY);
+	if (fd_tester >= 0)
+	{
+		close(fd_tester);
+		return (try_rt);
+	}
+	free(try_rt);
+	close(fd_tester);
+	error_manager("Invalid texture, please check if it exists!", false);
+	return (NULL);
+}
+
+/**
+ * Resolves filename and finds the actual file path
+ * Handles filenames with or without .rt extension
+ * Searches in current directory and scenes/ directory
+ * @param file Filename to resolve
+ * @return Full path to valid .rt file, or NULL on error (prints error message)
+ */
+char 	*parser_texture_name(char *file)
+{
+	if (ft_strncmp(file + ft_strlen(file) - 4, ".ppm", 4) != 0)
+		return (try_file_no_ppm(file));
+	else
+		return (try_file_with_ppm(file));
+}
+
 
 /**
  * Reads a .rt file and splits each line into separate elements

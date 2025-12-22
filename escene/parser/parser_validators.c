@@ -6,7 +6,7 @@
 /*   By: dmaestro <dmaestro@student.42madrid.con    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 12:30:00 by dmaestro          #+#    #+#             */
-/*   Updated: 2025/12/22 13:04:17 by dmaestro         ###   ########.fr       */
+/*   Updated: 2025/12/22 17:59:50 by dmaestro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ bool correct_number_of_elements(char **element)
         return(true);
     else
     {
-        ft_printf("%s", "the file .rt contain incorrect elements ,please correct them");
+        error_manager("the file .rt contain incorrect elements ,please correct them", false);
          return(false);
     }
        
@@ -123,7 +123,7 @@ t_list **list_of_float_checker(char **splited_element, float max  , float min, b
     int j;
     float *actual_float;
     if(double_array_len(splited_element) != 3)
-        return(ft_printf("%s","no valid parametter find in :"), NULL);
+        return(error_manager("no valid parametter find in :", false), NULL);
     j = 0; 
     i = 0;
     resuslt = ft_calloc(1, sizeof(t_list *));
@@ -135,7 +135,7 @@ t_list **list_of_float_checker(char **splited_element, float max  , float min, b
         { 
             if(ft_isdigit(splited_element[j][i]) == 0 && splited_element[j][i] != '.')
             {
-                ft_printf("%s","no valid parametter find in :");
+                error_manager("no valid parametter find in :", false);
                 return(NULL);
             }
             i++;
@@ -145,10 +145,8 @@ t_list **list_of_float_checker(char **splited_element, float max  , float min, b
          *actual_float = ft_float(splited_element[j]); 
          if(if_betwen_values(*actual_float, min, max) == false && range == true)
          {
-            ft_printf("%s\n","invalid value it isnt  in the range of :");
-            printf("%f\n", *actual_float);
-            return(NULL);
-            
+            error_manager("no valid parametter find in :", false);
+            return(NULL);  
          }
             
         ft_lstadd_back(resuslt, ft_lstnew(actual_float));

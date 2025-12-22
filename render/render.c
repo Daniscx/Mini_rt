@@ -6,7 +6,7 @@
 /*   By: dmaestro <dmaestro@student.42madrid.con    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 17:00:00 by ravazque          #+#    #+#             */
-/*   Updated: 2025/12/22 14:48:12 by dmaestro         ###   ########.fr       */
+/*   Updated: 2025/12/22 18:41:10 by dmaestro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ void	render_scene(t_minirt *rt)
 	int		y;
 	t_ray	ray;
 
-	printf("Rendering scene at %dx%d resolution...\n", rt->img.width, rt->img.height);
 	rt->scene->camera->aspect_ratio = (double)rt->img.width / rt->img.height;
 	y = -1;
 	while (++y < rt->img.height)
