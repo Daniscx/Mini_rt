@@ -1,0 +1,10 @@
+A 1 255,255,255
+
+C 0,0,8 0,0,-1 60
+
+L 5,5,5 0.8 255,255,255
+L -5,3,5 0.8 200,200,255
+
+spt 0,0,0 4 255,255,255 scenes/textures/earth.ppm scenes/textures/earth_bump.ppm
+
+plc 0,-2.5,0 0,1,0 60,60,80

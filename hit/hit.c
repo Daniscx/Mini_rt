@@ -1,0 +1,70 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   hit.c                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dmaestro <dmaestro@student.42madrid.con    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/12/18 02:39:47 by dmaestro          #+#    #+#             */
+/*   Updated: 2025/12/22 14:48:12 by dmaestro         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+
+#include "../includes/hit.h"
+#include "../includes/texture.h"
+#include "../includes/escene.h"
+
+t_hit	hit_new(void)
+{
+	t_hit	hit;
+
+	hit.hit = false;
+	hit.t = INFINITY;
+	hit.point = vec3_new(0, 0, 0);
+	hit.normal = vec3_new(0, 1, 0);
+	hit.color = vec3_new(0, 0, 0);
+	hit.specular = 1.0;
+	hit.u = 0;
+	hit.v = 0;
+	hit.texture = NULL;
+	hit.bump_map = NULL;
+	hit.checkerboard = false;
+	return (hit);
+}
+t_hit	find_closest_hit(t_ray ray, t_scene *scene)
+{
+	t_hit	closest;
+	t_hit	current;
+	t_list	*aux;
+	t_object *current_object;
+
+	closest = hit_new();
+	if (!scene || !scene->object)
+		return (closest);
+	aux = *scene->object;
+	while (aux)
+	{
+		current_object = aux->content;
+		if (current_object && current_object->intersecction && current_object->figure)
+		{
+			current = current_object->intersecction(ray, current_object->figure);
+			if (current.hit && current.t < closest.t)
+			{
+				closest = current;
+				closest.checkerboard = current_object->check_board;
+			}
+		}
+		aux = aux->next;
+	}
+	return (closest);
+}
+void	apply_hit_effects(t_hit *hit)
+{
+	if (hit->bump_map)
+		hit->normal = apply_bump_map(hit);
+	if (hit->texture)
+		hit->color = apply_texture(hit);
+	if (hit->checkerboard)
+		hit->color = apply_checkerboard(hit);
+}

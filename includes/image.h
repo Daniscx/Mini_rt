@@ -1,21 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   escene.h                                           :+:      :+:    :+:   */
+/*   image.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dmaestro <dmaestro@student.42madrid.con    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/03 16:43:48 by dmaestro          #+#    #+#             */
-/*   Updated: 2025/12/03 16:55:44 by dmaestro         ###   ########.fr       */
+/*   Created: 2025/12/20 22:24:24 by dmaestro          #+#    #+#             */
+/*   Updated: 2025/12/20 22:27:24 by dmaestro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ESCENE_H
-#define ESCENE_H
+#ifndef IMAGE_H
+#define IMAGE_H
 
-typedef struct  escene_s    escene_t;
+/* =[ MLX Image ]=========================================================== */
+// MiniLibX image buffer with pixel data and rendering metadata
 
-escene_t *escene_constructor(char *file);
-void    escene_destructor(escene_t *escene);
+typedef struct s_img
+{
+	void			*img_ptr;
+	char			*pixels_ptr;
+	int				bpp;
+	int				line_len;
+	int				endian;
+	int				width;
+	int				height;
+}					t_img;
+
+
 
 #endif

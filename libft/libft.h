@@ -6,7 +6,7 @@
 /*   By: dmaestro <dmaestro@student.42madrid.con    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 16:13:33 by dmaestro          #+#    #+#             */
-/*   Updated: 2025/11/27 18:56:11 by dmaestro         ###   ########.fr       */
+/*   Updated: 2025/12/20 23:20:14 by dmaestro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,19 @@
 # define LIBFT_H
 # include <fcntl.h>
 # include <stdarg.h>
+# include <math.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
+# include <X11/X.h>
+# include <X11/Xlib.h>
+# include <X11/keysym.h>
+# include <stdbool.h>
+# include <string.h>
+# include <time.h>
+# include <sys/stat.h>
+# include <limits.h>
+# include <sys/time.h>
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 100

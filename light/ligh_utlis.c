@@ -1,0 +1,57 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ligh_utlis.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dmaestro <dmaestro@student.42madrid.con    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/12/20 22:13:36 by dmaestro          #+#    #+#             */
+/*   Updated: 2025/12/22 14:48:12 by dmaestro         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../includes/light.h"
+#include "../includes/hit.h"
+#include "../includes/texture.h"
+#include "../includes/escene.h"
+
+static t_vec3	get_sample_direction(t_vec3 normal, int i)
+{
+	t_vec3	offset;
+
+	offset.x = (i % 3) * 0.5 - 0.5;
+	offset.y = ((i / 3) % 3) * 0.5 - 0.5;
+	offset.z = ((i / 9) % 3) * 0.5 - 0.5;
+	return (vec3_normalize(vec3_add(normal, offset)));
+}
+
+static t_vec3	trace_bounce(t_hit hit, t_scene *scene, int i)
+{
+	t_ray	bounce_ray;
+	t_hit	bounce_hit;
+	t_vec3	sample_dir;
+
+	sample_dir = get_sample_direction(hit.normal, i);
+	bounce_ray.origin = vec3_add(hit.point,
+			vec3_scale(hit.normal, EPSILON * 10));
+	bounce_ray.direction = sample_dir;
+	bounce_hit = find_closest_hit(bounce_ray, scene);
+	if (bounce_hit.hit)
+		return (vec3_scale(bounce_hit.color, GI_INTENSITY));
+	return (vec3_new(0, 0, 0));
+}
+
+t_vec3	calculate_color_bleeding(t_hit hit, t_scene *scene)
+{
+	t_vec3	result;
+	int		i;
+
+	result = vec3_new(0, 0, 0);
+	i = 0;
+	while (i < GI_SAMPLES)
+	{
+		result = vec3_add(result, trace_bounce(hit, scene, i));
+		i++;
+	}
+	return (vec3_scale(result, 1.0 / GI_SAMPLES));
+}
