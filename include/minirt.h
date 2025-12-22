@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 10:01:26 by ravazque          #+#    #+#             */
-/*   Updated: 2025/12/20 19:50:14 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/20 23:12:29 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@
 
 // Color bleeding samples: rays cast per pixel to gather indirect light
 // More samples = smoother result (8 = fast, 16 = balanced, 32 = slower)
-# define GI_SAMPLES 4
+# define GI_SAMPLES 8
 
 /* =[ Key State Indices ]=================================================== */
 

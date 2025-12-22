@@ -112,7 +112,7 @@ $(OBJ_ROOT) $(APP_OBJ_DIR) $(LIBFT_OBJ_DIR):
 	@mkdir -p $@
 
 clean:
-	@echo -e "$(LIGHT_RED)Running a objects cleanup...$(RESET)"
+	@echo -e "$(LIGHT_RED)Running an object cleanup...$(RESET)"
 	@rm -rf "$(OBJ_ROOT)"
 	@$(MAKE) -C $(MLX_DIR) clean > /dev/null 2>&1
 	@echo -e "$(TURQUOISE)Cleaning of objects completed!$(RESET)"
