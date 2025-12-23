@@ -8,6 +8,7 @@ docs/
 
 ## DS_STORE
 .DS_STORE
+linux-minilibx/.DS_STORE
 
 ## Mlx
 linux-minilibx/libmlx.a
@@ -31,7 +32,6 @@ linux-minilibx//test/mlx-test
 linux-minilibx/.vscode/*
 linux-minilibx/*~
 linux-minilibx/\#*\#
-linux-minilibx/.DS_STORE
 linux-minilibx/*.d
 linux-minilibx/*.o
 linux-minilibx/*.ko

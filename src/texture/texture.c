@@ -6,11 +6,12 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/18 12:00:00 by ravazque          #+#    #+#             */
-/*   Updated: 2025/12/20 19:45:12 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/23 03:22:51 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minirt.h"
+# include "../../includes/texture.h"
+# include "../../includes/hit.h"
 
 static void	skip_whitespace_comments(int fd, char *c)
 {
@@ -49,6 +50,7 @@ t_texture	*texture_load_ppm(const char *filename)
 	char		magic[3];
 	int			max_val;
 
+	printf("\033[32mLoading texture: \033[1;32m%s\033[0m\n", filename);
 	fd = open(filename, O_RDONLY);
 	if (fd < 0)
 		return (NULL);

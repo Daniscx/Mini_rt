@@ -6,11 +6,13 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/20 02:40:00 by ravazque          #+#    #+#             */
-/*   Updated: 2025/12/20 19:23:59 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/23 03:22:47 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minirt.h"
+# include "../../includes/texture.h"
+# include "../../includes/hit.h"
+# include "../../includes/objects.h"
 
 void	sphere_get_uv(t_vec3 point, t_vec3 center, double *u, double *v)
 {
@@ -25,7 +27,7 @@ void	sphere_get_uv(t_vec3 point, t_vec3 center, double *u, double *v)
 	*v = (phi + M_PI / 2.0) / M_PI;
 }
 
-t_vec3	apply_texture(t_hit *hit)
+t_vec3	apply_texture(struct s_hit *hit)
 {
 	if (!hit->texture)
 		return (hit->color);
@@ -42,7 +44,7 @@ static t_vec3	get_bump_tangent(t_vec3 normal)
 	return (tangent);
 }
 
-static void	calculate_bump_gradients(t_hit *hit, double *du, double *dv)
+static void	calculate_bump_gradients(struct s_hit *hit, double *du, double *dv)
 {
 	t_vec3	color_c;
 	t_vec3	color_u;
@@ -59,7 +61,7 @@ static void	calculate_bump_gradients(t_hit *hit, double *du, double *dv)
 		/ 3.0 - (color_c.x + color_c.y + color_c.z) / 3.0;
 }
 
-t_vec3	apply_bump_map(t_hit *hit)
+t_vec3	apply_bump_map(struct s_hit *hit)
 {
 	double	du;
 	double	dv;

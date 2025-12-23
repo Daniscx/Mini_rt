@@ -6,11 +6,12 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 17:00:00 by ravazque          #+#    #+#             */
-/*   Updated: 2025/12/20 03:10:03 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/23 03:22:41 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minirt.h"
+# include "../../includes/escene.h"
+# include "../../includes/minirt.h"
 
 static void	put_pixel(t_img *img, int x, int y, int color)
 {
@@ -42,15 +43,15 @@ void	render_scene(t_minirt *rt)
 	int		y;
 	t_ray	ray;
 
-	rt->scene.camera.aspect_ratio = (double)rt->img.width / rt->img.height;
+	rt->scene->camera->aspect_ratio = (double)rt->img.width / rt->img.height;
 	y = -1;
 	while (++y < rt->img.height)
 	{
 		x = -1;
 		while (++x < rt->img.width)
 		{
-			ray = ray_from_camera(&rt->scene.camera, x, y, &rt->img);
-			put_pixel(&rt->img, x, y, trace_ray(ray, &rt->scene));
+			ray = ray_from_camera(rt->scene->camera, x, y, &rt->img);
+			put_pixel(&rt->img, x, y, trace_ray(ray, rt->scene));
 		}
 	}
 	mlx_put_image_to_window(rt->mlx, rt->win, rt->img.img_ptr, 0, 0);

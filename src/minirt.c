@@ -5,20 +5,22 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/20 03:07:23 by ravazque          #+#    #+#             */
-/*   Updated: 2025/12/20 19:15:29 by ravazque         ###   ########.fr       */
+/*   Created: 2025/11/27 17:49:37 by dmaestro          #+#    #+#             */
+/*   Updated: 2025/12/23 03:19:21 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minirt.h"
+# include "../includes/minirt.h"
+# include "../includes/messages.h"
 
-void	error_manager(char *error_message)
+void	error_manager(char *error_message, bool exit_code)
 {
-	if (!error_message)
+	if (!error_message && exit_code == true)
 		exit(1);
 	ft_putstr_fd("\033[1;36mminiRT: \033[1;31mError: \033[0m", STDERR_FILENO);
 	ft_putendl_fd(error_message, STDERR_FILENO);
-	exit(1);
+	if(exit_code == true)
+		exit(1);
 }
 
 static void	parse_window_size(t_minirt *rt, int argc, char **argv)
@@ -52,26 +54,23 @@ static void	parse_window_size(t_minirt *rt, int argc, char **argv)
 
 int	main(int argc, char **argv)
 {
-	t_minirt	rt;
-	int			route;
+	t_minirt	*rt;
 
 	if (argc < 2 || argc > 5)
 	{
 		ft_putstr_fd(PRINT_USAGE, STDERR_FILENO);
 		return (1);
 	}
-	route = parser_file_name(argv[1]);
-	ft_bzero(&rt, sizeof(t_minirt));
-	if (scene_load(&rt.scene, argv[1], route) < 0)
+	rt = ft_calloc(1, sizeof(t_minirt));
+    rt->scene = escene_constructor(argv[1]);
+	if(rt->scene == NULL)
 	{
-		scene_free(&rt.scene);
-		error_manager(INVALID_OBJECTS);
+		free(rt);
+		error_manager("Scene construction failed.", true);
 	}
-	route_msg(route, argv[1]);
-	parse_window_size(&rt, argc, argv);
-	minirt_init(&rt);
-	render_scene(&rt);
-	mlx_loop(rt.mlx);
-	minirt_cleanup(&rt);
+	parse_window_size(rt, argc, argv);
+	minirt_init(rt);
+	render_scene(rt);
+	mlx_loop(rt->mlx);
 	return (0);
 }

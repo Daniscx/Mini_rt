@@ -3,7 +3,7 @@ MAKEFLAGS += --no-print-directory
 NAME        = miniRT
 
 SRC_DIR     = src
-INC_DIR     = include
+INC_DIR     = includes
 
 SCRSHT_DIR  = screenshots
 
@@ -21,60 +21,24 @@ CC			= cc
 # CFLAGS		= -Wall -Wextra -Werror -I$(INC_DIR) -I$(LIBFT_DIR) -I$(MLX_DIR)
 # CFLAGS_CB   = -Wall -Wextra -Werror -D COLOR_BLEEDING=1 -I$(INC_DIR) -I$(LIBFT_DIR) -I$(MLX_DIR)
 
-CFLAGS		= -Wall -Wextra -Werror -O3 -I$(INC_DIR) -I$(LIBFT_DIR) -I$(MLX_DIR)
-CFLAGS_CB   = -Wall -Wextra -Werror -D COLOR_BLEEDING=1 -O3 -I$(INC_DIR) -I$(LIBFT_DIR) -I$(MLX_DIR)
+# CFLAGS		= -Wall -Wextra -Werror -O3 -I$(INC_DIR) -I$(LIBFT_DIR) -I$(MLX_DIR)
+# CFLAGS_CB   = -Wall -Wextra -Werror -D COLOR_BLEEDING=1 -O3 -I$(INC_DIR) -I$(LIBFT_DIR) -I$(MLX_DIR)
 
-# CFLAGS   = -Wall -Wextra -Werror -Wno-error=incompatible-pointer-types -O3 -I$(INC_DIR) -I$(LIBFT_DIR) -I$(MLX_DIR)
-# CFLAGS_CB   = -Wall -Wextra -Werror -Wno-error=incompatible-pointer-types -D COLOR_BLEEDING=1 -O3 -I$(INC_DIR) -I$(LIBFT_DIR) -I$(MLX_DIR)
+CFLAGS   = -Wall -Wextra -Werror -Wno-error=incompatible-pointer-types -O3 -I$(INC_DIR) -I$(LIBFT_DIR)/include -I$(MLX_DIR) -I$(SRC_DIR)/escene/parser
+CFLAGS_CB   = -Wall -Wextra -Werror -Wno-error=incompatible-pointer-types -D COLOR_BLEEDING=1 -O3 -I$(INC_DIR) -I$(LIBFT_DIR)/include -I$(MLX_DIR) -I$(SRC_DIR)/escene/parser
 
 LDFLAGS  = -L$(MLX_DIR) -lmlx -L/usr/lib -lXext -lX11 -lm -lz
 AR       = ar
 ARFLAGS  = rcs
 
-HEADERS = \
-	$(INC_DIR)/minirt.h \
-	$(INC_DIR)/messages.h
+HEADERS = $(wildcard $(INC_DIR)/*.h)
 
 LIBFT_HEADERS = \
 	$(LIBFT_DIR)/include/libft.h
 
 # SRCS = \
 # 	$(SRC_DIR)/minirt.c \
-# 	$(SRC_DIR)/parse/parse.c \
-# 	$(SRC_DIR)/parse/scene_complete.c \
-# 	$(SRC_DIR)/scene/scene.c \
-# 	$(SRC_DIR)/scene/scene_load.c \
-# 	$(SRC_DIR)/scene/scene_load_utils.c \
-# 	$(SRC_DIR)/scene/scene_object_cy_co.c \
-# 	$(SRC_DIR)/scene/scene_object_helper.c \
-# 	$(SRC_DIR)/scene/scene_object_sp_pl.c \
-# 	$(SRC_DIR)/render/render.c \
-# 	$(SRC_DIR)/render/render_high.c \
-# 	$(SRC_DIR)/render/screenshot.c \
-# 	$(SRC_DIR)/ray/hit.c \
-# 	$(SRC_DIR)/ray/intersect.c \
-# 	$(SRC_DIR)/ray/intersect_cone.c \
-# 	$(SRC_DIR)/ray/intersect_cy_caps.c \
-# 	$(SRC_DIR)/ray/intersect_cylinder.c \
-# 	$(SRC_DIR)/ray/ray.c \
-# 	$(SRC_DIR)/math/vec3.c \
-# 	$(SRC_DIR)/math/vec3_color.c \
-# 	$(SRC_DIR)/math/vec3_utils.c \
-# 	$(SRC_DIR)/light/lighting.c \
-# 	$(SRC_DIR)/light/lighting_extra.c \
-# 	$(SRC_DIR)/texture/texture.c \
-# 	$(SRC_DIR)/texture/texture_effects.c \
-# 	$(SRC_DIR)/axu_minirt/camera.c \
-# 	$(SRC_DIR)/axu_minirt/collisions.c \
-# 	$(SRC_DIR)/axu_minirt/events_drag.c \
-# 	$(SRC_DIR)/axu_minirt/events_key.c \
-# 	$(SRC_DIR)/axu_minirt/events_loop.c \
-# 	$(SRC_DIR)/axu_minirt/events_mouse.c \
-# 	$(SRC_DIR)/axu_minirt/events_print.c \
-# 	$(SRC_DIR)/axu_minirt/events_select.c \
-# 	$(SRC_DIR)/axu_minirt/events_utils.c \
-# 	$(SRC_DIR)/axu_minirt/init.c \
-# 	$(SRC_DIR)/axu_minirt/init_window.c
+# 	...
 
 SRCS = $(shell find $(SRC_DIR) -type f -name '*.c' -not -path '$(LIBFT_DIR)/*' -not -path '$(MLX_DIR)/*')
 OBJS = $(SRCS:$(SRC_DIR)/%.c=$(APP_OBJ_DIR)/%.o)

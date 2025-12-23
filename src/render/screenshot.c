@@ -6,11 +6,11 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/17 16:00:00 by ravazque          #+#    #+#             */
-/*   Updated: 2025/12/20 19:26:23 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/23 03:22:43 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minirt.h"
+# include "../../includes/minirt.h"
 
 static void	write_bmp_headers(int fd, int width, int height)
 {
