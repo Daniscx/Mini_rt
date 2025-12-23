@@ -18,13 +18,9 @@ VALGRIND LOG: outs_valgrind/021_invalid_mixed_errors_valgrind.log
 ========================================
 MEMORY ANALYSIS:
 ========================================
-Definitely lost: 27 bytes
+Definitely lost: 0 bytes
 Indirectly lost: 0 bytes
 Possibly lost:   0 bytes
 Still reachable: 0 bytes
-Total leaked:    27 bytes
-RESULT: LEAKS DETECTED
-
-Invalid reads:  8
-Invalid writes: 0
-0
+Total leaked:    0 bytes
+RESULT: NO LEAKS

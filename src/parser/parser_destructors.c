@@ -18,8 +18,10 @@ void free_list_of_floats(t_list **list)
     t_list *actual_node;
     t_list *aux_node;
 
-    if(!list || *list == NULL)
-        return;
+    if (!list)
+        return ;
+    if (*list == NULL)
+        return (free(list));
     actual_node = *list;
     while(actual_node)
     {
@@ -38,10 +40,11 @@ void free_al_primitive(t_list **list)
     t_list *actual_node;
     t_list *aux_node;
     t_list **actual_list;
-  
 
-    if(!list || *list == NULL)
-        return;
+    if (!list)
+        return ;
+    if (*list == NULL)
+        return (free(list));
     actual_node = *list;
     if(actual_node->content)
         free(actual_node->content);
@@ -58,29 +61,29 @@ void free_al_primitive(t_list **list)
 
 void free_primitive_light(t_list **list)
 {
-    t_list *actual_node;
-    t_list *aux_node;
-    t_list **actual_list;
+    t_list	*node;
+    t_list	*next;
+    int		idx;
 
-    if(!list || *list == NULL)
-        return;
-    aux_node = *list;
-    if(aux_node->content)
-        free_list_of_floats(aux_node->content);
-    actual_node = aux_node->next;
-    free(aux_node);
-    if(actual_node)
+    if (!list)
+        return ;
+    if (*list == NULL)
+        return (free(list));
+    node = *list;
+    idx = 0;
+    while (node)
     {
-        if(actual_node->content)
-            free(actual_node->content);
-        aux_node = actual_node->next;
-        free(actual_node);
-    }
-    if(aux_node)
-    {
-        actual_list = (t_list **)aux_node->content;
-        free_list_of_floats(actual_list);
-        free(aux_node);
+        next = node->next;
+        if (node->content)
+        {
+            if (idx == 0 || idx == 2)
+                free_list_of_floats((t_list **)node->content);
+            else
+                free(node->content);
+        }
+        free(node);
+        node = next;
+        idx++;
     }
     free(list);
 }
@@ -91,8 +94,10 @@ void free_list_of_lights_primitive(t_list **list)
     t_list *aux_node;
     t_list **actual_list;
 
-    if(!list || *list == NULL)
-        return;
+    if (!list)
+        return ;
+    if (*list == NULL)
+        return (free(list));
     actual_node = *list;
     while(actual_node)
     {
@@ -107,30 +112,30 @@ void free_list_of_lights_primitive(t_list **list)
 
 void free_list_camera_primitive(t_list **list)
 {
-    t_list *actual_node;
-    t_list *aux_node;
-    t_list **actual_list;
-    
-    if(!list || *list == NULL)
-        return;
-    actual_node = *list;
-    if(actual_node->content)
-        free_list_of_floats(actual_node->content);
-    aux_node = actual_node->next;
-    free(actual_node);
-    if(aux_node)
+    t_list	*node;
+    t_list	*next;
+    int		idx;
+
+    if (!list)
+        return ;
+    if (*list == NULL)
+        return (free(list));
+    node = *list;
+    idx = 0;
+    while (node)
     {
-        actual_list = (t_list **)aux_node->content;
-        free_list_of_floats(actual_list);
-        actual_node = aux_node->next;
-        free(aux_node);
+        next = node->next;
+        if (node->content)
+        {
+            if (idx == 0 || idx == 1)
+                free_list_of_floats((t_list **)node->content);
+            else
+                free(node->content);
+        }
+        free(node);
+        node = next;
+        idx++;
     }
-    if(actual_node)
-    {
-        if(actual_node->content)
-            free(actual_node->content);
-        free(actual_node);
-    } 
     free(list);
 }
 
@@ -235,8 +240,10 @@ void list_of_objects_destructor_primitive(t_list **list)
     t_list **actual_list;
     t_list *content_node;
 
-    if(!list || *list == NULL)
-        return;
+    if (!list)
+        return ;
+    if (*list == NULL)
+        return (free(list));
     actual_node = *list;
     while(actual_node)
     {

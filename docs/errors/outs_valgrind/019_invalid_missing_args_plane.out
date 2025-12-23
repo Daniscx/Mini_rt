@@ -13,9 +13,9 @@ VALGRIND LOG: outs_valgrind/019_invalid_missing_args_plane_valgrind.log
 ========================================
 MEMORY ANALYSIS:
 ========================================
-Definitely lost: 9 bytes
+Definitely lost: 0 bytes
 Indirectly lost: 0 bytes
 Possibly lost:   0 bytes
 Still reachable: 0 bytes
-Total leaked:    9 bytes
-RESULT: LEAKS DETECTED
+Total leaked:    0 bytes
+RESULT: NO LEAKS

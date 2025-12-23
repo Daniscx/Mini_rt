@@ -15,6 +15,6 @@ MEMORY ANALYSIS:
 Definitely lost: 0 bytes
 Indirectly lost: 0 bytes
 Possibly lost:   0 bytes
-Still reachable: 000 bytes
+Still reachable: 217 bytes
 Total leaked:    0 bytes
 RESULT: NO LEAKS

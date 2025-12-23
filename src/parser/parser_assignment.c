@@ -19,8 +19,10 @@ static void	free_file_content(t_list **content)
 	t_list		*tmp;
 	t_line_data	*line_data;
 
-	if (!content || !*content)
+	if (!content)
 		return ;
+	if (!*content)
+		return (free(content));
 	aux = *content;
 	while (aux)
 	{

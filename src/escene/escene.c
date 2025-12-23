@@ -25,14 +25,17 @@ t_scene *escene_constructor(char *file, int *msg)
     if(!primitive_escene)
         return(free(result), *msg = 1, NULL);
     if (!primitive_escene->al || !*primitive_escene->al)
-        return(error_manager("Scene must have an ambient light (A).", true),
-            escene_primitive_destructor(primitive_escene), free(result), NULL);
+        return (escene_primitive_destructor(primitive_escene), free(result),
+            error_manager("Scene must have an ambient light (A).", true), NULL);
     if (!primitive_escene->camera || !*primitive_escene->camera)
-        return(error_manager("Scene must have a camera (C).", true),
-            escene_primitive_destructor(primitive_escene), free(result), NULL);
+        return (escene_primitive_destructor(primitive_escene), free(result),
+            error_manager("Scene must have a camera (C).", true), NULL);
     if (!primitive_escene->light || !*primitive_escene->light)
-        return(error_manager("Scene must have at least one light (L).", true),
-            escene_primitive_destructor(primitive_escene), free(result), NULL);
+        return (escene_primitive_destructor(primitive_escene), free(result),
+            error_manager("Scene must have at least one light (L).", true), NULL);
+    if (!primitive_escene->object || !*primitive_escene->object)
+        return (escene_primitive_destructor(primitive_escene), free(result),
+            error_manager("Scene must have at least one object (sp, pl, cy, co).", true), NULL);
     result->al = ambient_light_constructor(get_list_of_elements(primitive_escene, AL));
     result->camera = camera_constructor(get_list_of_elements(primitive_escene, C));
     result->object = object_list_Constructor(get_list_of_elements(primitive_escene, OB));

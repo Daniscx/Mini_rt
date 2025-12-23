@@ -4,18 +4,17 @@ FILE: scenes/invalid_scenes/invalid_objects.rt
 DESCRIPTION: Escena inválida: invalid_objects.rt
 ========================================
 
+[1;36mminiRT: [1;31mError: [0mScene must have at least one object (sp, pl, cy, co).
 
-[0;96mRendering shutdown protocol detected... Finishing rendering![0;0m
-
-EXIT CODE: 0
+EXIT CODE: 1
 VALGRIND LOG: outs_valgrind/024_invalid_objects_valgrind.log
 
 ========================================
 MEMORY ANALYSIS:
 ========================================
-Definitely lost: 18 bytes
+Definitely lost: 0 bytes
 Indirectly lost: 0 bytes
 Possibly lost:   0 bytes
-Still reachable: 0 bytes
-Total leaked:    18 bytes
-RESULT: LEAKS DETECTED
+Still reachable: 217 bytes
+Total leaked:    0 bytes
+RESULT: NO LEAKS

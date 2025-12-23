@@ -16,9 +16,9 @@ VALGRIND LOG: outs_valgrind/002_invalid_all_valgrind.log
 ========================================
 MEMORY ANALYSIS:
 ========================================
-Definitely lost: 36 bytes
+Definitely lost: 0 bytes
 Indirectly lost: 0 bytes
 Possibly lost:   0 bytes
 Still reachable: 0 bytes
-Total leaked:    36 bytes
-RESULT: LEAKS DETECTED
+Total leaked:    0 bytes
+RESULT: NO LEAKS
