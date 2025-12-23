@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/15 14:10:51 by dmaestro          #+#    #+#             */
-/*   Updated: 2025/12/23 02:49:25 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/23 19:40:34 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,5 +153,7 @@ t_hit		intersect_sphere(t_ray ray, void *sphere);
 t_hit		intersect_plane(t_ray ray, void *plane);
 t_hit		intersect_cylinder(t_ray ray, void *cy);
 t_hit		intersect_cone(t_ray ray, void *co);
+
+/* ========================================================================= */
 
 #endif

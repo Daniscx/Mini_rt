@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/27 17:49:37 by dmaestro          #+#    #+#             */
-/*   Updated: 2025/12/23 03:19:21 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/23 17:19:10 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,18 +55,23 @@ static void	parse_window_size(t_minirt *rt, int argc, char **argv)
 int	main(int argc, char **argv)
 {
 	t_minirt	*rt;
+	int			msg;
 
 	if (argc < 2 || argc > 5)
 	{
 		ft_putstr_fd(PRINT_USAGE, STDERR_FILENO);
 		return (1);
 	}
+	msg = 0;
 	rt = ft_calloc(1, sizeof(t_minirt));
-    rt->scene = escene_constructor(argv[1]);
+    rt->scene = escene_constructor(argv[1], &msg);
 	if(rt->scene == NULL)
 	{
 		free(rt);
-		error_manager("Scene construction failed.", true);
+		if (msg == 1)
+			error_manager("Scene construction failed.", true);
+		else
+			exit(1);
 	}
 	parse_window_size(rt, argc, argv);
 	minirt_init(rt);

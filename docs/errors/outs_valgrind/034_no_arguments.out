@@ -1,0 +1,18 @@
+========================================
+TEST: no_arguments
+DESCRIPTION: Ejecutar sin argumentos
+========================================
+
+[38;5;208mCompile with: [0m"make cb" to use the color bleeding mode.
+[36mUsage: [0m./miniRT <scene.rt> [width] [height] [fps]
+  scene.rt        - Scene file to load.
+  width           - Window width.        (426-4096) [optional]
+  height          - Window height.       (240-2160) [optional]
+  maximum FPS     - Frames per second.   (24-60)    [optional]
+[92m
+// - If you want to define the width and height of the window, you must
+// enter at least those two parameters.
+// - Only once the width and height have been defined can the maximum FPS
+// be defined.
+// - If you want to leave a value as default but must specify a value,
+// you can use 0 or any other number in an invalid range.[0m

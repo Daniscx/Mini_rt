@@ -1,0 +1,21 @@
+========================================
+TEST: invalid_objects
+FILE: scenes/invalid_scenes/invalid_objects.rt
+DESCRIPTION: Escena inválida: invalid_objects.rt
+========================================
+
+
+[0;96mRendering shutdown protocol detected... Finishing rendering![0;0m
+
+EXIT CODE: 0
+VALGRIND LOG: outs_valgrind/024_invalid_objects_valgrind.log
+
+========================================
+MEMORY ANALYSIS:
+========================================
+Definitely lost: 18 bytes
+Indirectly lost: 0 bytes
+Possibly lost:   0 bytes
+Still reachable: 0 bytes
+Total leaked:    18 bytes
+RESULT: LEAKS DETECTED

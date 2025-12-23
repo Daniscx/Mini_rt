@@ -1,0 +1,572 @@
+==2096062== Memcheck, a memory error detector
+==2096062== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==2096062== Using Valgrind-3.18.1-42b08ed5bd-20211015 and LibVEX; rerun with -h for copyright info
+==2096062== Command: ./miniRT scenes/invalid_scenes/invalid_light_brightness_low.rt
+==2096062== Parent PID: 2096061
+==2096062== 
+--2096062-- 
+--2096062-- Valgrind options:
+--2096062--    --leak-check=full
+--2096062--    --show-leak-kinds=all
+--2096062--    --track-origins=yes
+--2096062--    --verbose
+--2096062--    --log-file=outs_valgrind/016_invalid_light_brightness_low_valgrind.log
+--2096062-- Contents of /proc/version:
+--2096062--   Linux version 5.15.0-161-generic (buildd@lcy02-amd64-072) (gcc (Ubuntu 11.4.0-1ubuntu1~22.04.2) 11.4.0, GNU ld (GNU Binutils for Ubuntu) 2.38) #171-Ubuntu SMP Sat Oct 11 08:17:01 UTC 2025
+--2096062-- 
+--2096062-- Arch and hwcaps: AMD64, LittleEndian, amd64-cx16-lzcnt-rdtscp-sse3-ssse3-avx-avx2-bmi-f16c-rdrand-rdseed
+--2096062-- Page sizes: currently 4096, max supported 4096
+--2096062-- Valgrind library directory: /usr/libexec/valgrind
+--2096062-- Reading syms from /home/ravazque/Desktop/otherProjects/minirt/miniRT
+--2096062-- Reading syms from /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
+--2096062--   Considering /usr/lib/debug/.build-id/ac/af96d7b1a6bad57b559d646233d5dc1a23257c.debug ..
+--2096062--   .. build-id is valid
+--2096062-- Reading syms from /usr/libexec/valgrind/memcheck-amd64-linux
+--2096062--    object doesn't have a symbol table
+--2096062--    object doesn't have a dynamic symbol table
+--2096062-- Scheduler: using generic scheduler lock implementation.
+--2096062-- Reading suppressions file: /usr/libexec/valgrind/default.supp
+==2096062== embedded gdbserver: reading from /tmp/vgdb-pipe-from-vgdb-to-2096062-by-ravazque-on-???
+==2096062== embedded gdbserver: writing to   /tmp/vgdb-pipe-to-vgdb-from-2096062-by-ravazque-on-???
+==2096062== embedded gdbserver: shared mem   /tmp/vgdb-pipe-shared-mem-vgdb-2096062-by-ravazque-on-???
+==2096062== 
+==2096062== TO CONTROL THIS PROCESS USING vgdb (which you probably
+==2096062== don't want to do, unless you know exactly what you're doing,
+==2096062== or are doing some strange experiment):
+==2096062==   /usr/bin/vgdb --pid=2096062 ...command...
+==2096062== 
+==2096062== TO DEBUG THIS PROCESS USING GDB: start GDB like this
+==2096062==   /path/to/gdb ./miniRT
+==2096062== and then give GDB the following command
+==2096062==   target remote | /usr/bin/vgdb --pid=2096062
+==2096062== --pid is optional if only one valgrind process is running
+==2096062== 
+--2096062-- REDIR: 0x402aa40 (ld-linux-x86-64.so.2:strlen) redirected to 0x580bcec2 (???)
+--2096062-- REDIR: 0x402a810 (ld-linux-x86-64.so.2:index) redirected to 0x580bcedc (???)
+--2096062-- Reading syms from /usr/libexec/valgrind/vgpreload_core-amd64-linux.so
+--2096062--    object doesn't have a symbol table
+--2096062-- Reading syms from /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so
+--2096062--    object doesn't have a symbol table
+==2096062== WARNING: new redirection conflicts with existing -- ignoring it
+--2096062--     old: 0x0402aa40 (strlen              ) R-> (0000.0) 0x580bcec2 ???
+--2096062--     new: 0x0402aa40 (strlen              ) R-> (2007.0) 0x0484ee30 strlen
+--2096062-- REDIR: 0x4027220 (ld-linux-x86-64.so.2:strcmp) redirected to 0x484fcd0 (strcmp)
+--2096062-- REDIR: 0x402afa0 (ld-linux-x86-64.so.2:mempcpy) redirected to 0x4853840 (mempcpy)
+--2096062-- Reading syms from /usr/lib/x86_64-linux-gnu/libXext.so.6.4.0
+--2096062--    object doesn't have a symbol table
+--2096062-- Reading syms from /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0
+--2096062--    object doesn't have a symbol table
+--2096062-- Reading syms from /usr/lib/x86_64-linux-gnu/libm.so.6
+--2096062--   Considering /usr/lib/debug/.build-id/b2/b4cd0f73a7c7a6da5ba4126bceb33ce68853d5.debug ..
+--2096062--   .. build-id is valid
+--2096062-- Reading syms from /usr/lib/x86_64-linux-gnu/libz.so.1.2.11
+--2096062--    object doesn't have a symbol table
+--2096062-- Reading syms from /usr/lib/x86_64-linux-gnu/libc.so.6
+--2096062--   Considering /usr/lib/debug/.build-id/4f/7b0c955c3d81d7cac1501a2498b69d1d82bfe7.debug ..
+--2096062--   .. build-id is valid
+==2096062== WARNING: new redirection conflicts with existing -- ignoring it
+--2096062--     old: 0x04b71c60 (memalign            ) R-> (1011.0) 0x0484e080 memalign
+--2096062--     new: 0x04b71c60 (memalign            ) R-> (1017.0) 0x0484e050 aligned_alloc
+==2096062== WARNING: new redirection conflicts with existing -- ignoring it
+--2096062--     old: 0x04b71c60 (memalign            ) R-> (1011.0) 0x0484e080 memalign
+--2096062--     new: 0x04b71c60 (memalign            ) R-> (1017.0) 0x0484e020 aligned_alloc
+==2096062== WARNING: new redirection conflicts with existing -- ignoring it
+--2096062--     old: 0x04b71c60 (memalign            ) R-> (1011.0) 0x0484e080 memalign
+--2096062--     new: 0x04b71c60 (memalign            ) R-> (1017.0) 0x0484e050 aligned_alloc
+==2096062== WARNING: new redirection conflicts with existing -- ignoring it
+--2096062--     old: 0x04b71c60 (memalign            ) R-> (1011.0) 0x0484e080 memalign
+--2096062--     new: 0x04b71c60 (memalign            ) R-> (1017.0) 0x0484e020 aligned_alloc
+--2096062-- Reading syms from /usr/lib/x86_64-linux-gnu/libxcb.so.1.1.0
+--2096062--    object doesn't have a symbol table
+--2096062-- Reading syms from /usr/lib/x86_64-linux-gnu/libXau.so.6.0.0
+--2096062--    object doesn't have a symbol table
+--2096062-- Reading syms from /usr/lib/x86_64-linux-gnu/libXdmcp.so.6.0.0
+--2096062--    object doesn't have a symbol table
+--2096062-- Reading syms from /usr/lib/x86_64-linux-gnu/libbsd.so.0.11.5
+--2096062--    object doesn't have a symbol table
+--2096062-- Reading syms from /usr/lib/x86_64-linux-gnu/libmd.so.0.0.5
+--2096062--    object doesn't have a symbol table
+--2096062-- REDIR: 0x4b74720 (libc.so.6:strnlen) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--2096062-- REDIR: 0x4b749e0 (libc.so.6:strpbrk) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--2096062-- REDIR: 0x4b742e0 (libc.so.6:strcmp) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--2096062-- REDIR: 0x4b92cd0 (libc.so.6:wcsnlen) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--2096062-- REDIR: 0x4b756d0 (libc.so.6:memset) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--2096062-- REDIR: 0x4b91540 (libc.so.6:wcslen) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--2096062-- REDIR: 0x4b75c10 (libc.so.6:memcpy@@GLIBC_2.14) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--2096062-- REDIR: 0x4b91370 (libc.so.6:wcschr) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--2096062-- REDIR: 0x4b74260 (libc.so.6:index) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--2096062-- REDIR: 0x4b74960 (libc.so.6:rindex) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--2096062-- REDIR: 0x4b755a0 (libc.so.6:memmove) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+==2096062== Preferring higher priority redirection:
+--2096062--     old: 0x04c6c840 (__memcpy_avx_unalign) R-> (2018.0) 0x04850f90 __memcpy_avx_unaligned_erms
+--2096062--     new: 0x04c6c840 (__memcpy_avx_unalign) R-> (2018.1) 0x04852880 memmove
+--2096062-- REDIR: 0x4b913f0 (libc.so.6:wcscmp) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--2096062-- REDIR: 0x4b759e0 (libc.so.6:stpncpy) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--2096062-- REDIR: 0x4b919b0 (libc.so.6:wmemchr) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--2096062-- REDIR: 0x4b74830 (libc.so.6:strncmp) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--2096062-- REDIR: 0x4b75a70 (libc.so.6:strcasecmp) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--2096062-- REDIR: 0x4b74420 (libc.so.6:strcspn) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--2096062-- REDIR: 0x4b91470 (libc.so.6:wcscpy) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--2096062-- REDIR: 0x4b741d0 (libc.so.6:strcat) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--2096062-- REDIR: 0x4b75b60 (libc.so.6:strncasecmp_l) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--2096062-- REDIR: 0x4b75480 (libc.so.6:bcmp) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--2096062-- REDIR: 0x4b7d570 (libc.so.6:memrchr) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--2096062-- REDIR: 0x4b77010 (libc.so.6:strchrnul) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--2096062-- REDIR: 0x4b74390 (libc.so.6:strcpy) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--2096062-- REDIR: 0x4b75b10 (libc.so.6:strcasecmp_l) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--2096062-- REDIR: 0x4b746a0 (libc.so.6:strlen) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--2096062-- REDIR: 0x4b748d0 (libc.so.6:strncpy) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--2096062-- REDIR: 0x4b75950 (libc.so.6:stpcpy) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--2096062-- REDIR: 0x4b753f0 (libc.so.6:memchr) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--2096062-- REDIR: 0x4b74b00 (libc.so.6:strspn) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--2096062-- REDIR: 0x4b757d0 (libc.so.6:mempcpy) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--2096062-- REDIR: 0x4b75ac0 (libc.so.6:strncasecmp) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--2096062-- REDIR: 0x4b76f80 (libc.so.6:rawmemchr) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--2096062-- REDIR: 0x4c69690 (libc.so.6:__strrchr_avx2) redirected to 0x484e810 (rindex)
+--2096062-- REDIR: 0x4b710a0 (libc.so.6:malloc) redirected to 0x4848820 (malloc)
+--2096062-- REDIR: 0x4b713e0 (libc.so.6:free) redirected to 0x484b210 (free)
+==2096062== Invalid read of size 8
+==2096062==    at 0x40A155: free_primitive_light (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40AB58: light_parser (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x409E63: primitive_escene_t_asignation (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40B96B: escene_primiteve_contructor (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40536D: escene_constructor (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x4067E6: main (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==  Address 0x4d5b8e0 is 0 bytes inside a block of size 16 free'd
+==2096062==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2096062==    by 0x40A131: free_primitive_light (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40AB58: light_parser (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x409E63: primitive_escene_t_asignation (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40B96B: escene_primiteve_contructor (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40536D: escene_constructor (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x4067E6: main (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==  Block was alloc'd at
+==2096062==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2096062==    by 0x40CF2D: ft_lstnew (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40A980: light_parser (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x409E63: primitive_escene_t_asignation (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40B96B: escene_primiteve_contructor (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40536D: escene_constructor (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x4067E6: main (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062== 
+==2096062== Invalid read of size 8
+==2096062==    at 0x40A15E: free_primitive_light (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40AB58: light_parser (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x409E63: primitive_escene_t_asignation (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40B96B: escene_primiteve_contructor (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40536D: escene_constructor (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x4067E6: main (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==  Address 0x4d5b6b0 is 0 bytes inside a block of size 9 free'd
+==2096062==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2096062==    by 0x40A124: free_primitive_light (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40AB58: light_parser (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x409E63: primitive_escene_t_asignation (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40B96B: escene_primiteve_contructor (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40536D: escene_constructor (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x4067E6: main (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==  Block was alloc'd at
+==2096062==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2096062==    by 0x40CCAC: ft_calloc (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40BCF0: list_of_float_checker (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40A964: light_parser (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x409E63: primitive_escene_t_asignation (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40B96B: escene_primiteve_contructor (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40536D: escene_constructor (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x4067E6: main (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062== 
+==2096062== Invalid read of size 8
+==2096062==    at 0x40A180: free_primitive_light (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40AB58: light_parser (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x409E63: primitive_escene_t_asignation (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40B96B: escene_primiteve_contructor (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40536D: escene_constructor (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x4067E6: main (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==  Address 0x4d5b750 is 0 bytes inside a block of size 16 free'd
+==2096062==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2096062==    by 0x40A0F7: free_primitive_light (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40AB58: light_parser (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x409E63: primitive_escene_t_asignation (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40B96B: escene_primiteve_contructor (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40536D: escene_constructor (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x4067E6: main (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==  Block was alloc'd at
+==2096062==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2096062==    by 0x40CF2D: ft_lstnew (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40BE35: list_of_float_checker (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40A964: light_parser (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x409E63: primitive_escene_t_asignation (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40B96B: escene_primiteve_contructor (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40536D: escene_constructor (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x4067E6: main (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062== 
+==2096062== Invalid read of size 8
+==2096062==    at 0x40A183: free_primitive_light (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40AB58: light_parser (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x409E63: primitive_escene_t_asignation (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40B96B: escene_primiteve_contructor (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40536D: escene_constructor (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x4067E6: main (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==  Address 0x4d5b758 is 8 bytes inside a block of size 16 free'd
+==2096062==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2096062==    by 0x40A0F7: free_primitive_light (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40AB58: light_parser (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x409E63: primitive_escene_t_asignation (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40B96B: escene_primiteve_contructor (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40536D: escene_constructor (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x4067E6: main (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==  Block was alloc'd at
+==2096062==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2096062==    by 0x40CF2D: ft_lstnew (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40BE35: list_of_float_checker (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40A964: light_parser (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x409E63: primitive_escene_t_asignation (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40B96B: escene_primiteve_contructor (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40536D: escene_constructor (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x4067E6: main (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062== 
+==2096062== Invalid free() / delete / delete[] / realloc()
+==2096062==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2096062==    by 0x40A190: free_primitive_light (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40AB58: light_parser (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x409E63: primitive_escene_t_asignation (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40B96B: escene_primiteve_contructor (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40536D: escene_constructor (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x4067E6: main (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==  Address 0x4d5b700 is 0 bytes inside a block of size 5 free'd
+==2096062==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2096062==    by 0x40A110: free_primitive_light (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40AB58: light_parser (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x409E63: primitive_escene_t_asignation (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40B96B: escene_primiteve_contructor (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40536D: escene_constructor (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x4067E6: main (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==  Block was alloc'd at
+==2096062==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2096062==    by 0x40CCAC: ft_calloc (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40BE1E: list_of_float_checker (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40A964: light_parser (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x409E63: primitive_escene_t_asignation (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40B96B: escene_primiteve_contructor (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40536D: escene_constructor (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x4067E6: main (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062== 
+==2096062== Invalid free() / delete / delete[] / realloc()
+==2096062==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2096062==    by 0x40A177: free_primitive_light (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40AB58: light_parser (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x409E63: primitive_escene_t_asignation (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40B96B: escene_primiteve_contructor (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40536D: escene_constructor (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x4067E6: main (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==  Address 0x4d5b750 is 0 bytes inside a block of size 16 free'd
+==2096062==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2096062==    by 0x40A0F7: free_primitive_light (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40AB58: light_parser (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x409E63: primitive_escene_t_asignation (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40B96B: escene_primiteve_contructor (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40536D: escene_constructor (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x4067E6: main (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==  Block was alloc'd at
+==2096062==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2096062==    by 0x40CF2D: ft_lstnew (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40BE35: list_of_float_checker (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40A964: light_parser (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x409E63: primitive_escene_t_asignation (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40B96B: escene_primiteve_contructor (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40536D: escene_constructor (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x4067E6: main (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062== 
+==2096062== Invalid free() / delete / delete[] / realloc()
+==2096062==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2096062==    by 0x40A19A: free_primitive_light (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40AB58: light_parser (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x409E63: primitive_escene_t_asignation (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40B96B: escene_primiteve_contructor (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40536D: escene_constructor (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x4067E6: main (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==  Address 0x4d5b6b0 is 0 bytes inside a block of size 9 free'd
+==2096062==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2096062==    by 0x40A124: free_primitive_light (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40AB58: light_parser (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x409E63: primitive_escene_t_asignation (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40B96B: escene_primiteve_contructor (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40536D: escene_constructor (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x4067E6: main (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==  Block was alloc'd at
+==2096062==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2096062==    by 0x40CCAC: ft_calloc (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40BCF0: list_of_float_checker (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40A964: light_parser (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x409E63: primitive_escene_t_asignation (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40B96B: escene_primiteve_contructor (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40536D: escene_constructor (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x4067E6: main (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062== 
+==2096062== Invalid free() / delete / delete[] / realloc()
+==2096062==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2096062==    by 0x40A1A2: free_primitive_light (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40AB58: light_parser (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x409E63: primitive_escene_t_asignation (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40B96B: escene_primiteve_contructor (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40536D: escene_constructor (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x4067E6: main (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==  Address 0x4d5b8e0 is 0 bytes inside a block of size 16 free'd
+==2096062==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2096062==    by 0x40A131: free_primitive_light (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40AB58: light_parser (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x409E63: primitive_escene_t_asignation (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40B96B: escene_primiteve_contructor (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40536D: escene_constructor (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x4067E6: main (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==  Block was alloc'd at
+==2096062==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2096062==    by 0x40CF2D: ft_lstnew (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40A980: light_parser (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x409E63: primitive_escene_t_asignation (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40B96B: escene_primiteve_contructor (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40536D: escene_constructor (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x4067E6: main (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062== 
+==2096062== 
+==2096062== HEAP SUMMARY:
+==2096062==     in use at exit: 9 bytes in 1 blocks
+==2096062==   total heap usage: 152 allocs, 159 frees, 10,461 bytes allocated
+==2096062== 
+==2096062== Searching for pointers to 1 not-freed blocks
+==2096062== Checked 176,064 bytes
+==2096062== 
+==2096062== 9 bytes in 1 blocks are definitely lost in loss record 1 of 1
+==2096062==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2096062==    by 0x40CCAC: ft_calloc (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x409D9D: primitive_escene_t_asignation (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40B96B: escene_primiteve_contructor (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40536D: escene_constructor (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x4067E6: main (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062== 
+==2096062== LEAK SUMMARY:
+==2096062==    definitely lost: 9 bytes in 1 blocks
+==2096062==    indirectly lost: 0 bytes in 0 blocks
+==2096062==      possibly lost: 0 bytes in 0 blocks
+==2096062==    still reachable: 0 bytes in 0 blocks
+==2096062==         suppressed: 0 bytes in 0 blocks
+==2096062== 
+==2096062== ERROR SUMMARY: 17 errors from 9 contexts (suppressed: 0 from 0)
+==2096062== 
+==2096062== 1 errors in context 1 of 9:
+==2096062== Invalid free() / delete / delete[] / realloc()
+==2096062==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2096062==    by 0x40A1A2: free_primitive_light (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40AB58: light_parser (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x409E63: primitive_escene_t_asignation (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40B96B: escene_primiteve_contructor (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40536D: escene_constructor (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x4067E6: main (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==  Address 0x4d5b8e0 is 0 bytes inside a block of size 16 free'd
+==2096062==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2096062==    by 0x40A131: free_primitive_light (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40AB58: light_parser (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x409E63: primitive_escene_t_asignation (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40B96B: escene_primiteve_contructor (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40536D: escene_constructor (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x4067E6: main (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==  Block was alloc'd at
+==2096062==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2096062==    by 0x40CF2D: ft_lstnew (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40A980: light_parser (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x409E63: primitive_escene_t_asignation (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40B96B: escene_primiteve_contructor (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40536D: escene_constructor (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x4067E6: main (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062== 
+==2096062== 
+==2096062== 1 errors in context 2 of 9:
+==2096062== Invalid free() / delete / delete[] / realloc()
+==2096062==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2096062==    by 0x40A19A: free_primitive_light (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40AB58: light_parser (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x409E63: primitive_escene_t_asignation (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40B96B: escene_primiteve_contructor (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40536D: escene_constructor (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x4067E6: main (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==  Address 0x4d5b6b0 is 0 bytes inside a block of size 9 free'd
+==2096062==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2096062==    by 0x40A124: free_primitive_light (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40AB58: light_parser (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x409E63: primitive_escene_t_asignation (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40B96B: escene_primiteve_contructor (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40536D: escene_constructor (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x4067E6: main (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==  Block was alloc'd at
+==2096062==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2096062==    by 0x40CCAC: ft_calloc (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40BCF0: list_of_float_checker (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40A964: light_parser (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x409E63: primitive_escene_t_asignation (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40B96B: escene_primiteve_contructor (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40536D: escene_constructor (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x4067E6: main (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062== 
+==2096062== 
+==2096062== 1 errors in context 3 of 9:
+==2096062== Invalid read of size 8
+==2096062==    at 0x40A15E: free_primitive_light (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40AB58: light_parser (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x409E63: primitive_escene_t_asignation (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40B96B: escene_primiteve_contructor (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40536D: escene_constructor (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x4067E6: main (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==  Address 0x4d5b6b0 is 0 bytes inside a block of size 9 free'd
+==2096062==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2096062==    by 0x40A124: free_primitive_light (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40AB58: light_parser (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x409E63: primitive_escene_t_asignation (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40B96B: escene_primiteve_contructor (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40536D: escene_constructor (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x4067E6: main (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==  Block was alloc'd at
+==2096062==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2096062==    by 0x40CCAC: ft_calloc (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40BCF0: list_of_float_checker (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40A964: light_parser (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x409E63: primitive_escene_t_asignation (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40B96B: escene_primiteve_contructor (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40536D: escene_constructor (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x4067E6: main (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062== 
+==2096062== 
+==2096062== 1 errors in context 4 of 9:
+==2096062== Invalid read of size 8
+==2096062==    at 0x40A155: free_primitive_light (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40AB58: light_parser (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x409E63: primitive_escene_t_asignation (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40B96B: escene_primiteve_contructor (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40536D: escene_constructor (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x4067E6: main (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==  Address 0x4d5b8e0 is 0 bytes inside a block of size 16 free'd
+==2096062==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2096062==    by 0x40A131: free_primitive_light (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40AB58: light_parser (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x409E63: primitive_escene_t_asignation (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40B96B: escene_primiteve_contructor (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40536D: escene_constructor (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x4067E6: main (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==  Block was alloc'd at
+==2096062==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2096062==    by 0x40CF2D: ft_lstnew (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40A980: light_parser (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x409E63: primitive_escene_t_asignation (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40B96B: escene_primiteve_contructor (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40536D: escene_constructor (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x4067E6: main (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062== 
+==2096062== 
+==2096062== 3 errors in context 5 of 9:
+==2096062== Invalid free() / delete / delete[] / realloc()
+==2096062==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2096062==    by 0x40A177: free_primitive_light (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40AB58: light_parser (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x409E63: primitive_escene_t_asignation (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40B96B: escene_primiteve_contructor (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40536D: escene_constructor (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x4067E6: main (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==  Address 0x4d5b750 is 0 bytes inside a block of size 16 free'd
+==2096062==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2096062==    by 0x40A0F7: free_primitive_light (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40AB58: light_parser (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x409E63: primitive_escene_t_asignation (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40B96B: escene_primiteve_contructor (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40536D: escene_constructor (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x4067E6: main (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==  Block was alloc'd at
+==2096062==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2096062==    by 0x40CF2D: ft_lstnew (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40BE35: list_of_float_checker (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40A964: light_parser (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x409E63: primitive_escene_t_asignation (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40B96B: escene_primiteve_contructor (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40536D: escene_constructor (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x4067E6: main (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062== 
+==2096062== 
+==2096062== 3 errors in context 6 of 9:
+==2096062== Invalid free() / delete / delete[] / realloc()
+==2096062==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2096062==    by 0x40A190: free_primitive_light (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40AB58: light_parser (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x409E63: primitive_escene_t_asignation (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40B96B: escene_primiteve_contructor (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40536D: escene_constructor (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x4067E6: main (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==  Address 0x4d5b700 is 0 bytes inside a block of size 5 free'd
+==2096062==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2096062==    by 0x40A110: free_primitive_light (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40AB58: light_parser (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x409E63: primitive_escene_t_asignation (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40B96B: escene_primiteve_contructor (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40536D: escene_constructor (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x4067E6: main (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==  Block was alloc'd at
+==2096062==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2096062==    by 0x40CCAC: ft_calloc (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40BE1E: list_of_float_checker (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40A964: light_parser (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x409E63: primitive_escene_t_asignation (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40B96B: escene_primiteve_contructor (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40536D: escene_constructor (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x4067E6: main (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062== 
+==2096062== 
+==2096062== 3 errors in context 7 of 9:
+==2096062== Invalid read of size 8
+==2096062==    at 0x40A183: free_primitive_light (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40AB58: light_parser (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x409E63: primitive_escene_t_asignation (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40B96B: escene_primiteve_contructor (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40536D: escene_constructor (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x4067E6: main (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==  Address 0x4d5b758 is 8 bytes inside a block of size 16 free'd
+==2096062==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2096062==    by 0x40A0F7: free_primitive_light (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40AB58: light_parser (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x409E63: primitive_escene_t_asignation (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40B96B: escene_primiteve_contructor (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40536D: escene_constructor (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x4067E6: main (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==  Block was alloc'd at
+==2096062==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2096062==    by 0x40CF2D: ft_lstnew (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40BE35: list_of_float_checker (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40A964: light_parser (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x409E63: primitive_escene_t_asignation (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40B96B: escene_primiteve_contructor (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40536D: escene_constructor (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x4067E6: main (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062== 
+==2096062== 
+==2096062== 3 errors in context 8 of 9:
+==2096062== Invalid read of size 8
+==2096062==    at 0x40A180: free_primitive_light (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40AB58: light_parser (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x409E63: primitive_escene_t_asignation (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40B96B: escene_primiteve_contructor (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40536D: escene_constructor (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x4067E6: main (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==  Address 0x4d5b750 is 0 bytes inside a block of size 16 free'd
+==2096062==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2096062==    by 0x40A0F7: free_primitive_light (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40AB58: light_parser (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x409E63: primitive_escene_t_asignation (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40B96B: escene_primiteve_contructor (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40536D: escene_constructor (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x4067E6: main (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==  Block was alloc'd at
+==2096062==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2096062==    by 0x40CF2D: ft_lstnew (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40BE35: list_of_float_checker (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40A964: light_parser (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x409E63: primitive_escene_t_asignation (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40B96B: escene_primiteve_contructor (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x40536D: escene_constructor (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062==    by 0x4067E6: main (in /home/ravazque/Desktop/otherProjects/minirt/miniRT)
+==2096062== 
+==2096062== ERROR SUMMARY: 17 errors from 9 contexts (suppressed: 0 from 0)

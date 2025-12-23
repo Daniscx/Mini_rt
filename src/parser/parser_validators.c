@@ -45,12 +45,12 @@ bool str_empty(char *str)
     return(true);
 }
 
-bool correct_number_of_elements(char **element)
+bool correct_number_of_elements(char **element, int line, t_error_list *errors)
 {
     size_t nb_of_args;
     size_t len;
     if (!element || !element[0])
-        return (false);
+        return (error_list_add(errors, line, "Empty or invalid line.", NULL), false);
     len = ft_strlen(element[0]);
     nb_of_args = double_array_len(element + 1);
     if( ft_strncmp(element[0], "C", len) == 0|| ft_strncmp(element[0], "pl", len) == 0 || ft_strncmp(element[0], "sp", len) == 0 || ft_strncmp(element[0], "plc", len) == 0)
@@ -58,22 +58,28 @@ bool correct_number_of_elements(char **element)
         if(nb_of_args == 3)
             return(true);
         else
-            return(false);
+            return(error_list_add(errors, line, "Expected 3 arguments.", element[0]), false);
     }
     else if(ft_strncmp(element[0], "L", len) == 0 && (nb_of_args == 2 || nb_of_args == 3))
         return(true);
+    else if(ft_strncmp(element[0], "L", len) == 0)
+        return(error_list_add(errors, line, "Expected 2 or 3 arguments.", element[0]), false);
     else if(ft_strncmp(element[0], "A", len) == 0  && nb_of_args == 2 )
         return(true);
+    else if(ft_strncmp(element[0], "A", len) == 0)
+        return(error_list_add(errors, line, "Expected 2 arguments.", element[0]), false);
     else if ((ft_strncmp(element[0], "cy", len) == 0 || ft_strncmp(element[0], "co", len) == 0 || ft_strncmp(element[0], "spt", len) == 0) && nb_of_args ==  5)
         return(true);
+    else if (ft_strncmp(element[0], "cy", len) == 0 || ft_strncmp(element[0], "co", len) == 0 || ft_strncmp(element[0], "spt", len) == 0)
+        return(error_list_add(errors, line, "Expected 5 arguments.", element[0]), false);
     else
     {
-        error_manager("The file contains incorrect elements.", false);
+        error_list_add(errors, line, "Unknown element type.", element[0]);
         return(false);
     }
 }
 
-t_list **list_of_float_checker(char **splited_element, float max  , float min, bool range)
+t_list **list_of_float_checker(char **splited_element, float max  , float min, bool range, int line, t_error_list *errors, char *param_name)
 {
     t_list **result;
     int i;
@@ -81,7 +87,7 @@ t_list **list_of_float_checker(char **splited_element, float max  , float min, b
     float *actual_float;
 
     if(double_array_len(splited_element) != 3)
-        return(error_manager("No valid parameter found in:", false), NULL);
+        return(error_list_add(errors, line, "Expected 3 comma-separated values.", param_name), NULL);
     j = 0;
     i = 0;
     result = ft_calloc(1, sizeof(t_list *));
@@ -93,7 +99,7 @@ t_list **list_of_float_checker(char **splited_element, float max  , float min, b
         {
             if(ft_isdigit(splited_element[j][i]) == 0 && splited_element[j][i] != '.')
             {
-                error_manager("No valid parameter found in:", false);
+                error_list_add(errors, line, "Invalid numeric value.", param_name);
                 free_list_of_floats(result);
                 return(NULL);
             }
@@ -104,7 +110,7 @@ t_list **list_of_float_checker(char **splited_element, float max  , float min, b
         *actual_float = ft_atof(splited_element[j]);
         if(if_betwen_values(*actual_float, min, max) == false && range == true)
         {
-            error_manager("No valid parameter found in:", false);
+            error_list_add(errors, line, "Value out of allowed range.", param_name);
             free(actual_float);
             free_list_of_floats(result);
             return(NULL);

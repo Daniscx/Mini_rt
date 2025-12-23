@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/20 18:41:42 by ravazque          #+#    #+#             */
-/*   Updated: 2025/12/23 02:15:07 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/23 19:40:43 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,5 +51,7 @@ There must be at least one object and one light."
 # define SD_PROTOCOL "\
 \n\033[0;96mRendering shutdown protocol detected... \
 Finishing rendering!\033[0;0m\n"
+
+/* ========================================================================= */
 
 #endif

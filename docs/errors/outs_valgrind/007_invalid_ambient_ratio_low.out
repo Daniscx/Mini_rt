@@ -1,0 +1,21 @@
+========================================
+TEST: invalid_ambient_ratio_low
+FILE: scenes/invalid_scenes/invalid_ambient_ratio_low.rt
+DESCRIPTION: Escena inválida: invalid_ambient_ratio_low.rt
+========================================
+
+[1;36mminiRT: [1;31mError (Line 1): [0mIn parameter '[1;33mratio[0m': Value must be between 0.0 and 1.0.
+[1;36mminiRT: [1;31mError: [0mScene construction failed.
+
+EXIT CODE: 1
+VALGRIND LOG: outs_valgrind/007_invalid_ambient_ratio_low_valgrind.log
+
+========================================
+MEMORY ANALYSIS:
+========================================
+Definitely lost: 9 bytes
+Indirectly lost: 0 bytes
+Possibly lost:   0 bytes
+Still reachable: 0 bytes
+Total leaked:    9 bytes
+RESULT: LEAKS DETECTED

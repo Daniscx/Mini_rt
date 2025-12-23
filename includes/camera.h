@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/15 12:46:10 by dmaestro          #+#    #+#             */
-/*   Updated: 2025/12/23 02:47:59 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/23 19:41:03 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,5 +102,7 @@ void		warp_mouse_center(t_minirt *rt);
 
 void		center_window_on_screen(t_minirt *rt);
 void		resize_window(t_minirt *rt, int width, int height);
+
+/* ========================================================================= */
 
 #endif

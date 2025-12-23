@@ -1,0 +1,20 @@
+========================================
+TEST: nonexistent
+FILE: scenes/nonexistent_file.rt
+DESCRIPTION: Archivo que no existe
+========================================
+
+[1;36mminiRT: [1;31mError: [0mInvalid file. Please check if it exists.
+
+EXIT CODE: 1
+VALGRIND LOG: outs_valgrind/032_nonexistent_valgrind.log
+
+========================================
+MEMORY ANALYSIS:
+========================================
+Definitely lost: 0 bytes
+Indirectly lost: 0 bytes
+Possibly lost:   0 bytes
+Still reachable: 250 bytes
+Total leaked:    0 bytes
+RESULT: NO LEAKS

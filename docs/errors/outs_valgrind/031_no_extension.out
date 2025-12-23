@@ -1,0 +1,25 @@
+========================================
+TEST: no_extension
+FILE: scenes/invalid_scenes/invalid_all
+DESCRIPTION: Archivo sin extensión .rt
+========================================
+
+[32mAdded .rt extension to file: [1;32mscenes/invalid_scenes/invalid_all[0m
+[1;36mminiRT: [1;31mError (Line 1): [0mIn parameter '[1;33mA[0m': Expected 2 arguments.
+[1;36mminiRT: [1;31mError (Line 3): [0mIn parameter '[1;33mC[0m': Expected 3 arguments.
+[1;36mminiRT: [1;31mError (Line 5): [0mIn parameter '[1;33mL[0m': Expected 2 or 3 arguments.
+[1;36mminiRT: [1;31mError (Line 7): [0mIn parameter '[1;33mco[0m': Expected 5 arguments.
+[1;36mminiRT: [1;31mError: [0mScene construction failed.
+
+EXIT CODE: 1
+VALGRIND LOG: outs_valgrind/031_no_extension_valgrind.log
+
+========================================
+MEMORY ANALYSIS:
+========================================
+Definitely lost: 36 bytes
+Indirectly lost: 0 bytes
+Possibly lost:   0 bytes
+Still reachable: 0 bytes
+Total leaked:    36 bytes
+RESULT: LEAKS DETECTED

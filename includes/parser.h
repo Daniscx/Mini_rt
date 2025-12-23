@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 17:13:55 by dmaestro          #+#    #+#             */
-/*   Updated: 2025/12/23 03:24:20 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/23 19:40:21 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,5 +41,7 @@ void				escene_primitive_destructor(t_primitive_escene *primitive);
 
 bool				if_betwen_values(float elem, float min, float max);
 t_list				**get_list_of_elements(t_primitive_escene *prim, enum e_type_list id);	// line break to pass norminette - [ 42 ]
+
+/* ========================================================================= */
 
 #endif

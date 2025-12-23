@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/18 03:56:15 by dmaestro          #+#    #+#             */
-/*   Updated: 2025/12/23 02:54:06 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/23 19:40:16 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,5 +34,7 @@ typedef struct s_ray
 t_ray	ray_new(t_vec3 origin, t_vec3 direction);
 t_vec3	ray_at(t_ray ray, double t);
 t_ray	ray_from_camera(t_camera *cam, int x, int y, t_img *img);
+
+/* ========================================================================= */
 
 #endif

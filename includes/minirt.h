@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/27 18:00:48 by dmaestro          #+#    #+#             */
-/*   Updated: 2025/12/23 02:47:42 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/23 19:40:28 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,5 +65,7 @@ void	print_drop_msg(t_object *obj, t_vec3 pos);
 
 void	generate_filename(char *filename);
 int		save_bmp(t_img *img, char *filename);
+
+/* ========================================================================= */
 
 #endif

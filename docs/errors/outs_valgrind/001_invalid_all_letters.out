@@ -1,0 +1,25 @@
+========================================
+TEST: invalid_all_letters
+FILE: scenes/invalid_scenes/invalid_all_letters.rt
+DESCRIPTION: Escena inválida: invalid_all_letters.rt
+========================================
+
+[1;36mminiRT: [1;31mError (Line 1): [0mIn parameter '[1;33mcolor[0m': Invalid numeric value.
+[1;36mminiRT: [1;31mError (Line 3): [0mIn parameter '[1;33mFOV[0m': Invalid numeric value.
+[1;36mminiRT: [1;31mError (Line 5): [0mIn parameter '[1;33mcolor[0m': Invalid numeric value.
+[1;36mminiRT: [1;31mError (Line 7): [0mIn parameter '[1;33mcolor[0m': Invalid numeric value.
+[1;36mminiRT: [1;31mError (Line 8): [0mIn parameter '[1;33mcolor[0m': Invalid numeric value.
+[1;36mminiRT: [1;31mError: [0mScene construction failed.
+
+EXIT CODE: 1
+VALGRIND LOG: outs_valgrind/001_invalid_all_letters_valgrind.log
+
+========================================
+MEMORY ANALYSIS:
+========================================
+Definitely lost: 18 bytes
+Indirectly lost: 0 bytes
+Possibly lost:   0 bytes
+Still reachable: 0 bytes
+Total leaked:    18 bytes
+RESULT: LEAKS DETECTED

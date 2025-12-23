@@ -1,0 +1,10 @@
+========================================
+TEST: invalid_light_brightness_low
+FILE: scenes/invalid_scenes/invalid_light_brightness_low.rt
+DESCRIPTION: Escena inválida: invalid_light_brightness_low.rt
+========================================
+
+timeout: the monitored command dumped core
+
+EXIT CODE: 139
+RESULT: PASS - Error detectado correctamente

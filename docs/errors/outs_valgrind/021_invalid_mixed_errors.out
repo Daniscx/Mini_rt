@@ -1,0 +1,30 @@
+========================================
+TEST: invalid_mixed_errors
+FILE: scenes/invalid_scenes/invalid_mixed_errors.rt
+DESCRIPTION: Escena inválida: invalid_mixed_errors.rt
+========================================
+
+[1;36mminiRT: [1;31mError (Line 1): [0mIn parameter '[1;33mratio[0m': Value must be between 0.0 and 1.0.
+[1;36mminiRT: [1;31mError (Line 3): [0mIn parameter '[1;33mFOV[0m': Value must be between 0 and 180.
+[1;36mminiRT: [1;31mError (Line 5): [0mIn parameter '[1;33mbrightness[0m': Value must be between 0.0 and 1.0.
+[1;36mminiRT: [1;31mError (Line 7): [0mIn parameter '[1;33mdiameter[0m': Invalid numeric value.
+[1;36mminiRT: [1;31mError (Line 9): [0mIn parameter '[1;33mnormal[0m': Value out of allowed range.
+[1;36mminiRT: [1;31mError (Line 11): [0mIn parameter '[1;33mheight[0m': Invalid numeric value.
+[1;36mminiRT: [1;31mError: [0mScene construction failed.
+
+EXIT CODE: 1
+VALGRIND LOG: outs_valgrind/021_invalid_mixed_errors_valgrind.log
+
+========================================
+MEMORY ANALYSIS:
+========================================
+Definitely lost: 27 bytes
+Indirectly lost: 0 bytes
+Possibly lost:   0 bytes
+Still reachable: 0 bytes
+Total leaked:    27 bytes
+RESULT: LEAKS DETECTED
+
+Invalid reads:  8
+Invalid writes: 0
+0

@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/20 22:28:19 by dmaestro          #+#    #+#             */
-/*   Updated: 2025/12/23 02:47:36 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/23 19:40:46 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,5 +42,7 @@ typedef struct s_input
 	t_vec3	drag_plane_point;
 	t_vec3	drag_plane_normal;
 }	t_input;
+
+/* ========================================================================= */
 
 #endif

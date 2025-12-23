@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 16:43:48 by dmaestro          #+#    #+#             */
-/*   Updated: 2025/12/23 02:49:53 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/23 20:22:20 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ typedef struct s_scene
 
 /* =[ Scene Functions ]===================================================== */
 
-t_scene	*escene_constructor(char *file);
+t_scene	*escene_constructor(char *file, int *msg);
 void	escene_destructor(t_scene *escene);
 
 /* =[ Debug Print Functions ]=============================================== */

@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/15 13:33:38 by dmaestro          #+#    #+#             */
-/*   Updated: 2025/12/23 02:48:29 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/23 19:40:50 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,5 +67,7 @@ void	light_list_destructor(t_list **lights);
 t_vec3	apply_checkerboard(t_hit *hit);
 t_vec3	calculate_color_bleeding(t_hit hit, t_scene *scene);
 t_vec3	calculate_lighting(t_hit hit, t_scene *scene, t_vec3 view_dir);
+
+/* ========================================================================= */
 
 #endif

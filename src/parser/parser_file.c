@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 12:30:00 by dmaestro          #+#    #+#             */
-/*   Updated: 2025/12/23 03:40:28 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/23 19:42:28 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static char 	*try_file_no_rt(char *file)
 	if (fd_tester >= 0)
 	{
 		close(fd_tester);
-		print_autocomplete_msg(1, try_rt);
+		print_autocomplete_msg(1, file);
 		return (try_rt);
 	}
 	free(try_rt);
@@ -59,12 +59,12 @@ static char 	*try_file_no_rt(char *file)
 	{
 		free(try_rt);
 		close(fd_tester);
-		print_autocomplete_msg(2, try_scene);
+		print_autocomplete_msg(2, file);
 		return (try_scene);
 	}
 	free(try_rt);
 	free(try_scene);
-	error_manager("Invalid file. Please check if it exists.", false);
+	error_manager("Invalid file. Please check if it exists.", true);
 	return (0);
 }
 
@@ -84,11 +84,11 @@ static char 	*try_file_with_rt(char *file)
 	if (fd_tester >= 0)
 	{
 		close(fd_tester);
-		print_autocomplete_msg(4, try_rt);
+		print_autocomplete_msg(4, file);
 		return (try_rt);
 	}
 	free(try_rt);
-	error_manager("Invalid file. Please check if it exists.", false);
+	error_manager("Invalid file. Please check if it exists.", true);
 	return (NULL);
 }
 
@@ -166,6 +166,8 @@ static t_list **get_file_content(char *file)
     t_list **result;
     char *line_to_do_split;
     char **axu_line;
+    t_line_data *line_data;
+    int line_number;
 
     result = ft_calloc(1, sizeof(t_list *));
     if(!result)
@@ -176,9 +178,11 @@ static t_list **get_file_content(char *file)
         free(result);
         return(NULL);
     }
+    line_number = 0;
     line_to_do_split = get_next_line(fd);
     while(line_to_do_split != NULL)
     {
+        line_number++;
         if(ft_strchr(line_to_do_split, '\n'))
         {
             char *tmp = line_to_do_split;
@@ -186,14 +190,17 @@ static t_list **get_file_content(char *file)
             free(tmp);
         }
         if(str_empty(line_to_do_split) == true)
-            {
-                free(line_to_do_split);
-                line_to_do_split = get_next_line(fd);
-                continue;
-            }
+        {
+            free(line_to_do_split);
+            line_to_do_split = get_next_line(fd);
+            continue;
+        }
         axu_line = ft_split(line_to_do_split, ' ');
         free(line_to_do_split);
-        ft_lstadd_back(result, ft_lstnew(axu_line));
+        line_data = ft_calloc(1, sizeof(t_line_data));
+        line_data->line_number = line_number;
+        line_data->content = axu_line;
+        ft_lstadd_back(result, ft_lstnew(line_data));
         line_to_do_split = get_next_line(fd);
     }
     close(fd);

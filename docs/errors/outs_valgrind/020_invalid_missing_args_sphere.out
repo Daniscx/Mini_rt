@@ -1,0 +1,21 @@
+========================================
+TEST: invalid_missing_args_sphere
+FILE: scenes/invalid_scenes/invalid_missing_args_sphere.rt
+DESCRIPTION: Escena inválida: invalid_missing_args_sphere.rt
+========================================
+
+[1;36mminiRT: [1;31mError (Line 7): [0mIn parameter '[1;33msp[0m': Expected 3 arguments.
+[1;36mminiRT: [1;31mError: [0mScene construction failed.
+
+EXIT CODE: 1
+VALGRIND LOG: outs_valgrind/020_invalid_missing_args_sphere_valgrind.log
+
+========================================
+MEMORY ANALYSIS:
+========================================
+Definitely lost: 9 bytes
+Indirectly lost: 0 bytes
+Possibly lost:   0 bytes
+Still reachable: 0 bytes
+Total leaked:    9 bytes
+RESULT: LEAKS DETECTED

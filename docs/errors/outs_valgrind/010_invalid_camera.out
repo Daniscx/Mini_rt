@@ -1,0 +1,20 @@
+========================================
+TEST: invalid_camera
+FILE: scenes/invalid_scenes/invalid_camera.rt
+DESCRIPTION: Escena inválida: invalid_camera.rt
+========================================
+
+[1;36mminiRT: [1;31mError: [0mScene must have a camera (C).
+
+EXIT CODE: 1
+VALGRIND LOG: outs_valgrind/010_invalid_camera_valgrind.log
+
+========================================
+MEMORY ANALYSIS:
+========================================
+Definitely lost: 0 bytes
+Indirectly lost: 0 bytes
+Possibly lost:   0 bytes
+Still reachable: 000 bytes
+Total leaked:    0 bytes
+RESULT: NO LEAKS

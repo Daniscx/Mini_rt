@@ -1,0 +1,20 @@
+========================================
+TEST: no_rt_extension
+FILE: /tmp/tmp.0nu689n81b
+DESCRIPTION: Archivo con contenido pero sin .rt
+========================================
+
+[1;36mminiRT: [1;31mError: [0mInvalid file. Please check if it exists.
+
+EXIT CODE: 1
+VALGRIND LOG: outs_valgrind/036_no_rt_extension_valgrind.log
+
+========================================
+MEMORY ANALYSIS:
+========================================
+Definitely lost: 0 bytes
+Indirectly lost: 0 bytes
+Possibly lost:   0 bytes
+Still reachable: 250 bytes
+Total leaked:    0 bytes
+RESULT: NO LEAKS

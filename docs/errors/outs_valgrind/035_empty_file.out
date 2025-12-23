@@ -1,0 +1,20 @@
+========================================
+TEST: empty_file
+FILE: /tmp/tmp.uTZRAIZZs8.rt
+DESCRIPTION: Archivo .rt vacío
+========================================
+
+[1;36mminiRT: [1;31mError: [0mScene must have an ambient light (A).
+
+EXIT CODE: 1
+VALGRIND LOG: outs_valgrind/035_empty_file_valgrind.log
+
+========================================
+MEMORY ANALYSIS:
+========================================
+Definitely lost: 9 bytes
+Indirectly lost: 0 bytes
+Possibly lost:   0 bytes
+Still reachable: 319 bytes
+Total leaked:    9 bytes
+RESULT: LEAKS DETECTED

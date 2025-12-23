@@ -21,11 +21,11 @@ CC			= cc
 # CFLAGS		= -Wall -Wextra -Werror -I$(INC_DIR) -I$(LIBFT_DIR) -I$(MLX_DIR)
 # CFLAGS_CB   = -Wall -Wextra -Werror -D COLOR_BLEEDING=1 -I$(INC_DIR) -I$(LIBFT_DIR) -I$(MLX_DIR)
 
-# CFLAGS		= -Wall -Wextra -Werror -O3 -I$(INC_DIR) -I$(LIBFT_DIR) -I$(MLX_DIR)
-# CFLAGS_CB   = -Wall -Wextra -Werror -D COLOR_BLEEDING=1 -O3 -I$(INC_DIR) -I$(LIBFT_DIR) -I$(MLX_DIR)
+CFLAGS		= -Wall -Wextra -Werror -O3 -I$(INC_DIR) -I$(LIBFT_DIR) -I$(MLX_DIR)
+CFLAGS_CB   = -Wall -Wextra -Werror -D COLOR_BLEEDING=1 -O3 -I$(INC_DIR) -I$(LIBFT_DIR) -I$(MLX_DIR)
 
-CFLAGS   = -Wall -Wextra -Werror -Wno-error=incompatible-pointer-types -O3 -I$(INC_DIR) -I$(LIBFT_DIR)/include -I$(MLX_DIR) -I$(SRC_DIR)/escene/parser
-CFLAGS_CB   = -Wall -Wextra -Werror -Wno-error=incompatible-pointer-types -D COLOR_BLEEDING=1 -O3 -I$(INC_DIR) -I$(LIBFT_DIR)/include -I$(MLX_DIR) -I$(SRC_DIR)/escene/parser
+# CFLAGS   = -Wall -Wextra -Werror -Wno-error=incompatible-pointer-types -O3 -I$(INC_DIR) -I$(LIBFT_DIR)/include -I$(MLX_DIR) -I$(SRC_DIR)/escene/parser
+# CFLAGS_CB   = -Wall -Wextra -Werror -Wno-error=incompatible-pointer-types -D COLOR_BLEEDING=1 -O3 -I$(INC_DIR) -I$(LIBFT_DIR)/include -I$(MLX_DIR) -I$(SRC_DIR)/escene/parser
 
 LDFLAGS  = -L$(MLX_DIR) -lmlx -L/usr/lib -lXext -lX11 -lm -lz
 AR       = ar
@@ -112,7 +112,7 @@ ORANGE_BOLD		= \033[1;38;5;208m
 
 all:
 	@if $(MAKE) -q $(NAME) 2>/dev/null; then \
-		echo "make: Nothing to be done for 'all'."; \
+		printf "make: Nothing to be done for 'all'.\n"; \
 	else \
 		msg=""; \
 		if [ ! -f "$(MLX_A)" ]; then \
@@ -137,13 +137,13 @@ all:
 			msg="$${msg}miniRT"; \
 		fi; \
 		if [ -n "$$msg" ]; then \
-			echo -e "$(DARK_BLUE)Compiling $$msg...$(RESET)"; \
+			printf "$(DARK_BLUE)Compiling $$msg...$(RESET)\n"; \
 		fi; \
 		$(MAKE) $(NAME); \
 	fi
 
 cb:
-	@echo -e "$(ORANGE_BOLD)Compiling with COLOR BLEEDING enabled:$(RESET)"
+	@printf "$(ORANGE_BOLD)Compiling with COLOR BLEEDING enabled:$(RESET)\n"
 	@$(MAKE) fclean > /dev/null
 	@$(MAKE) ENABLE_CB=1 all
 
@@ -153,7 +153,7 @@ ifdef ENABLE_CB
 else
 	@$(CC) $(CFLAGS) $(OBJS) $(LIBFT_A) $(LDFLAGS) -o $@
 endif
-	@echo -e "$(LIGHT_TURQUOISE)miniRT ready!$(RESET)"
+	@printf "$(LIGHT_TURQUOISE)miniRT ready!$(RESET)\n"
 
 $(MLX_A):
 	@$(MAKE) -C $(MLX_DIR) > /dev/null 2>&1
@@ -177,51 +177,51 @@ $(OBJ_ROOT) $(APP_OBJ_DIR) $(LIBFT_OBJ_DIR):
 	@mkdir -p $@
 
 clean:
-	@echo -e "$(LIGHT_RED)Running an object cleanup...$(RESET)"
+	@printf "$(LIGHT_RED)Running an object cleanup...$(RESET)\n"
 	@rm -rf "$(OBJ_ROOT)"
 	@$(MAKE) -C $(MLX_DIR) clean > /dev/null 2>&1
-	@echo -e "$(TURQUOISE)Cleaning of objects completed!$(RESET)"
+	@printf "$(TURQUOISE)Cleaning of objects completed!$(RESET)\n"
 
 fclean:
-	@echo -e "$(LIGHT_RED)Running a full cleanup...$(RESET)"
+	@printf "$(LIGHT_RED)Running a full cleanup...$(RESET)\n"
 	@rm -rf "$(OBJ_ROOT)"
 	@rm -f "$(NAME)" "$(LIBFT_A)"
 	@$(MAKE) -C $(MLX_DIR) clean > /dev/null 2>&1
-	@echo -e "$(TURQUOISE)Full cleaning finished!$(RESET)"
+	@printf "$(TURQUOISE)Full cleaning finished!$(RESET)\n"
 
 clean_screenshots:
 	@if [ ! -d "./screenshots" ]; then \
-		echo -e "$(LIGHT_RED)The directory \"./screenshots/\" does not exist!$(RESET)"; \
+		printf "$(LIGHT_RED)The directory \"./screenshots/\" does not exist!$(RESET)\n"; \
 	else \
-		echo -e "$(LIGHT_RED)Running a screenshots cleanup...$(RESET)"; \
+		printf "$(LIGHT_RED)Running a screenshots cleanup...$(RESET)\n"; \
 		rm -rf $(SCRSHT_DIR)/*; \
-		echo -e "$(LIGHT_GREEN)Screenshots cleanup completed!$(RESET)"; \
+		printf "$(LIGHT_GREEN)Screenshots cleanup completed!$(RESET)\n"; \
 	fi
 
 fclean_screenshots:
 	@if [ ! -d "./screenshots" ]; then \
-		echo -e "$(LIGHT_RED)The directory \"./screenshots/\" does not exist!$(RESET)"; \
+		printf "$(LIGHT_RED)The directory \"./screenshots/\" does not exist!$(RESET)\n"; \
 	else \
-		echo -e "$(LIGHT_RED)Running a screenshots full cleanup...$(RESET)"; \
+		printf "$(LIGHT_RED)Running a screenshots full cleanup...$(RESET)\n"; \
 		rm -rf "$(SCRSHT_DIR)"; \
-		echo -e "$(LIGHT_GREEN)Screenshots full cleanup completed!$(RESET)"; \
+		printf "$(LIGHT_GREEN)Screenshots full cleanup completed!$(RESET)\n"; \
 	fi
 
 re:
 	@$(MAKE) fclean
-	@echo -e "———"
+	@printf "———\n"
 	@$(MAKE) -s all
 
 test_mandatory:
 	@$(MAKE) re
 	@$(MAKE) clean
-	@echo -e "———"
+	@printf "———\n"
 	@./$(NAME) test_mandatory
 
 test_bonus:
 	@$(MAKE) re
 	@$(MAKE) clean
-	@echo -e "———"
+	@printf "———\n"
 	@./$(NAME) test_bonus
 
 .PHONY: all cb clean fclean re test_mandatory test_bonus
@@ -236,8 +236,5 @@ test_bonus:
 # between <normal mode> and <color bleeding mode>.
 
 # Remove the "-O3" flag during correction, as it fixes possible errors but greatly improves performance!
-
-# If you see "-e" before the loading messages, etc., when compiling, it's a problem with the terminal;
-# try using Bash or their most current versions!
 
 # ----------------------------------------------------------------------------------------------------------------

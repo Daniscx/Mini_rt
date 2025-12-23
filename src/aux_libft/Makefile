@@ -76,9 +76,9 @@ OBJS = $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	@echo -e "$(COMPILE)Compilando libft.a$(RESET)"
+	@printf "$(COMPILE)Compilando libft.a$(RESET)\n"
 	@$(AR) $(ARFLAGS) $@ $^
-	@echo -e "$(GREEN)libft.a ready!$(RESET)"
+	@printf "$(GREEN)libft.a ready!$(RESET)\n"
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
 	@$(CC) $(CFLAGS) -c $< -o $@
@@ -99,6 +99,3 @@ fclean: clean
 re: fclean all
 
 .PHONY: all clean fclean re
-
-# If you see "-e" before the loading messages, etc., when compiling, it's a problem with the terminal;
-# try using Bash or their most current versions!
