@@ -68,48 +68,51 @@ bool correct_number_of_elements(char **element)
         return(true);
     else
     {
-        error_manager("The file contain incorrect elements, please correct them.", false);
+        error_manager("The file contains incorrect elements.", false);
         return(false);
     }
 }
 
 t_list **list_of_float_checker(char **splited_element, float max  , float min, bool range)
 {
-    t_list **resuslt;
+    t_list **result;
     int i;
     int j;
     float *actual_float;
+
     if(double_array_len(splited_element) != 3)
-        return(error_manager("no valid parametter find in :", false), NULL);
-    j = 0; 
+        return(error_manager("No valid parameter found in:", false), NULL);
+    j = 0;
     i = 0;
-    resuslt = ft_calloc(1, sizeof(t_list *));
+    result = ft_calloc(1, sizeof(t_list *));
     while(splited_element[j])
     {
         if(splited_element[j][i] == '-')
             i++;
         while(splited_element[j][i])
-        { 
+        {
             if(ft_isdigit(splited_element[j][i]) == 0 && splited_element[j][i] != '.')
             {
-                error_manager("no valid parametter find in :", false);
+                error_manager("No valid parameter found in:", false);
+                free_list_of_floats(result);
                 return(NULL);
             }
             i++;
         }
         i = 0;
         actual_float = ft_calloc(1, sizeof(float));
-         *actual_float = ft_atof(splited_element[j]); 
-         if(if_betwen_values(*actual_float, min, max) == false && range == true)
-         {
-            error_manager("no valid parametter find in :", false);
-            return(NULL);  
-         }
-            
-        ft_lstadd_back(resuslt, ft_lstnew(actual_float));
+        *actual_float = ft_atof(splited_element[j]);
+        if(if_betwen_values(*actual_float, min, max) == false && range == true)
+        {
+            error_manager("No valid parameter found in:", false);
+            free(actual_float);
+            free_list_of_floats(result);
+            return(NULL);
+        }
+        ft_lstadd_back(result, ft_lstnew(actual_float));
         j++;
     }
-    return(resuslt);
+    return(result);
 }
 
 int	ft_ispace(char c)

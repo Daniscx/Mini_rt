@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 17:15:12 by dmaestro          #+#    #+#             */
-/*   Updated: 2025/12/23 03:24:26 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/23 04:06:04 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int					ft_ispace(char c);
 
 /* =[ Float List Parsing ]================================================== */
 
-t_list				**list_of_float_checker(char **split, float max, float min, bool rng);	// line break to pass norminette - [ 42 ]
+t_list				**list_of_float_checker(char **split, float max, float min, bool rng);						// line break to pass norminette - [ 42 ]
 
 /* =[ Element Parsers ]===================================================== */
 
@@ -46,7 +46,7 @@ int					ambient_light_parser(char **elem, t_list **list);
 int					light_parser(char **elem, t_list **list);
 int					camera_parser(char **elem, t_list **list);
 int					object_parser(char **elem, t_list **list);
-t_list				**general_parser(t_list **list, int f(char **, t_list **));
+t_list				**general_parser(t_list **list, int f(char **, t_list **), void (*destructor)(t_list **));	// line break to pass norminette - [ 42 ]
 
 /* =[ File Parsing ]======================================================== */
 
@@ -57,8 +57,8 @@ char				*parser_texture_name(char *file);
 
 t_primitive_escene	*escene_primiteve_contructor(char *file);
 void				escene_primitive_destructor(t_primitive_escene *prim);
-int					primitive_escene_t_asignation(t_list **el, t_primitive_escene *s);		// line break to pass norminette - [ 42 ]
-t_list				**get_list_of_elements(t_primitive_escene *prim, enum e_type_list id);	// line break to pass norminette - [ 42 ]
+int					primitive_escene_t_asignation(t_list **el, t_primitive_escene *s);							// line break to pass norminette - [ 42 ]
+t_list				**get_list_of_elements(t_primitive_escene *prim, enum e_type_list id);						// line break to pass norminette - [ 42 ]
 
 /* =[ Memory Cleanup ]====================================================== */
 

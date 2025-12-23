@@ -64,7 +64,7 @@ static char 	*try_file_no_rt(char *file)
 	}
 	free(try_rt);
 	free(try_scene);
-	error_manager("Invalid file, please check if it exists!", false);
+	error_manager("Invalid file. Please check if it exists.", false);
 	return (0);
 }
 
@@ -88,8 +88,7 @@ static char 	*try_file_with_rt(char *file)
 		return (try_rt);
 	}
 	free(try_rt);
-	close(fd_tester);
-	error_manager("Invalid file, please check if it exists!", false);
+	error_manager("Invalid file. Please check if it exists.", false);
 	return (NULL);
 }
 
@@ -126,7 +125,7 @@ static char 	*try_file_no_ppm(char *file)
 	}
 	free(try_rt);
 	free(try_scene);
-	error_manager("Invalid texture, please check if it exists!", false);
+	error_manager("Invalid texture. Please check if it exists.", false);
 	return (0);
 }
 
@@ -149,8 +148,7 @@ static char 	*try_file_with_ppm(char *file)
 		return (try_rt);
 	}
 	free(try_rt);
-	close(fd_tester);
-	error_manager("Invalid texture, please check if it exists!", false);
+	error_manager("Invalid texture. Please check if it exists.", false);
 	return (NULL);
 }
 
@@ -168,13 +166,16 @@ static t_list **get_file_content(char *file)
     t_list **result;
     char *line_to_do_split;
     char **axu_line;
-    
+
     result = ft_calloc(1, sizeof(t_list *));
     if(!result)
         return(NULL);
     fd = open(file, O_RDONLY);
     if(fd < 0)
+    {
+        free(result);
         return(NULL);
+    }
     line_to_do_split = get_next_line(fd);
     while(line_to_do_split != NULL)
     {
