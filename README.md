@@ -77,14 +77,20 @@ make clean_screenshots  	# Delete all screenshots from <./screenshots/>
 make fclean_screenshots 	# Delete all screenshots from <./screenshots/> and the <./screenshots/> directory
 ```
 
+<br>
+
 ## Usage
 
-```bash
-./miniRT <scene_file>
-./miniRT scenes/showcase.rt
-```
+| Argument | Range | Default | Description |
+|----------|-------|---------|-------------|
+| `scene.rt` | - | Required | Scene file to load |
+| `width` | 426 - 4096 | 426 | Window width in pixels |
+| `height` | 240 - 2160 | 240 | Window height in pixels |
+| `fps` | 24 - 60 | 24 | Maximum frames per second |
 
-### Controls
+<br>
+
+## Controls
 
 | Key | Action |
 |-----|--------|
@@ -97,57 +103,107 @@ make fclean_screenshots 	# Delete all screenshots from <./screenshots/> and the 
 | `M` | Enter mouse capture mode |
 | `ESC` | Exit program |
 
+<br>
+
 ## Scene File Format (.rt)
 
 Scene files use a simple text format to define cameras, lights, and objects:
 
 ```
-# Comment line
-A <ratio> <R,G,B>                           # Ambient light
-C <x,y,z> <nx,ny,nz> <fov>                  # Camera
-L <x,y,z> <brightness> <R,G,B>              # Point light
+# Comment line (lines starting with #)
 
-sp <x,y,z> <diameter> <R,G,B>               # Sphere
-pl <x,y,z> <nx,ny,nz> <R,G,B>               # Plane
-cy <x,y,z> <nx,ny,nz> <diameter> <h> <R,G,B> # Cylinder
-co <x,y,z> <nx,ny,nz> <angle> <h> <R,G,B>   # Cone
+# === Required Elements (one each) ===
+A <ratio> <R,G,B>                              # Ambient light (2 args)
+C <x,y,z> <nx,ny,nz> <fov>                     # Camera (3 args)
+
+# === Optional Elements (multiple allowed) ===
+L <x,y,z> <brightness> [R,G,B]                 # Point light (2-3 args)
+
+# === Geometric Primitives ===
+sp <x,y,z> <diameter> <R,G,B>                  # Sphere (3 args)
+pl <x,y,z> <nx,ny,nz> <R,G,B>                  # Plane (3 args)
+cy <x,y,z> <nx,ny,nz> <diameter> <h> <R,G,B>   # Cylinder (5 args)
+co <x,y,z> <nx,ny,nz> <angle> <h> <R,G,B>      # Cone (5 args)
 ```
 
-### Parameter Ranges
+<br>
 
-| Parameter | Range | Description |
-|-----------|-------|-------------|
-| Ambient ratio | 0.0 - 1.0 | Intensity of ambient light |
-| Light brightness | 0.0 - 1.0 | Point light intensity |
-| FOV | 0 - 180 | Camera field of view in degrees |
-| RGB | 0 - 255 | Color components |
-| Normal vectors | -1.0 - 1.0 | Direction vectors (auto-normalized) |
+## Parameter Ranges
 
-### Bonus Identifiers
+| Parameter | Range | Validation | Description |
+|-----------|-------|------------|-------------|
+| Ambient ratio | 0.0 - 1.0 | Strict | Intensity of ambient light |
+| Light brightness | 0.0 - 1.0 | Strict | Point light intensity |
+| Light color | 0 - 255 | Strict | RGB components (optional, defaults to white) |
+| FOV | 0 - 180 | Strict | Camera field of view in degrees |
+| RGB colors | 0 - 255 | Strict | Color components for all objects |
+| Normal vectors | -1.0 - 1.0 | Strict | Direction vectors for planes |
+| Position | Any float | No limit | 3D coordinates (x,y,z) |
+| Orientation | Any float | No limit | Camera/axis direction (auto-normalized) |
+| Diameter/Height | Any float | No limit | Object dimensions |
+| Cone angle | Any float | No limit | Opening angle in degrees |
 
-| Identifier | Description |
-|------------|-------------|
-| `plc` | Plane with checkerboard pattern |
-| `spt` | Sphere with texture (requires texture path) |
-| `spb` | Sphere with bump map |
+<br>
 
-## Example Scene
+## Bonus Identifiers
+
+| Identifier | Arguments | Description |
+|------------|-----------|-------------|
+| `plc` | 3 | Plane with checkerboard pattern |
+| `spt` | 5 | Sphere with PPM texture (+ optional bump map) |
+
+**Textured sphere syntax:**
 
 ```
-# Ambient light - soft white
+spt <x,y,z> <diameter> <R,G,B> <texture.ppm> [bump_map.ppm]
+```
+
+<br>
+
+## Basic Scene
+```
+# Ambient light (ratio 0.2, white)
 A 0.2 255,255,255
 
-# Camera position, direction, FOV
+# Camera at (0,2,10), looking at -Z, 60° FOV
 C 0,2,10 0,0,-1 60
 
-# Lights
+# Two colored lights
 L -5,10,5 0.8 255,255,255
 L 5,8,3 0.6 255,200,150
 
 # Objects
-sp 0,1,0 2 255,100,100        # Red sphere
-pl 0,0,0 0,1,0 150,150,150    # Gray floor
+sp 0,1,0 2 255,100,100           # Red sphere
+pl 0,0,0 0,1,0 150,150,150       # Gray floor
 cy -3,0,0 0,1,0 1 3 100,255,100  # Green cylinder
+```
+
+<br>
+
+## Bonus Features Scene
+```
+A 0.1 255,255,255
+C 0,8,18 0,-0.2,-0.95 70
+
+# RGB colored lights
+L -12,18,12 0.6 255,200,200
+L 12,15,8 0.5 200,200,255
+L 0,20,5 0.4 200,255,200
+
+# Spheres
+sp -5,2.5,0 5 220,50,50
+sp 0,3.5,-5 4 50,220,50
+
+# Cylinders
+cy -3,0,7 0,1,0 1.5 6 200,100,200
+cy 3,0,7 0,1,0 1.5 6 100,200,200
+
+# Cone
+co 0,0,3 0,1,0 22 4 255,150,50
+
+# Checkerboard floor + wall
+plc 0,0,0 0,1,0 180,180,180
+pl 0,0,-12 0,0,1 140,160,180
 ```
 
 <br>
@@ -182,12 +238,13 @@ The miniRT project teaches fundamental 3D graphics and raytracing concepts:
 ## Technical Specifications
 
 - **Language**: C (C90 standard)
-- **Compiler**: cc with flags `-Wall -Wextra -Werror`
+- **Compiler**: cc with `-Wall -Wextra -Werror`
 - **Graphics Library**: MiniLibX (X11-based)
 - **Platform**: Linux with X11
-- **Resolution**: 426x240 (navigation) / 4096x2160 (screenshots)
+- **Default Resolution**: 426x240 (configurable up to 4096x2160)
+- **Screenshot Resolution**: 4096x2160 (BMP format)
 - **Color Depth**: 24-bit RGB
-- **Memory Management**: Proper cleanup of all allocated resources
+- **Target FPS**: 24 (configurable 24-60)
 
 ## Requirements
 
