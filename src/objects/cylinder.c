@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 15:47:13 by dmaestro          #+#    #+#             */
-/*   Updated: 2025/12/23 03:22:03 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/24 01:19:27 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,12 +82,10 @@ static t_hit	intersect_cylinder_caps(t_ray ray, t_cylinder *cy)
 t_hit	intersect_cylinder(t_ray ray, void  *cylinder)
 {
 	t_cylinder	*cy;
-
-	cy = (t_cylinder *)cylinder;
-
 	t_hit	body_hit;
 	t_hit	caps_hit;
 
+	cy = (t_cylinder *)cylinder;
 	body_hit = intersect_cylinder_body(ray, cy);
 	caps_hit = intersect_cylinder_caps(ray, cy);
 	if (!body_hit.hit && !caps_hit.hit)
@@ -106,6 +104,7 @@ t_vec3  get_cylinder_body_center(void *cy)
     offset = vec3_scale(cylinder->axis, cylinder->height / 2.0);
 	return (vec3_add(cylinder->center, offset));
 }
+
 void  move_cylinder(void *cy, t_vec3 new_center)
 {
     t_vec3 offset;
@@ -115,6 +114,7 @@ void  move_cylinder(void *cy, t_vec3 new_center)
     offset = vec3_scale(cylinder->axis, cylinder->height / 2.0);
 	cylinder->center = vec3_sub(new_center, offset);
 }
+
 static bool	collides_cylinder(t_vec3 pos, void *cylinder)
 {
 	t_vec3	to_pos;
@@ -134,6 +134,7 @@ static bool	collides_cylinder(t_vec3 pos, void *cylinder)
 	radius = cy->diameter / 2.0;
 	return (dist < radius + CAMERA_RADIUS);
 }
+
 t_cylinder *cylinder_constructor(t_list **components, t_object *object)
 {
     t_cylinder  *result;
@@ -157,6 +158,7 @@ t_cylinder *cylinder_constructor(t_list **components, t_object *object)
 	object->collision = collides_cylinder;
     return(result);    
 }
+
 void cylinder_print(t_cylinder *cylinder)
 {
 	printf("Cylinder:\n");

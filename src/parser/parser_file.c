@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 12:30:00 by dmaestro          #+#    #+#             */
-/*   Updated: 2025/12/23 19:42:28 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/24 00:47:19 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,8 @@ static char 	*try_file_no_rt(char *file)
 	}
 	free(try_rt);
 	free(try_scene);
-	error_manager("Invalid file. Please check if it exists.", true);
-	return (0);
+	error_manager("Invalid file. Please check if it exists.", false);
+	return (NULL);
 }
 
 static char 	*try_file_with_rt(char *file)
@@ -88,7 +88,7 @@ static char 	*try_file_with_rt(char *file)
 		return (try_rt);
 	}
 	free(try_rt);
-	error_manager("Invalid file. Please check if it exists.", true);
+	error_manager("Invalid file. Please check if it exists.", false);
 	return (NULL);
 }
 
@@ -207,20 +207,20 @@ static t_list **get_file_content(char *file)
     return(result);
 }
 
-t_primitive_escene *escene_primiteve_contructor(char *file)
+t_primitive_escene *escene_primiteve_constructor(char *file, int *msg)
 {
-    t_primitive_escene *result;
-    char *final_file;
+    t_primitive_escene	*result;
+    char				*final_file;
     
     final_file = parser_file_name(file);
     if (!final_file)
-        return (NULL);
+        return (*msg = 0, NULL);
     result = ft_calloc(1, sizeof(t_primitive_escene));
     if(primitive_escene_t_asignation(get_file_content(final_file), result) == -1)
     {
         free(final_file);
         free(result);
-        return(NULL);
+        return(*msg = 1, NULL);
     }
     free(final_file);
     return(result);

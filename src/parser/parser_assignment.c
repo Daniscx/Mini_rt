@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 12:30:00 by dmaestro          #+#    #+#             */
-/*   Updated: 2025/12/23 20:04:31 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/24 01:17:42 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,15 +50,13 @@ static void	process_all_lines(t_list **element_to_conver, t_primitive_escene *s,
 	while (actual_node)
 	{
 		line_data = (t_line_data *)actual_node->content;
-		if (correct_number_of_elements(line_data->content,
-			line_data->line_number, errors) == false)
+		if (correct_number_of_elements(line_data->content, line_data->line_number, errors) == false)
 		{
 			*has_errors = 1;
 			actual_node = actual_node->next;
 			continue;
 		}
-		ret = ambient_light_parser(line_data->content, s->al,
-			line_data->line_number, errors);
+		ret = ambient_light_parser(line_data->content, s->al, line_data->line_number, errors);
 		if (ret != 0)
 		{
 			if (ret == -1)
@@ -66,8 +64,7 @@ static void	process_all_lines(t_list **element_to_conver, t_primitive_escene *s,
 			actual_node = actual_node->next;
 			continue;
 		}
-		ret = camera_parser(line_data->content, s->camera,
-			line_data->line_number, errors);
+		ret = camera_parser(line_data->content, s->camera, line_data->line_number, errors);
 		if (ret != 0)
 		{
 			if (ret == -1)
@@ -75,8 +72,7 @@ static void	process_all_lines(t_list **element_to_conver, t_primitive_escene *s,
 			actual_node = actual_node->next;
 			continue;
 		}
-		ret = light_parser(line_data->content, s->light,
-			line_data->line_number, errors);
+		ret = light_parser(line_data->content, s->light, line_data->line_number, errors);
 		if (ret != 0)
 		{
 			if (ret == -1)
@@ -84,8 +80,7 @@ static void	process_all_lines(t_list **element_to_conver, t_primitive_escene *s,
 			actual_node = actual_node->next;
 			continue;
 		}
-		ret = object_parser(line_data->content, s->object,
-			line_data->line_number, errors);
+		ret = object_parser(line_data->content, s->object, line_data->line_number, errors);
 		if (ret != 0)
 		{
 			if (ret == -1)

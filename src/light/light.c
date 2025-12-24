@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/15 13:37:23 by dmaestro          #+#    #+#             */
-/*   Updated: 2025/12/23 03:21:56 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/24 01:20:16 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,7 @@ void	print_list_of_lights(t_list **lights)
 	while (aux)
 	{
 		light = (t_light *)aux->content;
-		printf(" Light %d: Position(%.2f, %.2f, %.2f), Brightness: %.2f, Color(%.2f, %.2f, %.2f)\n",
-				count,
+		printf(" Light %d: Position(%.2f, %.2f, %.2f), Brightness: %.2f, Color(%.2f, %.2f, %.2f)\n", count,
 				light->position.x, light->position.y, light->position.z,
 				light->brightness,
 				light->color.x, light->color.y, light->color.z);

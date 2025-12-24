@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 15:49:11 by dmaestro          #+#    #+#             */
-/*   Updated: 2025/12/23 03:22:08 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/24 01:18:05 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,10 +77,9 @@ t_sphere *sphere_constructor(t_list **components, t_object *object, bool texture
 {
     t_sphere    *result;
     t_list      *aux;
+
     aux = *(components);
-    
     result = ft_calloc(1, sizeof(t_sphere ));
-    
     result->center = vector_constructor(aux->content, false);
     aux = aux->next;
     result->diameter = *(float *)aux->content;

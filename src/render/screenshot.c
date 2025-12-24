@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/17 16:00:00 by ravazque          #+#    #+#             */
-/*   Updated: 2025/12/23 03:22:43 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/24 01:14:39 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,7 @@ static void	write_bmp_row(int fd, t_img *img, int y)
 	x = -1;
 	while (++x < img->width)
 	{
-		color = *(unsigned int *)(img->pixels_ptr
-				+ (y * img->line_len + x * (img->bpp / 8)));
+		color = *(unsigned int *)(img->pixels_ptr + (y * img->line_len + x * (img->bpp / 8)));
 		pixel[0] = color & 0xFF;
 		pixel[1] = (color >> 8) & 0xFF;
 		pixel[2] = (color >> 16) & 0xFF;

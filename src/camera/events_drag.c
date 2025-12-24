@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/17 16:00:00 by ravazque          #+#    #+#             */
-/*   Updated: 2025/12/23 03:21:19 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/24 01:21:19 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,8 +83,7 @@ void	handle_object_drag(t_minirt *rt, int x, int y)
 		return ;
 	clamp_mouse_to_window(rt, &x, &y);
 	ray = ray_from_camera(rt->scene->camera, x, y, &rt->img);
-	new_pos = ray_plane_intersect(ray, rt->input.drag_plane_point,
-			rt->input.drag_plane_normal);
+	new_pos = ray_plane_intersect(ray, rt->input.drag_plane_point, rt->input.drag_plane_normal);
 	obj = rt->input.selected_obj;
 	obj->movement(obj->figure, new_pos);
 	rt->input.drag_plane_point = new_pos;

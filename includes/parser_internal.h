@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 17:15:12 by dmaestro          #+#    #+#             */
-/*   Updated: 2025/12/23 20:22:05 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/24 00:45:28 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ char				*parser_texture_name(char *file);
 
 /* =[ Primitive Scene Functions ]=========================================== */
 
-t_primitive_escene	*escene_primiteve_contructor(char *file);
+t_primitive_escene *escene_primiteve_constructor(char *file, int *msg);
 void				escene_primitive_destructor(t_primitive_escene *prim);
 int					primitive_escene_t_asignation(t_list **el, t_primitive_escene *s);			// line break to pass norminette - [ 42 ]
 t_list				**get_list_of_elements(t_primitive_escene *prim, enum e_type_list id);		// line break to pass norminette - [ 42 ]

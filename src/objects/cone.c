@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/18 05:42:53 by dmaestro          #+#    #+#             */
-/*   Updated: 2025/12/23 03:21:59 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/24 01:20:01 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,7 +137,6 @@ void move_cone(void *co, t_vec3 new_center)
     t_vec3	offset;
     
     cone = (t_cone *)co;
-
     offset = vec3_scale(cone->axis, cone->height / 2.0);
 	cone->apex = vec3_sub(new_center, offset);
     
@@ -168,6 +167,7 @@ static bool	collides_cone(t_vec3 pos, void *cone)
 	dist = vec3_length(vec3_sub(pos, closest));
 	return (dist < cone_radius + CAMERA_RADIUS);
 }
+
 t_cone  *cone_constructor(t_list **components, t_object *object)
 {
     t_cone *result;
@@ -191,6 +191,7 @@ t_cone  *cone_constructor(t_list **components, t_object *object)
 	object->collision = collides_cone;
 	return(result);
 }
+
 void cone_print(t_cone *co)
 {
 	printf("Cone:\n");

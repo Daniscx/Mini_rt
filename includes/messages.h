@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/20 18:41:42 by ravazque          #+#    #+#             */
-/*   Updated: 2025/12/23 19:40:43 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/23 21:44:01 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,6 @@ Usage: \033[0m./miniRT <scene.rt> [width] [height] [fps]\n\
 // be defined.\n\
 // - If you want to leave a value as default but must specify a value,\n\
 // you can use 0 or any other number in an invalid range.\033[0m\n"
-
-/* =[ Error Messages ]====================================================== */
-
-# define INVALID_OBJECTS "\
-\
-Invalid number of lights and/or objects. \
-There must be at least one object and one light."
 
 /* =[ Default Value Messages ]============================================== */
 

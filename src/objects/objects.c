@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/15 14:25:50 by dmaestro          #+#    #+#             */
-/*   Updated: 2025/12/23 03:33:50 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/24 01:18:38 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ t_list  **object_list_Constructor(t_list **components)
     }
     return (result);
 }
+
 static enum e_objects	get_identificator(char *name)
 {
  

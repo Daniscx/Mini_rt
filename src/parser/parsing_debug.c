@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/10 19:30:30 by dmaestro          #+#    #+#             */
-/*   Updated: 2025/12/23 03:22:27 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/24 01:15:21 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void print_light(t_list **light)
 }
 void    print_plane(t_list **plane)
 {
-       t_list *aux;
+    t_list *aux;
     t_list *sub;
     
     printf("%s\n", "plane:");
@@ -112,6 +112,7 @@ void    print_hell(t_list **object)
         sub = sub->next;
     }
 }
+
 void    print_objects(t_list **objects)
 {
     t_list *aux;
@@ -131,6 +132,7 @@ void    print_objects(t_list **objects)
         aux = aux->next;
     }
 }
+
 void    print_cameras(t_list **camera)
 {
     t_list *aux;
@@ -154,6 +156,7 @@ void    print_cameras(t_list **camera)
     aux = aux->next;
     printf("%f\n", *(float *)aux->content);
 }
+
 void print_primitive_escene(t_primitive_escene *escene)
 {
     t_list *aux;

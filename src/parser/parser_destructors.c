@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 12:30:00 by dmaestro          #+#    #+#             */
-/*   Updated: 2025/12/23 03:22:17 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/24 01:16:46 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void free_list_of_floats(t_list **list)
     {
         aux_node = actual_node->next;
         if(actual_node->content)
-                free(actual_node->content);
+            free(actual_node->content);
         free(actual_node);
         actual_node = aux_node;
     }
