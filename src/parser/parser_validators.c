@@ -68,10 +68,14 @@ bool correct_number_of_elements(char **element, int line, t_error_list *errors)
         return(true);
     else if(ft_strncmp(element[0], "A", len) == 0)
         return(error_list_add(errors, line, "Expected 2 arguments.", element[0]), false);
-    else if ((ft_strncmp(element[0], "cy", len) == 0 || ft_strncmp(element[0], "co", len) == 0 || ft_strncmp(element[0], "spt", len) == 0) && nb_of_args ==  5)
-        return(true);
-    else if (ft_strncmp(element[0], "cy", len) == 0 || ft_strncmp(element[0], "co", len) == 0 || ft_strncmp(element[0], "spt", len) == 0)
-        return(error_list_add(errors, line, "Expected 5 arguments.", element[0]), false);
+    else if ((ft_strncmp(element[0], "cy", len) == 0 || ft_strncmp(element[0], "co", len) == 0) && nb_of_args == 5)
+        return (true);
+    else if (ft_strncmp(element[0], "cy", len) == 0 || ft_strncmp(element[0], "co", len) == 0)
+        return (error_list_add(errors, line, "Expected 5 arguments.", element[0]), false);
+    else if (ft_strncmp(element[0], "spt", len) == 0 && (nb_of_args == 4 || nb_of_args == 5))
+        return (true);
+    else if (ft_strncmp(element[0], "spt", len) == 0)
+        return (error_list_add(errors, line, "Expected 4 or 5 arguments.", element[0]), false);
     else
     {
         error_list_add(errors, line, "Unknown element type.", element[0]);

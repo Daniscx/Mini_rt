@@ -6,12 +6,12 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/27 17:49:37 by dmaestro          #+#    #+#             */
-/*   Updated: 2025/12/23 17:19:10 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/24 01:46:17 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../includes/minirt.h"
-# include "../includes/messages.h"
+#include "../includes/minirt.h"
+#include "../includes/messages.h"
 
 void	error_manager(char *error_message, bool exit_code)
 {
@@ -19,7 +19,7 @@ void	error_manager(char *error_message, bool exit_code)
 		exit(1);
 	ft_putstr_fd("\033[1;36mminiRT: \033[1;31mError: \033[0m", STDERR_FILENO);
 	ft_putendl_fd(error_message, STDERR_FILENO);
-	if(exit_code == true)
+	if (exit_code == true)
 		exit(1);
 }
 
@@ -64,8 +64,8 @@ int	main(int argc, char **argv)
 	}
 	msg = 0;
 	rt = ft_calloc(1, sizeof(t_minirt));
-    rt->scene = escene_constructor(argv[1], &msg);
-	if(rt->scene == NULL)
+	rt->scene = escene_constructor(argv[1], &msg);
+	if (rt->scene == NULL)
 	{
 		free(rt);
 		if (msg == 1)

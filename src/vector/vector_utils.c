@@ -6,11 +6,11 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/18 04:11:55 by dmaestro          #+#    #+#             */
-/*   Updated: 2025/12/23 03:20:34 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/12/24 01:47:03 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../../includes/vector.h"
+#include "../../includes/vector.h"
 
 t_vec3	vec3_cross(t_vec3 a, t_vec3 b)
 {
@@ -24,8 +24,8 @@ t_vec3	vec3_cross(t_vec3 a, t_vec3 b)
 
 double	vec3_length(t_vec3 v)
 {
-	double result;
-	
+	double	result;
+
 	result = sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
 	if (isnan(result) || isinf(result))
 		return (0.0);

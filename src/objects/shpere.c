@@ -86,12 +86,17 @@ t_sphere *sphere_constructor(t_list **components, t_object *object, bool texture
     aux = aux->next;
     result->color = vector_constructor(aux->content, true);
 	object->textured = texture;
-	if(texture == true)
+	if (texture == true)
 	{
 		aux = aux->next;
 		result->texture = texture_load_ppm(aux->content);
-		aux = aux->next;
-		result->bump_map = texture_load_ppm(aux->content);
+		if (aux->next)
+		{
+			aux = aux->next;
+			result->bump_map = texture_load_ppm(aux->content);
+		}
+		else
+			result->bump_map = NULL;
 		object->identificator = Sp;
 	}
 	else
