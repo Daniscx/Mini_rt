@@ -6,7 +6,7 @@
 /*   By: dmaestro <dmaestro@student.42madrid.con    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 12:30:00 by dmaestro          #+#    #+#             */
-/*   Updated: 2025/12/22 13:04:36 by dmaestro         ###   ########.fr       */
+/*   Updated: 2025/12/27 19:20:52 by dmaestro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -310,11 +310,11 @@ void primitive_destructor_selector(t_list **list, char *identificator)
 
     printf("destruyendo : %s\n", "teta");
     len = ft_strlen(identificator);
-   // if(ft_strncmp(identificator, "sp", len) == 0 || ft_strncmp(identificator, "spt", len) == 0)
-     // primitive_sphere_destructor(list);
-   // else if(ft_strncmp(identificator, "pl", len) == 0 || ft_strncmp(identificator, "plc", len) == 0)
+   if(ft_strncmp(identificator, "sp", len) == 0 || ft_strncmp(identificator, "spt", len) == 0)
+      primitive_sphere_destructor(list);
+   //else if(ft_strncmp(identificator, "pl", len) == 0 || ft_strncmp(identificator, "plc", len) == 0)
         // primitive_plane_destructor(list);
-    if(ft_strncmp(identificator, "cy", len) == 0 || ft_strncmp(identificator, "co", len) == 0)
+   else if(ft_strncmp(identificator, "cy", len) == 0 || ft_strncmp(identificator, "co", len) == 0)
         primitive_cylinder_destructor(list);
 }
 
@@ -362,6 +362,22 @@ void escene_primitive_destructor(t_primitive_escene *primitive)
     if(primitive->light)
         free_list_of_lights_primitive(primitive->light);
     //if(primitive->object)
-        //list_of_objects_destructor_primitive(primitive->object);
+       // list_of_objects_destructor_primitive(primitive->object);
     free(primitive);
+}
+void list_of_db_array_destructor(t_list **element)
+{
+    t_list *aux;
+    t_list *next;
+
+    aux = *element;
+
+    while(aux)
+    {
+        next = aux->next;
+        free_double_pointer(aux->content);
+        free(aux);
+        aux  = next;
+    }
+    free(element);
 }

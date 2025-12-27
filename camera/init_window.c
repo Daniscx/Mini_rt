@@ -6,7 +6,7 @@
 /*   By: dmaestro <dmaestro@student.42madrid.con    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/17 16:00:00 by ravazque          #+#    #+#             */
-/*   Updated: 2025/12/21 17:35:42 by dmaestro         ###   ########.fr       */
+/*   Updated: 2025/12/22 19:26:52 by dmaestro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,6 @@ void	resize_window(t_minirt *rt, int width, int height)
 		mlx_destroy_window(rt->mlx, rt->win);
 	rt->win = mlx_new_window(rt->mlx, width, height, WIN_TITLE);
 	if (!rt->win)
-		error_manager("Window creation failed");
+		error_manager("Window creation failed", true);
 	XSync(display, False);
 }

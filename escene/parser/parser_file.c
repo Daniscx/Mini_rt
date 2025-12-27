@@ -6,7 +6,7 @@
 /*   By: dmaestro <dmaestro@student.42madrid.con    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 12:30:00 by dmaestro          #+#    #+#             */
-/*   Updated: 2025/12/22 18:57:54 by dmaestro         ###   ########.fr       */
+/*   Updated: 2025/12/27 18:55:08 by dmaestro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -187,6 +187,7 @@ static t_list **get_file_content(char *file)
     t_list **result;
     char *line_to_do_split;
     char **axu_line;
+	char *free_aux;
     
     result = ft_calloc(1, sizeof(t_list *));
     if(!result)
@@ -198,7 +199,12 @@ static t_list **get_file_content(char *file)
     while(line_to_do_split != NULL)
     {
         if(ft_strchr(line_to_do_split, '\n'))
-            line_to_do_split = ft_substr(line_to_do_split, 0, ft_strlen(line_to_do_split) - 1);
+		{
+			 free_aux = ft_substr(line_to_do_split, 0, ft_strlen(line_to_do_split) - 1);
+			 free(line_to_do_split);
+			 line_to_do_split = free_aux;	
+		}
+           
         if(str_empty(line_to_do_split) == true)
             {
                 free(line_to_do_split);

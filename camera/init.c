@@ -6,7 +6,7 @@
 /*   By: dmaestro <dmaestro@student.42madrid.con    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 17:00:00 by ravazque          #+#    #+#             */
-/*   Updated: 2025/12/22 06:04:03 by dmaestro         ###   ########.fr       */
+/*   Updated: 2025/12/22 19:26:38 by dmaestro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static void	malloc_error(t_minirt *rt)
 		mlx_destroy_display(rt->mlx);
 		free(rt->mlx);
 	}
-	error_manager("Memory allocation failed");
+	error_manager("Memory allocation failed", true);
 }
 
 static int	create_image(t_minirt *rt, t_img *img, int w, int h)

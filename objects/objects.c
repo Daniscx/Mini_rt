@@ -6,13 +6,13 @@
 /*   By: dmaestro <dmaestro@student.42madrid.con    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/15 14:25:50 by dmaestro          #+#    #+#             */
-/*   Updated: 2025/12/22 18:41:28 by dmaestro         ###   ########.fr       */
+/*   Updated: 2025/12/22 22:19:40 by dmaestro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/objects.h"
 static  t_object *object_costructor(t_list **components);
-
+void print_list_of_objects(t_list **objects);
 t_list  **object_list_Constructor(t_list **components)
 {
     t_list *aux;
@@ -30,6 +30,7 @@ t_list  **object_list_Constructor(t_list **components)
             ft_lstadd_back(result, ft_lstnew(obj));
         aux = aux->next;
     }
+    print_list_of_objects(result);
     return (result);
 }
 static  enum  objects get_identificator(char *name)
@@ -47,6 +48,8 @@ static  enum  objects get_identificator(char *name)
         return (Sp);
     else if (ft_strncmp(name, "co", 2) == 0)
         return (Co);
+    else if (ft_strncmp(name, "pb", 2) == 0)
+        return (Pb);
     else
         return (NONE_MANAGE);
         
@@ -65,6 +68,9 @@ static void *object_selection_create(enum objects identficator, t_list **object,
         return(plane_constructor(object, structs, true));
     else if(identficator == Spt)
         return(sphere_constructor(object, structs, true));
+    else if(identficator == Pb)
+        return(paraboid_constructor(object, structs ));
+    
     return (NULL);
 }
 static  t_object *object_costructor(t_list **components)
@@ -162,6 +168,17 @@ void  print_object(t_object *object)
             printf("Cone Angle: %.2f\n", cone->angle);
             printf("Cone Height: %.2f\n", cone->height);
             printf("Cone Color: (%.2f, %.2f, %.2f)\n", cone->color.x, cone->color.y, cone->color.z);
+        }
+    }
+    else if(object->identificator == Pb )
+    {
+        t_paraboid *paraboid = (t_paraboid *)object->figure;
+        if(paraboid)
+        {
+            printf("Paraboid Apex: (%.2f, %.2f, %.2f)\n", paraboid->vertex.x, paraboid->vertex.y, paraboid->vertex.z);
+            printf("Paraboid Axis: (%.2f, %.2f, %.2f)\n", paraboid->axis.x, paraboid->axis.y, paraboid->axis.z);
+            printf("Paraboid curve: %.2f\n", paraboid->a);
+            printf("Paraboid Color: (%.2f, %.2f, %.2f)\n", paraboid->color.x, paraboid->color.y, paraboid->color.z);
         }
     }
 }

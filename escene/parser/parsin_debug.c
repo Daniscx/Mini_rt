@@ -6,7 +6,7 @@
 /*   By: dmaestro <dmaestro@student.42madrid.con    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/10 19:30:30 by dmaestro          #+#    #+#             */
-/*   Updated: 2025/12/22 01:33:17 by dmaestro         ###   ########.fr       */
+/*   Updated: 2025/12/27 17:22:52 by dmaestro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,37 @@ void    print_hell(t_list **object)
     }
     
 }
+static void print_paraboid(t_list **object)
+{
+    t_list *aux;
+    t_list *sub;
+    
+    printf("%s\n", "paraboid:");
+    aux = *object;
+    aux = aux->next;
+    sub = *(t_list **)aux->content;
+    while(sub)
+    {
+        printf("%f\n", *(float *)sub->content);
+        sub = sub->next;
+    }
+    aux = aux->next;
+    sub = *(t_list **)aux->content;
+    while(sub)
+    {
+        printf("%f\n", *(float *)sub->content);
+        sub = sub->next;
+    }
+    aux = aux->next;
+    printf("%f\n", *(float *)aux->content);
+    aux = aux->next;
+    sub = *(t_list **)aux->content;
+    while(sub)
+    {
+        printf("%f\n", *(float *)sub->content);
+        sub = sub->next;
+    }
+}
 void    print_objects(t_list **objects)
 {
     t_list *aux;
@@ -133,6 +164,8 @@ void    print_objects(t_list **objects)
             print_plane(aux->content);
         if(ft_strncmp((char *)sub->content, "cy", 2) == 0)
             print_hell(aux->content);
+        if(ft_strncmp((char *)sub->content, "pb", 2) == 0)
+            print_paraboid(aux->content);
         aux = aux->next;
     }
         
@@ -184,5 +217,6 @@ void print_primitive_escene(t_primitive_escene *escene)
     }
     print_cameras(escene->camera);
     print_objects(escene->object);
+    exit(0);
     
 }

@@ -6,7 +6,7 @@
 /*   By: dmaestro <dmaestro@student.42madrid.con    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 12:30:00 by dmaestro          #+#    #+#             */
-/*   Updated: 2025/12/22 13:42:57 by dmaestro         ###   ########.fr       */
+/*   Updated: 2025/12/27 18:59:02 by dmaestro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ int    primitive_escene_t_asignation(t_list **element_to_conver, t_primitive_esc
      struct_to_assignate->object = general_parser(element_to_conver, object_parser);
     if(!struct_to_assignate->object)
         return(free(struct_to_assignate), -1);
+    list_of_db_array_destructor(element_to_conver);
     return(0);
         
 } 

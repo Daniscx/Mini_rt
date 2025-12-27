@@ -6,7 +6,7 @@
 /*   By: dmaestro <dmaestro@student.42madrid.con    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/15 14:10:51 by dmaestro          #+#    #+#             */
-/*   Updated: 2025/12/22 20:29:56 by dmaestro         ###   ########.fr       */
+/*   Updated: 2025/12/22 22:20:50 by dmaestro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,8 @@ enum objects
     Pl,             /* Plane */
     Co,             /* Cone */
     Plc,            /* Plane with checkerboard */
-	Spt,            /* Sphere with texture */
+	Spt,
+	Pb,            /* Sphere with texture */
     NONE_MANAGE,    /* Placeholder for invalid objects */
 };
 
@@ -108,6 +109,7 @@ t_cylinder *cylinder_constructor(t_list **components, t_object *object); /* Crea
 t_plane *plane_constructor(t_list **components, t_object *object, bool check_board); /* Create plane */
 t_sphere *sphere_constructor(t_list **components, t_object *object, bool texture); /* Create sphere */
 t_cone *cone_constructor(t_list **components, t_object *object); /* Create cone */
+t_paraboid *paraboid_constructor(t_list **components, t_object *object);
 
 /* Object operations */
 t_hit intersect_plane(t_ray ray, void *plane); /* Intersect ray with plane */

@@ -25,7 +25,7 @@ CC			= cc
 # CFLAGS_CB   = -Wall -Wextra -Werror -D COLOR_BLEEDING=1 -I$(INC_DIR) -O3 -I$(LIBFT_DIR) -I$(MLX_DIR)
 
 CFLAGS   = -Wall -Wextra -Werror   -g -I$(INC_DIR) -I$(LIBFT_DIR) -I$(MLX_DIR)
-CFLAGS_CB   = -Wall -Wextra -Werror  -D COLOR_BLEEDING=1 -O3 -I$(INC_DIR) -I$(LIBFT_DIR) -I$(MLX_DIR)
+CFLAGS_CB   = -Wall -Wextra -Werror  -D COLOR_BLEEDING=1  -I$(INC_DIR) -I$(LIBFT_DIR) -I$(MLX_DIR)
 
 LDFLAGS  = -L$(MLX_DIR) -lmlx -L/usr/lib -lXext -lX11 -lm -lz
 AR       = ar
@@ -37,6 +37,7 @@ SRCS =		vector/Vector.c \
 			texture/texture.c \
 			render/screenshot.c \
 			render/render.c \
+			objects/paraboid.c\
 			render/render_high.c \
 			ray/ray.c \
 			objects/shpere.c \

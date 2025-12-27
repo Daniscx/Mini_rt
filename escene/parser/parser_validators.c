@@ -6,7 +6,7 @@
 /*   By: dmaestro <dmaestro@student.42madrid.con    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 12:30:00 by dmaestro          #+#    #+#             */
-/*   Updated: 2025/12/22 17:59:50 by dmaestro         ###   ########.fr       */
+/*   Updated: 2025/12/27 18:48:07 by dmaestro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,35 @@ bool str_empty(char *str)
  * @param element Array of arguments, first element is the identifier
  * @return true if correct number of arguments, false otherwise
  */
+float *float_checker(char *nb)
+{
+    int i;
+    float *result;
+    if(!nb)
+        return(NULL);
+    result = ft_calloc(1, sizeof(float));
+    i = 0;
+    while(nb[i])
+    {
+        if(ft_isdigit(nb[i]) != 1 && nb[i] != '.')
+            return(free(result), NULL);
+        else if(ft_isdigit(nb[i]) != 1)
+            break;
+        i++;
+    }
+    if((size_t)i != ft_strlen(nb))
+        i++;
+    while(nb[i])
+    {
+        if(ft_isdigit(nb[i]) != 1)
+            return(free(result), NULL);
+        i++;
+    }
+    //if(nb[i] != '\0')
+        //return(free(result), NULL);
+    *result = ft_float(nb);
+    return(result);
+}
 bool correct_number_of_elements(char **element)
 {
     size_t nb_of_args;
@@ -94,6 +123,8 @@ bool correct_number_of_elements(char **element)
     else if(ft_strncmp(element[0], "L", len) == 0 && (nb_of_args == 2 || nb_of_args == 3))
         return(true);
     else if(ft_strncmp(element[0], "A", len) == 0  && nb_of_args == 2 )
+        return(true);
+    else if (ft_strncmp(element[0], "pb", len) == 0 && nb_of_args == 4)
         return(true);
     else if ((ft_strncmp(element[0], "cy", len) == 0 || ft_strncmp(element[0], "co", len) == 0 || ft_strncmp(element[0], "spt", len) == 0)
                  && nb_of_args ==  5)
