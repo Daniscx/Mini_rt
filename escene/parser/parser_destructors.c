@@ -6,7 +6,7 @@
 /*   By: dmaestro <dmaestro@student.42madrid.con    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 12:30:00 by dmaestro          #+#    #+#             */
-/*   Updated: 2025/12/27 19:20:52 by dmaestro         ###   ########.fr       */
+/*   Updated: 2026/01/09 15:18:56 by dmaestro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -208,6 +208,28 @@ void primitive_sphere_destructor(t_list **list)
     
 }
 
+void general_destructor(t_list **components, char *position)
+{
+    int i;
+    t_list *aux;
+    t_list *node;
+    
+    aux = *components;
+    i = 0;
+    while(aux)
+    {
+
+        if(ft_strchr(position, ft_itoa(i)[0]))
+            free_list_of_floats(aux->content);
+        else
+            free(aux->content);
+        node = aux ;
+        aux = aux->next;
+        free(node);
+        i++;
+    }
+    free(components);
+}
 /**
  * Frees a plane primitive structure
  * Plane has: [identifier, position_list**, normal_list**, color_list**]
@@ -311,9 +333,9 @@ void primitive_destructor_selector(t_list **list, char *identificator)
     printf("destruyendo : %s\n", "teta");
     len = ft_strlen(identificator);
    if(ft_strncmp(identificator, "sp", len) == 0 || ft_strncmp(identificator, "spt", len) == 0)
-      primitive_sphere_destructor(list);
-   //else if(ft_strncmp(identificator, "pl", len) == 0 || ft_strncmp(identificator, "plc", len) == 0)
-        // primitive_plane_destructor(list);
+      general_destructor(list,"13" );
+   else if(ft_strncmp(identificator, "pl", len) == 0 || ft_strncmp(identificator, "plc", len) == 0)
+        general_destructor(list, "123");
    else if(ft_strncmp(identificator, "cy", len) == 0 || ft_strncmp(identificator, "co", len) == 0)
         primitive_cylinder_destructor(list);
 }
@@ -361,8 +383,8 @@ void escene_primitive_destructor(t_primitive_escene *primitive)
         free_list_camera_primitive(primitive->camera);
     if(primitive->light)
         free_list_of_lights_primitive(primitive->light);
-    //if(primitive->object)
-       // list_of_objects_destructor_primitive(primitive->object);
+    if(primitive->object)
+       list_of_objects_destructor_primitive(primitive->object);
     free(primitive);
 }
 void list_of_db_array_destructor(t_list **element)

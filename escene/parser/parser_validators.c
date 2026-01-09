@@ -6,7 +6,7 @@
 /*   By: dmaestro <dmaestro@student.42madrid.con    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 12:30:00 by dmaestro          #+#    #+#             */
-/*   Updated: 2025/12/27 18:48:07 by dmaestro         ###   ########.fr       */
+/*   Updated: 2026/01/09 14:59:14 by dmaestro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,10 +78,13 @@ float *float_checker(char *nb)
 {
     int i;
     float *result;
+    
     if(!nb)
         return(NULL);
     result = ft_calloc(1, sizeof(float));
     i = 0;
+    if(nb[i] == '-')
+        i++;
     while(nb[i])
     {
         if(ft_isdigit(nb[i]) != 1 && nb[i] != '.')
@@ -98,8 +101,6 @@ float *float_checker(char *nb)
             return(free(result), NULL);
         i++;
     }
-    //if(nb[i] != '\0')
-        //return(free(result), NULL);
     *result = ft_float(nb);
     return(result);
 }
@@ -150,30 +151,15 @@ bool correct_number_of_elements(char **element)
 t_list **list_of_float_checker(char **splited_element, float max  , float min, bool range)
 {
     t_list **resuslt;
-    int i;
     int j;
     float *actual_float;
     if(double_array_len(splited_element) != 3)
         return(error_manager("no valid parametter find in :", false), NULL);
     j = 0; 
-    i = 0;
     resuslt = ft_calloc(1, sizeof(t_list *));
     while(splited_element[j])
     {
-        if(splited_element[j][i] == '-')
-            i++;
-        while(splited_element[j][i])
-        { 
-            if(ft_isdigit(splited_element[j][i]) == 0 && splited_element[j][i] != '.')
-            {
-                error_manager("no valid parametter find in :", false);
-                return(NULL);
-            }
-            i++;
-        }
-        i = 0;
-        actual_float = ft_calloc(1, sizeof(float));
-         *actual_float = ft_float(splited_element[j]); 
+        actual_float = float_checker(splited_element[j]);
          if(if_betwen_values(*actual_float, min, max) == false && range == true)
          {
             error_manager("no valid parametter find in :", false);
