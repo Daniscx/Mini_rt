@@ -6,13 +6,13 @@
 /*   By: dmaestro <dmaestro@student.42madrid.con    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 12:30:00 by dmaestro          #+#    #+#             */
-/*   Updated: 2026/01/09 15:18:56 by dmaestro         ###   ########.fr       */
+/*   Updated: 2026/01/10 21:11:04 by dmaestro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser_internal.h"
 #include "../../includes/mini_rt.h"
-
+void general_destructor(t_list **components, char *position);
 /**
  * Frees a linked list of floats
  * Frees each node's content (float*) and the node itself
@@ -115,7 +115,7 @@ void free_list_of_lights_primitive(t_list **list)
     {
         aux_node = actual_node->next;
         actual_list = (t_list **)actual_node->content;
-        free_primitive_light(actual_list);
+        general_destructor(actual_list,"02");
         free(actual_node);
         actual_node = aux_node;
     }
@@ -145,6 +145,7 @@ void free_list_camera_primitive(t_list **list)
         actual_list = (t_list **)aux_node->content;
         free_list_of_floats(actual_list);
         actual_node = aux_node->next;
+        free(aux_node);
     }
     if(actual_node)
     {
@@ -155,58 +156,7 @@ void free_list_camera_primitive(t_list **list)
     free(list);
 }
 
-/**
- * Frees a sphere primitive structure
- * Sphere has: [identifier, center_list**, diameter_float, color_list**]
- * @param list Linked list representing sphere data
- */
-void primitive_sphere_destructor(t_list **list)
-{   
-     t_list *actual_node;
-    t_list *aux_node;
-    t_list **actual_list;
 
-    if(!list || *list == NULL)
-        return;
-    actual_node = *list;
-    if(actual_node->content)
-        free(actual_node->content);
-    aux_node = actual_node->next;
-    if(aux_node)
-    {
-        actual_list = (t_list **)aux_node->content;
-        free_list_of_floats(actual_list);
-        free(aux_node);
-    }
-    if(actual_node)
-    { 
-        free(actual_node->content);
-        aux_node = actual_node->next;
-        free(actual_node);
-    }
-    if(aux_node)
-    {
-        actual_list = (t_list **)aux_node->content;
-        free_list_of_floats(actual_list);
-        actual_node = aux_node->next;
-        free(aux_node);
-    }
-    if(actual_node)
-    {
-        if(actual_node->content)
-            free(actual_node->content);
-        aux_node = actual_node->next;
-        free(actual_node);
-    }
-    if(aux_node)
-    {
-        if(aux_node->content)
-            free(aux_node->content);
-        free(aux_node);
-    }
-    free(list);
-    
-}
 
 void general_destructor(t_list **components, char *position)
 {
@@ -219,8 +169,8 @@ void general_destructor(t_list **components, char *position)
     while(aux)
     {
 
-        if(ft_strchr(position, ft_itoa(i)[0]))
-            free_list_of_floats(aux->content);
+        if(ft_strchr(position, i + '0'))
+            general_destructor(aux->content, NULL);
         else
             free(aux->content);
         node = aux ;
@@ -229,95 +179,6 @@ void general_destructor(t_list **components, char *position)
         i++;
     }
     free(components);
-}
-/**
- * Frees a plane primitive structure
- * Plane has: [identifier, position_list**, normal_list**, color_list**]
- * @param list Linked list representing plane data
- */
-void primitive_plane_destructor(t_list **list)
-{   
-     t_list *actual_node;
-    t_list *aux_node;
-
-    if(!list || *list == NULL)
-        return;
-    actual_node = *list;
-    if(actual_node->content)
-        free(actual_node->content);
-    aux_node = actual_node->next;
-    if(aux_node)
-    {
-        free_list_of_floats(aux_node->content);
-        actual_node = aux_node->next;
-        free(aux_node);
-    }
-    if(actual_node)
-    { 
-        free_list_of_floats(actual_node->content);
-        aux_node = actual_node->next;
-        free(actual_node);
-    }
-    if(aux_node)
-    {
-        free_list_of_floats(aux_node->content);
-        free(aux_node);
-    }
-    free(list);
-    
-}
-
-/**
- * Frees a cylinder primitive structure
- * Cylinder has: [identifier, center_list**, axis_list**, diameter_float, height_float, color_list**]
- * @param list Linked list representing cylinder data
- */
-void primitive_cylinder_destructor(t_list **list)
-{   
-     t_list *actual_node;
-    t_list *aux_node;
-    t_list **actual_list;
-
-    if(!list || *list == NULL)
-        return;
-    actual_node = *list;
-    if(actual_node->content)
-        free(actual_node->content);
-    aux_node = actual_node->next;
-    if(aux_node)
-    {
-        actual_list = (t_list **)aux_node->content;
-        free_list_of_floats(actual_list);
-        free(aux_node);
-    }
-    if(actual_node)
-    { 
-        free_list_of_floats(actual_node->content);
-        aux_node = actual_node->next;
-        free(actual_node);
-    }
-    if(aux_node)
-    {
-        if(aux_node->content)
-            free(aux_node->content);
-        actual_node = aux_node->next;
-        free(aux_node);
-    }
-    if(actual_node)
-    {
-        if(actual_node->content)
-            free(actual_node->content);
-        aux_node = actual_node->next;
-        free(actual_node);
-    }
-    if(aux_node)
-    {
-        actual_list = (t_list **)aux_node->content;
-        free_list_of_floats(actual_list);
-        free(aux_node);
-    }
-    free(list);
-    
 }
 
 /**
@@ -329,15 +190,12 @@ void primitive_cylinder_destructor(t_list **list)
 void primitive_destructor_selector(t_list **list, char *identificator)
 {
     size_t len;
-
-    printf("destruyendo : %s\n", "teta");
-    len = ft_strlen(identificator);
    if(ft_strncmp(identificator, "sp", len) == 0 || ft_strncmp(identificator, "spt", len) == 0)
       general_destructor(list,"13" );
    else if(ft_strncmp(identificator, "pl", len) == 0 || ft_strncmp(identificator, "plc", len) == 0)
         general_destructor(list, "123");
    else if(ft_strncmp(identificator, "cy", len) == 0 || ft_strncmp(identificator, "co", len) == 0)
-        primitive_cylinder_destructor(list);
+        general_destructor(list, "125");
 }
 
 /**

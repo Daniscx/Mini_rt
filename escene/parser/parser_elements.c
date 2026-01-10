@@ -6,7 +6,7 @@
 /*   By: dmaestro <dmaestro@student.42madrid.con    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 12:30:00 by dmaestro          #+#    #+#             */
-/*   Updated: 2025/12/27 19:25:00 by dmaestro         ###   ########.fr       */
+/*   Updated: 2026/01/10 20:43:35 by dmaestro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,8 @@ int light_parser(char **actual_element, t_list **list_to_add_element)
         return(error_manager("no valid parametter find in light ratio\n", false), -1);
     ft_lstadd_back(new_light_element, ft_lstnew(actual_float));
     if(!actual_element[3])
-        actual_element[3] = ft_strdup("255,255,255"); 
+        splited_element = ft_split("255,255,255" , ','); 
+    else
     splited_element = ft_split(actual_element[3], ',');
     if(!splited_element || *splited_element == NULL)
         return(-1);
@@ -111,11 +112,13 @@ int camera_parser(char **actual_element, t_list **list_to_add_element)
         return (0);
     x_y_z_to_split = ft_split(actual_element[1], ',');
     list_float = list_of_float_checker(x_y_z_to_split, 0 , 0, false);
+    free_double_pointer(x_y_z_to_split);
     if(!list_float)
         return(ft_putstr_fd("camera_element\n", 2), -1);
     ft_lstadd_back(list_to_add_element, ft_lstnew(list_float));
     x_y_z_to_split = ft_split(actual_element[2], ',');
     list_float = list_of_float_checker(x_y_z_to_split, 0 , 0, false);
+    free_double_pointer(x_y_z_to_split);
     if(!list_float)
         return(ft_putstr_fd("camera_element\n", 2), -1);
     ft_lstadd_back(list_to_add_element, ft_lstnew(list_float));

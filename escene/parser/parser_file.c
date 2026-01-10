@@ -6,7 +6,7 @@
 /*   By: dmaestro <dmaestro@student.42madrid.con    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 12:30:00 by dmaestro          #+#    #+#             */
-/*   Updated: 2026/01/09 14:53:22 by dmaestro         ###   ########.fr       */
+/*   Updated: 2026/01/10 20:56:41 by dmaestro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -278,5 +278,6 @@ t_primitive_escene *escene_primiteve_contructor(char *file)
     if(primitive_escene_t_asignation(get_file_content(final_file), result) == -1)
         return(NULL);
     //print_primitive_escene(result);
+	free(final_file);
     return(result);    
 }
