@@ -10,9 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../../includes/hit.h"
-# include "../../includes/texture.h"
-# include "../../includes/escene.h"
+#include "../../includes/hit.h"
+#include "../../includes/texture.h"
+#include "../../includes/escene.h"
 
 t_hit	hit_new(void)
 {
@@ -31,12 +31,28 @@ t_hit	hit_new(void)
 	hit.checkerboard = false;
 	return (hit);
 }
+
+static t_hit	check_object_hit(t_object *obj, t_ray ray, t_hit closest)
+{
+	t_hit	current;
+
+	if (obj && obj->intersecction && obj->figure)
+	{
+		current = obj->intersecction(ray, obj->figure);
+		if (current.hit && current.t < closest.t)
+		{
+			closest = current;
+			closest.checkerboard = obj->check_board;
+		}
+	}
+	return (closest);
+}
+
 t_hit	find_closest_hit(t_ray ray, t_scene *scene)
 {
-	t_hit	closest;
-	t_hit	current;
-	t_list	*aux;
-	t_object *current_object;
+	t_hit		closest;
+	t_list		*aux;
+	t_object	*current_object;
 
 	closest = hit_new();
 	if (!scene || !scene->object)
@@ -45,19 +61,12 @@ t_hit	find_closest_hit(t_ray ray, t_scene *scene)
 	while (aux)
 	{
 		current_object = aux->content;
-		if (current_object && current_object->intersecction && current_object->figure)
-		{
-			current = current_object->intersecction(ray, current_object->figure);
-			if (current.hit && current.t < closest.t)
-			{
-				closest = current;
-				closest.checkerboard = current_object->check_board;
-			}
-		}
+		closest = check_object_hit(current_object, ray, closest);
 		aux = aux->next;
 	}
 	return (closest);
 }
+
 void	apply_hit_effects(t_hit *hit)
 {
 	if (hit->bump_map)

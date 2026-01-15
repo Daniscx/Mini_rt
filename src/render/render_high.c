@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../../includes/minirt.h"
+#include "../../includes/minirt.h"
 
 static void	put_pixel(t_img *img, int x, int y, int color)
 {
@@ -66,8 +66,10 @@ void	render_high_res(t_minirt *rt)
 	if (rt->high_res_mode)
 		return ;
 	rt->high_res_mode = true;
-	ft_printf("\n\033[1;35m[SCREENSHOT]\033[0m Rendering at %dx%d...\n", rt->img_high.width, rt->img_high.height);
-	rt->scene->camera->aspect_ratio = (double)rt->img_high.width / rt->img_high.height;
+	ft_printf("\n\033[1;35m[SCREENSHOT]\033[0m Rendering at %dx%d...\n",
+		rt->img_high.width, rt->img_high.height);
+	rt->scene->camera->aspect_ratio = (double)rt->img_high.width
+		/ rt->img_high.height;
 	y = -1;
 	while (++y < rt->img_high.height)
 	{

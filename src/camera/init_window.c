@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../../includes/minirt.h"
+#include "../../includes/minirt.h"
 
 void	warp_mouse_center(t_minirt *rt)
 {
@@ -28,11 +28,13 @@ void	center_window_on_screen(t_minirt *rt)
 	Window	window;
 	int		screen_w;
 	int		screen_h;
+	int		pos_x;
 
 	display = ((t_xvar *)rt->mlx)->display;
 	window = ((t_winlist *)rt->win)->window;
 	mlx_get_screen_size(rt->mlx, &screen_w, &screen_h);
-	XMoveWindow(display, window, (screen_w - rt->win_w) / 2, (screen_h - rt->win_h) / 2);
+	pos_x = (screen_w - rt->win_w) / 2;
+	XMoveWindow(display, window, pos_x, (screen_h - rt->win_h) / 2);
 	XFlush(display);
 }
 

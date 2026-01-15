@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../../includes/minirt.h"
+#include "../../includes/minirt.h"
 
 static t_vec3	ray_plane_intersect(t_ray ray, t_vec3 plane_pt, t_vec3 plane_n)
 {
@@ -83,7 +83,8 @@ void	handle_object_drag(t_minirt *rt, int x, int y)
 		return ;
 	clamp_mouse_to_window(rt, &x, &y);
 	ray = ray_from_camera(rt->scene->camera, x, y, &rt->img);
-	new_pos = ray_plane_intersect(ray, rt->input.drag_plane_point, rt->input.drag_plane_normal);
+	new_pos = ray_plane_intersect(ray, rt->input.drag_plane_point,
+			rt->input.drag_plane_normal);
 	obj = rt->input.selected_obj;
 	obj->movement(obj->figure, new_pos);
 	rt->input.drag_plane_point = new_pos;

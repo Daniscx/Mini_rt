@@ -10,16 +10,16 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../../includes/minirt.h"
+#include "../../includes/minirt.h"
 
 static t_object	*find_object_at_pixel(t_minirt *rt, int x, int y)
 {
-	t_ray	ray;
-	t_hit	closest;
-	t_hit	current;
-	t_list 	*aux;
-	t_object *current_obj;
-	
+	t_ray		ray;
+	t_hit		closest;
+	t_hit		current;
+	t_list		*aux;
+	t_object	*current_obj;
+
 	ray = ray_from_camera(rt->scene->camera, x, y, &rt->img);
 	closest.hit = false;
 	closest.t = 1e30;
@@ -47,6 +47,7 @@ static void	select_object(t_minirt *rt, int x, int y)
 	t_vec3		pos;
 	Display		*dpy;
 	Window		win;
+	int			mask;
 
 	obj = find_object_at_pixel(rt, x, y);
 	if (obj == NULL)
@@ -58,7 +59,9 @@ static void	select_object(t_minirt *rt, int x, int y)
 	rt->input.drag_plane_normal = rt->scene->camera->direction;
 	dpy = ((t_xvar *)rt->mlx)->display;
 	win = ((t_winlist *)rt->win)->window;
-	XGrabPointer(dpy, win, True, ButtonReleaseMask | PointerMotionMask, GrabModeAsync, GrabModeAsync, None, None, CurrentTime);
+	mask = ButtonReleaseMask | PointerMotionMask;
+	XGrabPointer(dpy, win, True, mask, GrabModeAsync, GrabModeAsync,
+		None, None, CurrentTime);
 }
 
 int	mouse_press_handler(int btn, int x, int y, t_minirt *rt)

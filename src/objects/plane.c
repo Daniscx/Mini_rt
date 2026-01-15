@@ -10,16 +10,40 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../../includes/objects.h"
+#include "../../includes/objects.h"
 
-t_hit	intersect_plane(t_ray ray, void  *plane)
+static t_vec3	get_plane_point(void *plane)
+{
+	t_plane	*aux;
+
+	aux = (t_plane *)plane;
+	return (aux->point);
+}
+
+static void	move_plane(void *plane, t_vec3 new_center)
+{
+	t_plane	*aux;
+
+	aux = (t_plane *)plane;
+	aux->point = new_center;
+}
+
+static bool	collision_plane(t_vec3 xyz, void *plane)
+{
+	if (!plane)
+		return (false);
+	(void)xyz;
+	return (false);
+}
+
+t_hit	intersect_plane(t_ray ray, void *plane)
 {
 	t_hit	hit;
 	double	denom;
 	double	t;
-    t_plane *pl;
-    
-    pl = (t_plane *)plane;
+	t_plane	*pl;
+
+	pl = (t_plane *)plane;
 	hit = hit_new();
 	denom = vec3_dot(ray.direction, pl->normal);
 	if (fabs(denom) < EPSILON)
@@ -38,46 +62,22 @@ t_hit	intersect_plane(t_ray ray, void  *plane)
 	return (hit);
 }
 
-static t_vec3 get_plane_point(void *plane)
- {
-    t_plane *aux;
-
-    aux = (t_plane *)plane;
-    return(aux->point);
-}
- 
-static void move_plane(void *plane, t_vec3 new_center)
+t_plane	*plane_constructor(t_list **comp, t_object *obj, bool check_board)
 {
-    t_plane *aux;
+	t_plane	*result;
+	t_list	*aux;
 
-    aux = (t_plane *)plane;
-    aux->point = new_center;
-}
-
-static bool collision_plane(t_vec3 xyz, void *plane)
-{
-    if(!plane)
-        return(false);
-    (void)xyz;
-    return(false);
-}
-
-t_plane *plane_constructor(t_list **components, t_object *object , bool check_board)
-{
-    t_plane *result;
-    t_list *aux;
-
-    result = ft_calloc(1, sizeof(t_plane ));
-    aux = *components;
-    result->point = vector_constructor(aux->content, false);
-    aux = aux->next;
-    result->normal = vec3_normalize(vector_constructor(aux->content, false));
-    aux = aux->next;
-    result->color = vector_constructor(aux->content,true);
-    object->intersecction = intersect_plane;
-    object->postion = get_plane_point;
-    object->movement = move_plane;
-    object->collision = collision_plane;
-    object->check_board = check_board;
-    return(result);
+	result = ft_calloc(1, sizeof(t_plane));
+	aux = *comp;
+	result->point = vector_constructor(aux->content, false);
+	aux = aux->next;
+	result->normal = vec3_normalize(vector_constructor(aux->content, false));
+	aux = aux->next;
+	result->color = vector_constructor(aux->content, true);
+	obj->intersecction = intersect_plane;
+	obj->postion = get_plane_point;
+	obj->movement = move_plane;
+	obj->collision = collision_plane;
+	obj->check_board = check_board;
+	return (result);
 }

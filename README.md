@@ -165,7 +165,7 @@ spt <x,y,z> <diameter> <R,G,B> <texture.ppm> [bump_map.ppm]
 # Ambient light (ratio 0.2, white)
 A 0.2 255,255,255
 
-# Camera at (0,2,10), looking at -Z, 60° FOV
+# Camera at (0,2,10), looking at -Z, 60 FOV
 C 0,2,10 0,0,-1 60
 
 # Two colored lights
@@ -211,13 +211,151 @@ pl 0,0,-12 0,0,1 140,160,180
 </details>
 
 <details>
-<summary><strong>📁 Project Structure [Pre-Norminette]</strong></summary>
+<summary><strong>📁 Project Structure</strong></summary>
 
 <br>
 
 ```
 miniRT/
+├── includes/                           # Header files
+├── src/                                # Source files
+├── linux-minilibx/                     # MiniLibX graphics library
+├── scenes/                             # Scene files (.rt)
+├── screenshots/                        # Generated screenshots
+├── Makefile
+└── README.md
 ```
+
+### Header Files (includes/)
+
+| File | Description |
+|------|-------------|
+| `minirt.h` | Main header: application state, initialization and cleanup |
+| `camera.h` | Camera structure: position, direction, FOV, viewport vectors |
+| `escene.h` | Scene structure: objects, lights, camera and ambient light |
+| `objects.h` | Geometric primitives: sphere, cylinder, plane, cone definitions |
+| `parser.h` | Public parser API for scene file loading |
+| `parser_internal.h` | Internal parser: validation, error handling, memory management |
+| `ray.h` | Ray structure and ray-tracing operations |
+| `hit.h` | Intersection data: hit point, normal, color, material |
+| `light.h` | Point light: position, brightness, color |
+| `ambient_light.h` | Ambient light: ratio and color |
+| `vector.h` | 3D vector operations: dot, cross, normalize, scale |
+| `texture.h` | Texture loading and UV mapping |
+| `image.h` | Image buffer for pixel manipulation |
+| `input.h` | Input state: keyboard and mouse handling |
+| `messages.h` | Constants and error messages |
+
+### Source Files (src/)
+
+#### Main Entry Point
+| File | Description |
+|------|-------------|
+| `minirt.c` | Program entry: argument parsing, initialization, main loop |
+
+#### Camera Module (src/camera/)
+| File | Description |
+|------|-------------|
+| `camera.c` | Camera constructor/destructor, viewport vector calculation |
+| `camera_debug.c` | Debug functions for camera state output |
+| `collisions.c` | Camera-object collision detection during movement |
+| `events_drag.c` | Mouse drag handling for object manipulation |
+| `events_key.c` | Keyboard input: movement, rotation, actions |
+| `events_loop.c` | Main event loop processing |
+| `events_mouse.c` | Mouse movement and click handling |
+| `events_print.c` | Status messages for object selection |
+| `events_select.c` | Object selection via raycast |
+| `events_utils.c` | Utility functions: pixel-to-world conversion |
+| `init.c` | Scene initialization from parsed data |
+| `init_window.c` | MLX window and image buffer setup |
+
+#### Scene Module (src/escene/)
+| File | Description |
+|------|-------------|
+| `escene.c` | Scene construction from parsed primitives, validation |
+
+#### Objects Module (src/objects/)
+| File | Description |
+|------|-------------|
+| `cone.c` | Cone constructor: apex, axis, angle, height |
+| `cone_hit.c` | Ray-cone intersection calculation |
+| `cylinder.c` | Cylinder constructor: center, axis, diameter, height |
+| `cylinder_hit.c` | Ray-cylinder intersection (body + caps) |
+| `objects.c` | Object factory: type identification and construction |
+| `objects_utils.c` | Utilities: get center, move object |
+| `plane.c` | Plane constructor: point and normal |
+| `shpere.c` | Sphere constructor: center, diameter, textures |
+| `sphere_hit.c` | Ray-sphere intersection (quadratic formula) |
+
+#### Parser Module (src/parser/)
+| File | Description |
+|------|-------------|
+| `parser_scene.c` | Entry point: read .rt file, build primitive scene |
+| `parser_assignment.c` | Assign parsed elements to scene structure |
+| `parser_camera.c` | Parse camera: position, direction, FOV |
+| `parser_light.c` | Parse lights: position, brightness, color |
+| `parser_elements.c` | Parse ambient light element |
+| `parser_objects.c` | Object parser dispatcher |
+| `parser_obj_sphere.c` | Parse sphere: center, diameter, color |
+| `parser_obj_plane.c` | Parse plane: point, normal, color |
+| `parser_obj_cyl.c` | Parse cylinder/cone: position, axis, dimensions |
+| `parser_general.c` | Generic parser for element lists |
+| `parser_getlist.c` | Get specific element lists from scene |
+| `parser_file.c` | File path handling and extension validation |
+| `parser_validators.c` | Value validation: ranges, empty checks |
+| `parser_valid_args.c` | Argument count validation per element type |
+| `parser_valid_floats.c` | Float parsing and range validation |
+| `parser_errors.c` | Error list: create, add, print, free |
+| `parser_destructors.c` | Memory cleanup: float lists, lights, cameras |
+| `parser_destruct_primitives.c` | Destructors for sphere, plane, cylinder primitives |
+| `parser_destruct_scene.c` | Scene destructor: free all parsed data |
+| `parsing_debug.c` | Debug: print parsed scene structure |
+
+#### Ray Module (src/ray/)
+| File | Description |
+|------|-------------|
+| `ray.c` | Ray creation, evaluation, camera ray generation |
+
+#### Hit Module (src/hit/)
+| File | Description |
+|------|-------------|
+| `hit.c` | Find closest hit, handle textures and bump maps |
+
+#### Light Module (src/light/)
+| File | Description |
+|------|-------------|
+| `light.c` | Light constructor: position, brightness, color |
+| `light_calc.c` | Illumination: diffuse, specular, shadows, reflections |
+
+#### Ambient Light Module (src/ambient_light/)
+| File | Description |
+|------|-------------|
+| `ambient_light.c` | Ambient light constructor and application |
+
+#### Render Module (src/render/)
+| File | Description |
+|------|-------------|
+| `render.c` | Low-resolution rendering loop |
+| `render_high.c` | High-resolution rendering with anti-aliasing |
+| `screenshot.c` | BMP screenshot capture with timestamp |
+
+#### Texture Module (src/texture/)
+| File | Description |
+|------|-------------|
+| `texture.c` | PPM texture loading and memory management |
+| `texture_effects.c` | Effects: bump mapping, desaturation, brightness |
+| `texture_sample.c` | Sample color from texture at UV coordinates |
+| `texture_uv.c` | UV coordinate calculation for each object type |
+
+#### Vector Module (src/vector/)
+| File | Description |
+|------|-------------|
+| `vector.c` | Vector constructor from float lists |
+| `vector_ops.c` | Operations: add, subtract, dot, cross, normalize, scale |
+| `vector_utils.c` | Utilities: color conversion, distance, comparison |
+
+#### Library (src/aux_libft/)
+Custom implementation of standard C library functions including string manipulation, memory operations, linked lists, and I/O utilities.
 
 <br>
 

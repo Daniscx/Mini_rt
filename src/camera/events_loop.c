@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../../includes/minirt.h"
+#include "../../includes/minirt.h"
 
 static long	get_time_us(void)
 {

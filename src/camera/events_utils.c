@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../../includes/minirt.h"
-# include "../../includes/messages.h"
+#include "../../includes/minirt.h"
+#include "../../includes/messages.h"
 
 int	is_autorepeat_release(t_minirt *rt, int keycode)
 {
@@ -22,7 +22,8 @@ int	is_autorepeat_release(t_minirt *rt, int keycode)
 	if (XPending(display))
 	{
 		XPeekEvent(display, &next);
-		if (next.type == KeyPress && next.xkey.keycode == (unsigned int)keycode)
+		if (next.type == KeyPress
+			&& next.xkey.keycode == (unsigned int)keycode)
 			return (1);
 	}
 	return (0);
@@ -44,5 +45,3 @@ int	expose_handler(t_minirt *rt)
 		mlx_put_image_to_window(rt->mlx, rt->win, rt->img.img_ptr, 0, 0);
 	return (0);
 }
-
-

@@ -129,7 +129,7 @@ typedef struct s_object
 
 /* =[ Object List Constructor ]============================================= */
 
-t_list		**object_list_Constructor(t_list **components);
+t_list		**object_list_constructor(t_list **components);
 
 /* =[ Individual Object Constructors ]====================================== */
 

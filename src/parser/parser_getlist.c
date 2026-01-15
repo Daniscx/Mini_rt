@@ -1,29 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   collisions.c                                       :+:      :+:    :+:   */
+/*   parser_getlist.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/20 16:12:52 by ravazque          #+#    #+#             */
-/*   Updated: 2025/12/23 03:21:17 by ravazque         ###   ########.fr       */
+/*   Created: 2026/01/14 12:00:00 by ravazque          #+#    #+#             */
+/*   Updated: 2026/01/14 12:00:00 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minirt.h"
+#include "../../includes/parser_internal.h"
 
-bool	camera_collides(t_vec3 pos, t_scene *scene)
+t_list	**get_list_of_elements(t_primitive_escene *primitive,
+		enum e_type_list identifcator)
 {
-	t_list		*aux;
-	t_object	*obj;
-
-	aux = *scene->object;
-	while (aux)
-	{
-		obj = aux->content;
-		if (obj->collision(pos, obj->figure))
-			return (true);
-		aux = aux->next;
-	}
-	return (false);
+	if (identifcator == AL)
+		return (primitive->al);
+	else if (identifcator == L)
+		return (primitive->light);
+	else if (identifcator == C)
+		return (primitive->camera);
+	else if (identifcator == OB)
+		return (primitive->object);
+	return (NULL);
 }

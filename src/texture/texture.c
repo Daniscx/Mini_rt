@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../../includes/texture.h"
-# include "../../includes/hit.h"
+#include "../../includes/texture.h"
+#include "../../includes/hit.h"
 
 static void	skip_whitespace_comments(int fd, char *c)
 {
@@ -42,6 +42,20 @@ static int	read_ppm_int(int fd, char *c)
 	return (value);
 }
 
+static int	read_ppm_data(t_texture *tex, int fd, int max_val)
+{
+	int	data_size;
+
+	tex->channels = 3;
+	data_size = tex->width * tex->height * 3;
+	tex->data = malloc(data_size);
+	if (!tex->data || max_val != 255)
+		return (free(tex->data), free(tex), close(fd), 0);
+	if (read(fd, tex->data, data_size) != data_size)
+		return (free(tex->data), free(tex), close(fd), 0);
+	return (1);
+}
+
 t_texture	*texture_load_ppm(const char *filename)
 {
 	t_texture	*tex;
@@ -63,42 +77,7 @@ t_texture	*texture_load_ppm(const char *filename)
 	tex->width = read_ppm_int(fd, &c);
 	tex->height = read_ppm_int(fd, &c);
 	max_val = read_ppm_int(fd, &c);
-	tex->channels = 3;
-	tex->data = malloc(tex->width * tex->height * 3);
-	if (!tex->data || max_val != 255)
-		return (free(tex->data), free(tex), close(fd), NULL);
-	if (read(fd, tex->data, tex->width * tex->height * 3) != tex->width * tex->height * 3)
-		return (free(tex->data), free(tex), close(fd), NULL);
+	if (!read_ppm_data(tex, fd, max_val))
+		return (NULL);
 	return (close(fd), tex);
-}
-
-void	texture_free(t_texture *tex)
-{
-	if (!tex)
-		return ;
-	if (tex->data)
-		free(tex->data);
-	free(tex);
-}
-
-t_vec3	texture_sample(t_texture *tex, double u, double v)
-{
-	int				x;
-	int				y;
-	int				idx;
-	unsigned char	*pixel;
-
-	if (!tex || !tex->data)
-		return (vec3_new(1, 0, 1));
-	u = u - floor(u);
-	v = v - floor(v);
-	x = (int)(u * tex->width);
-	y = (int)(v * tex->height);
-	if (x >= tex->width)
-		x = tex->width - 1;
-	if (y >= tex->height)
-		y = tex->height - 1;
-	idx = (y * tex->width + x) * tex->channels;
-	pixel = &tex->data[idx];
-	return (vec3_new(pixel[0] / 255.0, pixel[1] / 255.0, pixel[2] / 255.0));
 }

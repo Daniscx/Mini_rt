@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../../includes/escene.h"
-# include "../../includes/minirt.h"
+#include "../../includes/escene.h"
+#include "../../includes/minirt.h"
 
 static void	put_pixel(t_img *img, int x, int y, int color)
 {

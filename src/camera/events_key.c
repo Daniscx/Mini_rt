@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../../includes/minirt.h"
-# include "../../includes/messages.h"
+#include "../../includes/minirt.h"
+#include "../../includes/messages.h"
 
 static int	get_key_index(int kc)
 {
@@ -40,12 +40,17 @@ static int	get_key_index(int kc)
 
 static void	toggle_mouse_mode(t_minirt *rt)
 {
+	int	cx;
+	int	cy;
+
 	rt->input.mouse_captured = !rt->input.mouse_captured;
 	if (rt->input.mouse_captured)
 	{
 		ft_printf(M_MODE);
 		mlx_mouse_hide(rt->mlx, rt->win);
-		mlx_mouse_move(rt->mlx, rt->win, rt->img.width / 2, rt->img.height / 2);
+		cx = rt->img.width / 2;
+		cy = rt->img.height / 2;
+		mlx_mouse_move(rt->mlx, rt->win, cx, cy);
 	}
 	else
 	{

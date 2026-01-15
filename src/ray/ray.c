@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../../includes/minirt.h"
+#include "../../includes/minirt.h"
 
 t_ray	ray_new(t_vec3 origin, t_vec3 direction)
 {
@@ -34,10 +34,12 @@ t_ray	ray_from_camera(t_camera *cam, int x, int y, t_img *img)
 	t_vec3	dir;
 
 	fov_scale = tan((cam->fov * M_PI / 180.0) / 2.0);
-	u = (2.0 * ((double)x + 0.5) / (double)img->width - 1.0) * cam->aspect_ratio;
+	u = (2.0 * ((double)x + 0.5) / (double)img->width - 1.0);
+	u *= cam->aspect_ratio;
 	v = 1.0 - 2.0 * ((double)y + 0.5) / (double)img->height;
 	u *= fov_scale;
 	v *= fov_scale;
-	dir = vec3_add(cam->direction, vec3_add(vec3_scale(cam->right, u), vec3_scale(cam->up, v)));
+	dir = vec3_add(cam->direction, vec3_add(vec3_scale(cam->right, u),
+				vec3_scale(cam->up, v)));
 	return (ray_new(cam->position, dir));
 }

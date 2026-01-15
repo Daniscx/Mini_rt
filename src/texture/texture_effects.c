@@ -10,29 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../../includes/texture.h"
-# include "../../includes/hit.h"
-# include "../../includes/objects.h"
-
-void	sphere_get_uv(t_vec3 point, t_vec3 center, double *u, double *v)
-{
-	t_vec3	local;
-	double	theta;
-	double	phi;
-
-	local = vec3_normalize(vec3_sub(point, center));
-	theta = atan2(local.x, local.z);
-	phi = asin(local.y);
-	*u = 1.0 - (theta + M_PI) / (2.0 * M_PI);
-	*v = (phi + M_PI / 2.0) / M_PI;
-}
-
-t_vec3	apply_texture(struct s_hit *hit)
-{
-	if (!hit->texture)
-		return (hit->color);
-	return (texture_sample(hit->texture, hit->u, hit->v));
-}
+#include "../../includes/texture.h"
+#include "../../includes/hit.h"
+#include "../../includes/objects.h"
 
 static t_vec3	get_bump_tangent(t_vec3 normal)
 {
@@ -44,7 +24,12 @@ static t_vec3	get_bump_tangent(t_vec3 normal)
 	return (tangent);
 }
 
-static void	calculate_bump_gradients(struct s_hit *hit, double *du, double *dv)
+static double	get_color_avg(t_vec3 c)
+{
+	return ((c.x + c.y + c.z) / 3.0);
+}
+
+static void	calc_bump_grad(struct s_hit *hit, double *du, double *dv)
 {
 	t_vec3	color_c;
 	t_vec3	color_u;
@@ -55,8 +40,8 @@ static void	calculate_bump_gradients(struct s_hit *hit, double *du, double *dv)
 	color_c = texture_sample(hit->bump_map, hit->u, hit->v);
 	color_u = texture_sample(hit->bump_map, hit->u + delta, hit->v);
 	color_v = texture_sample(hit->bump_map, hit->u, hit->v + delta);
-	*du = (color_u.x + color_u.y + color_u.z) / 3.0 - (color_c.x + color_c.y + color_c.z) / 3.0;
-	*dv = (color_v.x + color_v.y + color_v.z) / 3.0 - (color_c.x + color_c.y + color_c.z) / 3.0;
+	*du = get_color_avg(color_u) - get_color_avg(color_c);
+	*dv = get_color_avg(color_v) - get_color_avg(color_c);
 }
 
 t_vec3	apply_bump_map(struct s_hit *hit)
@@ -69,10 +54,12 @@ t_vec3	apply_bump_map(struct s_hit *hit)
 
 	if (!hit->bump_map)
 		return (hit->normal);
-	calculate_bump_gradients(hit, &du, &dv);
+	calc_bump_grad(hit, &du, &dv);
 	tangent = get_bump_tangent(hit->normal);
 	bitangent = vec3_cross(hit->normal, tangent);
-	perturbed = vec3_add(hit->normal, vec3_scale(tangent, -du * BUMP_STRENGTH * 10.0));
-	perturbed = vec3_add(perturbed, vec3_scale(bitangent, -dv * BUMP_STRENGTH * 10.0));
+	perturbed = vec3_add(hit->normal,
+			vec3_scale(tangent, -du * BUMP_STRENGTH * 10.0));
+	perturbed = vec3_add(perturbed,
+			vec3_scale(bitangent, -dv * BUMP_STRENGTH * 10.0));
 	return (vec3_normalize(perturbed));
 }

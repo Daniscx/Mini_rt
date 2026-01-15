@@ -4,6 +4,7 @@ miniRT_objects
 miniRT
 src/aux_libft/libft.a
 .vscode
+docs/
 
 ## DS_STORE
 .DS_STORE

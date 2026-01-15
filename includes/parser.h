@@ -22,7 +22,6 @@ typedef struct primitive_escene_s	t_primitive_escene;
 typedef struct s_list				t_list;
 
 /* =[ Parser Element Types ]================================================ */
-// Identifiers for accessing parsed element lists from primitive scene
 
 enum e_type_list
 {
@@ -40,7 +39,8 @@ void				escene_primitive_destructor(t_primitive_escene *primitive);
 /* =[ Parser Utilities ]==================================================== */
 
 bool				if_betwen_values(float elem, float min, float max);
-t_list				**get_list_of_elements(t_primitive_escene *prim, enum e_type_list id);	// line break to pass norminette - [ 42 ]
+t_list				**get_list_of_elements(t_primitive_escene *prim,
+						enum e_type_list id);
 
 /* ========================================================================= */
 

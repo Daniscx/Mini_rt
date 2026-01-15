@@ -18,7 +18,6 @@
 # include "parser.h"
 
 /* =[ Error Tracking ]====================================================== */
-// Structure to track parsing errors with line numbers
 
 typedef struct s_parse_error
 {
@@ -35,8 +34,19 @@ typedef struct s_error_list
 	int				count;
 }	t_error_list;
 
+/* =[ Float Check Context ]================================================= */
+
+typedef struct s_float_ctx
+{
+	float			max;
+	float			min;
+	bool			range;
+	int				line;
+	t_error_list	*errors;
+	char			*param;
+}	t_float_ctx;
+
 /* =[ Line Data ]=========================================================== */
-// Structure to store line content with line number for error reporting
 
 typedef struct s_line_data
 {
@@ -45,7 +55,6 @@ typedef struct s_line_data
 }	t_line_data;
 
 /* =[ Primitive Scene ]===================================================== */
-// Raw parsed data before conversion to final scene structures
 
 typedef struct primitive_escene_s
 {
@@ -58,7 +67,8 @@ typedef struct primitive_escene_s
 /* =[ Error Management ]=================================================== */
 
 t_error_list		*error_list_create(void);
-void				error_list_add(t_error_list *list, int line, char *msg, char *param);
+void				error_list_add(t_error_list *list, int line, char *msg,
+						char *param);
 void				error_list_print(t_error_list *list);
 void				error_list_free(t_error_list *list);
 
@@ -67,21 +77,33 @@ void				error_list_free(t_error_list *list);
 bool				if_betwen_values(float elem, float min, float max);
 size_t				double_array_len(char **doble);
 bool				str_empty(char *str);
-bool				correct_number_of_elements(char **element, int line, t_error_list *errors);
+bool				correct_number_of_elements(char **element, int line,
+						t_error_list *errors);
 int					ft_ispace(char c);
 
 /* =[ Float List Parsing ]================================================== */
 
-t_list				**list_of_float_checker(char **split, float max, float min, bool rng, int line, t_error_list *errors, char *param_name);	// norminette - [ 42 ]
+t_list				**list_of_float_checker(char **split, t_float_ctx *ctx);
 
 /* =[ Element Parsers ]===================================================== */
 
-int					ambient_light_parser(char **elem, t_list **list, int line, t_error_list *errors);
-int					light_parser(char **elem, t_list **list, int line, t_error_list *errors);
-int					camera_parser(char **elem, t_list **list, int line, t_error_list *errors);
-int					object_parser(char **elem, t_list **list, int line, t_error_list *errors);
+int					ambient_light_parser(char **elem, t_list **list, int line,
+						t_error_list *errors);
+int					light_parser(char **elem, t_list **list, int line,
+						t_error_list *errors);
+int					camera_parser(char **elem, t_list **list, int line,
+						t_error_list *errors);
+int					object_parser(char **elem, t_list **list, int line,
+						t_error_list *errors);
+
+/* =[ Object Parsers ]====================================================== */
+
+t_list				**sphere_parser(char **elem, int line, t_error_list *e);
+t_list				**plane_parser(char **elem, int line, t_error_list *e);
+t_list				**cylinder_parser(char **elem, int line, t_error_list *e);
 typedef int			(*t_parser_func)(char **, t_list **, int, t_error_list *);
-t_list				**general_parser(t_list **list, t_parser_func f, void (*destructor)(t_list **));	// line break to pass norminette - [ 42 ]
+t_list				**general_parser(t_list **list, t_parser_func f,
+						void (*destructor)(t_list **));
 
 /* =[ File Parsing ]======================================================== */
 
@@ -92,8 +114,10 @@ char				*parser_texture_name(char *file);
 
 t_primitive_escene	*escene_primiteve_constructor(char *file, int *msg);
 void				escene_primitive_destructor(t_primitive_escene *prim);
-int					primitive_escene_t_asignation(t_list **el, t_primitive_escene *s);			// line break to pass norminette - [ 42 ]
-t_list				**get_list_of_elements(t_primitive_escene *prim, enum e_type_list id);		// line break to pass norminette - [ 42 ]
+int					primitive_escene_t_asignation(t_list **el,
+						t_primitive_escene *s);
+t_list				**get_list_of_elements(t_primitive_escene *prim,
+						enum e_type_list id);
 
 /* =[ Memory Cleanup ]====================================================== */
 

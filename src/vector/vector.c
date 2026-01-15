@@ -10,30 +10,30 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../../includes/vector.h"
+#include "../../includes/vector.h"
 
-t_vec3 vector_constructor(t_list **cordinates, bool is_rgb)
+t_vec3	vector_constructor(t_list **cordinates, bool is_rgb)
 {
-    t_list *aux;
-    double x;
-    double y;
-    double z;
-    
- 
-    aux = *cordinates;
-    x = *(float *)aux->content;
-    if(is_rgb == true)
-    x /=255;
-    aux = aux->next;
-    y = *(float *)aux->content;
-    if(is_rgb == true)
-    y /= 255;
-    aux = aux->next;
-    z = *(float *)aux->content;
-    if(is_rgb == true)
-    z /= 255;
-    return(vec3_new(x , y, z));    
+	t_list	*aux;
+	double	x;
+	double	y;
+	double	z;
+
+	aux = *cordinates;
+	x = *(float *)aux->content;
+	if (is_rgb == true)
+		x /= 255;
+	aux = aux->next;
+	y = *(float *)aux->content;
+	if (is_rgb == true)
+		y /= 255;
+	aux = aux->next;
+	z = *(float *)aux->content;
+	if (is_rgb == true)
+		z /= 255;
+	return (vec3_new(x, y, z));
 }
+
 t_vec3	vec3_new(double x, double y, double z)
 {
 	t_vec3	v;
@@ -57,9 +57,4 @@ t_vec3	vec3_sub(t_vec3 a, t_vec3 b)
 t_vec3	vec3_scale(t_vec3 v, double scalar)
 {
 	return (vec3_new(v.x * scalar, v.y * scalar, v.z * scalar));
-}
-
-double	vec3_dot(t_vec3 a, t_vec3 b)
-{
-	return (a.x * b.x + a.y * b.y + a.z * b.z);
 }

@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../../includes/parser_internal.h"
-# include "../../includes/minirt.h"
+#include "../../includes/parser_internal.h"
+#include "../../includes/minirt.h"
 
 t_error_list	*error_list_create(void)
 {
@@ -55,33 +55,39 @@ void	error_list_add(t_error_list *list, int line, char *msg, char *param)
 	list->count++;
 }
 
+static void	print_error_line(t_parse_error *err)
+{
+	char	*line_str;
+
+	ft_putstr_fd("\033[1;36mminiRT: \033[1;31mError", STDERR_FILENO);
+	if (err->line > 0)
+	{
+		ft_putstr_fd(" (Line ", STDERR_FILENO);
+		line_str = ft_itoa(err->line);
+		ft_putstr_fd(line_str, STDERR_FILENO);
+		free(line_str);
+		ft_putstr_fd(")", STDERR_FILENO);
+	}
+	ft_putstr_fd(": \033[0m", STDERR_FILENO);
+	if (err->parameter)
+	{
+		ft_putstr_fd("'\033[1;33m", STDERR_FILENO);
+		ft_putstr_fd(err->parameter, STDERR_FILENO);
+		ft_putstr_fd("\033[0m': ", STDERR_FILENO);
+	}
+	ft_putendl_fd(err->message, STDERR_FILENO);
+}
+
 void	error_list_print(t_error_list *list)
 {
 	t_parse_error	*current;
-	char			*line_str;
 
 	if (!list || !list->first)
 		return ;
 	current = list->first;
 	while (current)
 	{
-		ft_putstr_fd("\033[1;36mminiRT: \033[1;31mError", STDERR_FILENO);
-		if (current->line > 0)
-		{
-			ft_putstr_fd(" (Line ", STDERR_FILENO);
-			line_str = ft_itoa(current->line);
-			ft_putstr_fd(line_str, STDERR_FILENO);
-			free(line_str);
-			ft_putstr_fd(")", STDERR_FILENO);
-		}
-		ft_putstr_fd(": \033[0m", STDERR_FILENO);
-		if (current->parameter)
-		{
-			ft_putstr_fd("In parameter '\033[1;33m", STDERR_FILENO);
-			ft_putstr_fd(current->parameter, STDERR_FILENO);
-			ft_putstr_fd("\033[0m': ", STDERR_FILENO);
-		}
-		ft_putendl_fd(current->message, STDERR_FILENO);
+		print_error_line(current);
 		current = current->next;
 	}
 }

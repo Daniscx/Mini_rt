@@ -10,36 +10,37 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../../includes/ambient_light.h"
+#include "../../includes/ambient_light.h"
 
-t_ambient_light *ambient_light_constructor(t_list **components)
+t_ambient_light	*ambient_light_constructor(t_list **components)
 {
-    t_ambient_light *result;
-    t_list *aux;
-    
-    result = ft_calloc(1, sizeof(t_ambient_light ));
-    aux = *components;
-    result->ratio = *(float *)aux->content;
-    aux = aux->next;
-    result->color = vector_constructor(aux->content, true);
-    return(result);
+	t_ambient_light	*result;
+	t_list			*aux;
+
+	result = ft_calloc(1, sizeof(t_ambient_light));
+	aux = *components;
+	result->ratio = *(float *)aux->content;
+	aux = aux->next;
+	result->color = vector_constructor(aux->content, true);
+	return (result);
 }
 
-void print_ambient_light(t_ambient_light *ambient)
+void	print_ambient_light(t_ambient_light *ambient)
 {
-    if (!ambient)
-    {
-        printf("Ambient Light: NULL\n");
-        return;
-    }
-    printf("Ambient Light:\n");
-    printf("  Ratio: %.2f\n", ambient->ratio);
-    printf("  Color: (R: %.2f, G: %.2f, B: %.2f)\n",  ambient->color.x, ambient->color.y, ambient->color.z);
+	if (!ambient)
+	{
+		printf("Ambient Light: NULL\n");
+		return ;
+	}
+	printf("Ambient Light:\n");
+	printf("  Ratio: %.2f\n", ambient->ratio);
+	printf("  Color: (R: %.2f, G: %.2f, B: %.2f)\n",
+		ambient->color.x, ambient->color.y, ambient->color.z);
 }
 
-void ambient_light_destructor(t_ambient_light *ambient)
+void	ambient_light_destructor(t_ambient_light *ambient)
 {
-    if(!ambient)
-        return;
-    free(ambient);
+	if (!ambient)
+		return ;
+	free(ambient);
 }

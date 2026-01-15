@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   vector_utils.c                                     :+:      :+:    :+:   */
+/*   vector_ops.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,28 +12,42 @@
 
 #include "../../includes/vector.h"
 
-t_vec3	vec3_negate(t_vec3 v)
+double	vec3_dot(t_vec3 a, t_vec3 b)
 {
-	return (vec3_new(-v.x, -v.y, -v.z));
+	return (a.x * b.x + a.y * b.y + a.z * b.z);
 }
 
-double	vec3_clamp(double value, double min, double max)
+t_vec3	vec3_cross(t_vec3 a, t_vec3 b)
 {
-	if (value < min)
-		return (min);
-	if (value > max)
-		return (max);
-	return (value);
+	t_vec3	result;
+
+	result.x = a.y * b.z - a.z * b.y;
+	result.y = a.z * b.x - a.x * b.z;
+	result.z = a.x * b.y - a.y * b.x;
+	return (result);
 }
 
-int	vec3_to_color(t_vec3 color)
+double	vec3_length(t_vec3 v)
 {
-	int	r;
-	int	g;
-	int	b;
+	double	result;
 
-	r = (int)(vec3_clamp(color.x, 0.0, 1.0) * 255.0);
-	g = (int)(vec3_clamp(color.y, 0.0, 1.0) * 255.0);
-	b = (int)(vec3_clamp(color.z, 0.0, 1.0) * 255.0);
-	return ((r << 16) | (g << 8) | b);
+	result = sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
+	if (isnan(result) || isinf(result))
+		return (0.0);
+	return (result);
+}
+
+t_vec3	vec3_normalize(t_vec3 v)
+{
+	double	len;
+
+	len = vec3_length(v);
+	if (len <= 0.0)
+		return (vec3_new(0.0, 0.0, 1.0));
+	return (vec3_scale(v, 1.0 / len));
+}
+
+t_vec3	vec3_mult(t_vec3 a, t_vec3 b)
+{
+	return (vec3_new(a.x * b.x, a.y * b.y, a.z * b.z));
 }
