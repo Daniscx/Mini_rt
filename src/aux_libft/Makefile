@@ -1,41 +1,101 @@
+MAKEFLAGS += --no-print-directory
 
-NAME	= libft.a
+NAME = libft.a
 
-CC		= cc
-CFLAGS	= -Wall -Werror -Wextra
+CC = cc
+CFLAGS = -Wall -Wextra -Werror -I$(INC_DIR)
+AR = ar
+ARFLAGS = rcs
 
-SRCS	= ft_isalpha.c ft_isdigit.c ft_isalnum.c ft_isascii.c \
-		ft_isprint.c ft_strlen.c ft_memset.c ft_bzero.c ft_memcpy.c \
-		ft_memmove.c ft_strlcpy.c ft_strlcat.c ft_toupper.c \
-		ft_tolower.c ft_strchr.c ft_strrchr.c ft_strncmp.c \
-		ft_memchr.c ft_memcmp.c ft_strnstr.c ft_atoi.c ft_strdup.c \
-		ft_calloc.c ft_substr.c ft_strjoin.c ft_strtrim.c ft_split.c \
-		ft_itoa.c ft_strmapi.c ft_striteri.c ft_putchar_fd.c ft_putstr_fd.c \
-		ft_putendl_fd.c ft_putnbr_fd.c ft_putunmath.c ft_putstr.c get_next_line.c \
-		get_next_line_utils.c ft_putpointer.c ft_putnb.c ft_selector.c \
-		ft_putchar.c ft_puthexnumax.c ft_puthexnum.c ft_printf.c ft_atol.c ft_dbpt_free.c ft_atof.c
+SRC_DIR = src
+INC_DIR = include
+OBJ_DIR = ../../miniRT_objects/aux_libft
 
-OBJS	= $(SRCS:.c=.o)
+RESET = \033[0m
+GREEN = \033[1;32m
+CYAN = \033[1;36m
+COMPILE = \033[1;33m
+RED = \033[1;91m
 
-BSRCS	= ft_lstnew_bonus.c ft_lstadd_front_bonus.c ft_lstsize_bonus.c \
-		ft_lstlast_bonus.c ft_lstadd_back_bonus.c 
+SRCS = $(SRC_DIR)/ft_isalpha.c \
+	   $(SRC_DIR)/ft_isdigit.c \
+	   $(SRC_DIR)/ft_isalnum.c \
+	   $(SRC_DIR)/ft_isascii.c \
+	   $(SRC_DIR)/ft_isprint.c \
+	   $(SRC_DIR)/ft_strlen.c \
+	   $(SRC_DIR)/ft_memset.c \
+	   $(SRC_DIR)/ft_bzero.c \
+	   $(SRC_DIR)/ft_memcpy.c \
+	   $(SRC_DIR)/ft_memmove.c \
+	   $(SRC_DIR)/ft_strlcpy.c \
+	   $(SRC_DIR)/ft_strlcat.c \
+	   $(SRC_DIR)/ft_toupper.c \
+	   $(SRC_DIR)/ft_tolower.c \
+	   $(SRC_DIR)/ft_strchr.c \
+	   $(SRC_DIR)/ft_strrchr.c \
+	   $(SRC_DIR)/ft_strncmp.c \
+	   $(SRC_DIR)/ft_memchr.c \
+	   $(SRC_DIR)/ft_memcmp.c \
+	   $(SRC_DIR)/ft_strnstr.c \
+	   $(SRC_DIR)/ft_atoi.c \
+	   $(SRC_DIR)/ft_strdup.c \
+	   $(SRC_DIR)/ft_calloc.c \
+	   $(SRC_DIR)/ft_substr.c \
+	   $(SRC_DIR)/ft_strjoin.c \
+	   $(SRC_DIR)/ft_strtrim.c \
+	   $(SRC_DIR)/ft_split.c \
+	   $(SRC_DIR)/ft_itoa.c \
+	   $(SRC_DIR)/ft_strmapi.c \
+	   $(SRC_DIR)/ft_striteri.c \
+	   $(SRC_DIR)/ft_putchar_fd.c \
+	   $(SRC_DIR)/ft_putstr_fd.c \
+	   $(SRC_DIR)/ft_putendl_fd.c \
+	   $(SRC_DIR)/ft_putnbr_fd.c \
+	   $(SRC_DIR)/ft_putunmath.c \
+	   $(SRC_DIR)/ft_putstr.c \
+	   $(SRC_DIR)/get_next_line.c \
+	   $(SRC_DIR)/get_next_line_utils.c \
+	   $(SRC_DIR)/ft_putpointer.c \
+	   $(SRC_DIR)/ft_putnb.c \
+	   $(SRC_DIR)/ft_selector.c \
+	   $(SRC_DIR)/ft_putchar.c \
+	   $(SRC_DIR)/ft_puthexnumax.c \
+	   $(SRC_DIR)/ft_puthexnum.c \
+	   $(SRC_DIR)/ft_printf.c \
+	   $(SRC_DIR)/ft_atol.c \
+	   $(SRC_DIR)/ft_dbpt_free.c \
+	   $(SRC_DIR)/ft_atof.c \
+	   $(SRC_DIR)/ft_lstnew.c \
+	   $(SRC_DIR)/ft_lstadd_front.c \
+	   $(SRC_DIR)/ft_lstsize.c \
+	   $(SRC_DIR)/ft_lstlast.c \
+	   $(SRC_DIR)/ft_lstadd_back.c
 
-BOBJS	= $(BSRCS:.c=.o)
+OBJS = $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 
-all : $(NAME)
+all: $(NAME)
 
 $(NAME): $(OBJS)
-	ar -rcs $(NAME) $(OBJS)
+	@printf "$(COMPILE)Compilando libft.a$(RESET)\n"
+	@$(AR) $(ARFLAGS) $@ $^
+	@printf "$(GREEN)libft.a ready!$(RESET)\n"
+
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
+	@$(CC) $(CFLAGS) -c $< -o $@
+
+$(OBJ_DIR):
+	@mkdir -p $@
 
 clean:
-	rm -f $(OBJS) $(BOBJS)
+	@if [ ! -d "../../miniRT_objects/miniRT" ]; then \
+		rm -rf "../../miniRT_objects"; \
+	else \
+		rm -rf $(OBJ_DIR); \
+	fi
 
 fclean: clean
-	rm -f $(NAME)
+	@rm -f $(NAME)
 
 re: fclean all
 
-bonus: $(BOBJS) $(NAME)
-	ar -rcs $(NAME) $(BOBJS)
-
-.PHONY: re clean fclean all bonus
+.PHONY: all clean fclean re
