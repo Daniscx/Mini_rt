@@ -119,13 +119,8 @@ main(){
 
 	log_info 'Execute "make all" from file "makefile.gen"'
 		${MAKE} -f Makefile.gen all
-
-	# ================== Cambiar en el cluster [En mi SO no funciona] ==================
-
-	# log_info 'Execute "make all" from file "test/makefile.gen"'
-	# 	(cd test ; ${MAKE} -f Makefile.gen all )
-	
-	# ==================================================================================
+	log_info 'Execute "make all" from file "test/makefile.gen"'
+		(cd test ; ${MAKE} -f Makefile.gen all )
 }
 
 main "$@"

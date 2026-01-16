@@ -18,14 +18,11 @@ APP_OBJ_DIR     = $(OBJ_ROOT)/miniRT
 LIBFT_OBJ_DIR   = $(OBJ_ROOT)/aux_libft
 
 CC			= cc
-# CFLAGS		= -Wall -Wextra -Werror -I$(INC_DIR) -I$(LIBFT_DIR) -I$(MLX_DIR)
-# CFLAGS_CB   = -Wall -Wextra -Werror -D COLOR_BLEEDING=1 -I$(INC_DIR) -I$(LIBFT_DIR) -I$(MLX_DIR)
+CFLAGS		= -Wall -Wextra -Werror -I$(INC_DIR) -I$(LIBFT_DIR) -I$(MLX_DIR)
+CFLAGS_CB   = -Wall -Wextra -Werror -D COLOR_BLEEDING=1 -I$(INC_DIR) -I$(LIBFT_DIR) -I$(MLX_DIR)
 
 # CFLAGS		= -Wall -Wextra -Werror -O3 -I$(INC_DIR) -I$(LIBFT_DIR) -I$(MLX_DIR)
 # CFLAGS_CB   = -Wall -Wextra -Werror -D COLOR_BLEEDING=1 -O3 -I$(INC_DIR) -I$(LIBFT_DIR) -I$(MLX_DIR)
-
-CFLAGS   = -Wall -Wextra -Werror -Wno-error=incompatible-pointer-types -O3 -I$(INC_DIR) -I$(LIBFT_DIR)/include -I$(MLX_DIR) -I$(SRC_DIR)/escene/parser
-CFLAGS_CB   = -Wall -Wextra -Werror -Wno-error=incompatible-pointer-types -D COLOR_BLEEDING=1 -O3 -I$(INC_DIR) -I$(LIBFT_DIR)/include -I$(MLX_DIR) -I$(SRC_DIR)/escene/parser
 
 LDFLAGS  = -L$(MLX_DIR) -lmlx -L/usr/lib -lXext -lX11 -lm -lz
 AR       = ar
@@ -54,6 +51,7 @@ SRCS = \
 	$(SRC_DIR)/escene/escene.c \
 	$(SRC_DIR)/hit/hit.c \
 	$(SRC_DIR)/light/light.c \
+	$(SRC_DIR)/light/light_utils.c \
 	$(SRC_DIR)/light/light_calc.c \
 	$(SRC_DIR)/objects/cone.c \
 	$(SRC_DIR)/objects/cone_hit.c \

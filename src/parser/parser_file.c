@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 12:30:00 by dmaestro          #+#    #+#             */
-/*   Updated: 2025/12/26 01:04:56 by ravazque         ###   ########.fr       */
+/*   Updated: 2026/01/16 21:15:20 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static char	*try_file_no_rt(char *file)
 	}
 	free(try_rt);
 	free(try_scene);
-	error_manager("Invalid file. Check extension.", false);
+	error_manager("Invalid file. Check the extension if the file exists.", false);
 	return (NULL);
 }
 
@@ -78,7 +78,7 @@ static char	*try_file_with_rt(char *file)
 		return (try_rt);
 	}
 	free(try_rt);
-	error_manager("Invalid file. Check extension.", false);
+	error_manager("Invalid file. Check the extension if the file exists.", false);
 	return (NULL);
 }
 
