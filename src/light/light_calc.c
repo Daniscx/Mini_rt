@@ -27,12 +27,13 @@ t_vec3	apply_checkerboard(t_hit *hit)
 	return (dark);
 }
 
-bool	is_in_shadow(t_vec3 pt, t_vec3 l_dir, double l_dist, t_scene *scene)
+bool	is_in_shadow(t_vec3 pt, t_vec3 n, t_vec3 l_dir, double l_dist,
+		t_scene *scene)
 {
 	t_ray	shadow_ray;
 	t_hit	hit;
 
-	shadow_ray.origin = vec3_add(pt, vec3_scale(l_dir, EPSILON * 10));
+	shadow_ray.origin = vec3_add(pt, vec3_scale(n, EPSILON * 10));
 	shadow_ray.direction = l_dir;
 	hit = find_closest_hit(shadow_ray, scene);
 	if (hit.hit && hit.t < l_dist)
@@ -72,7 +73,7 @@ static t_vec3	calculate_diffuse(t_hit hit, t_light *light, t_scene *scene)
 	light_dir = vec3_sub(light->position, hit.point);
 	light_dist = vec3_length(light_dir);
 	light_dir = vec3_normalize(light_dir);
-	if (is_in_shadow(hit.point, light_dir, light_dist, scene))
+	if (is_in_shadow(hit.point, hit.normal, light_dir, light_dist, scene))
 		return (vec3_new(0, 0, 0));
 	diff = vec3_dot(hit.normal, light_dir);
 	if (diff < 0)

@@ -291,4 +291,8 @@ test_bonus:
 
 # Remove the "-O3" flag during correction, as it fixes possible errors but greatly improves performance!
 
+# If “makefile.gen” does not exist and you try to run “make fclean” (for example, immediately after downloading
+# the repository), the makefile will return an error due to the absence of this mlx file. This is due to the
+# different systems on which mlx has been used. It is not an error!
+
 # ----------------------------------------------------------------------------------------------------------------

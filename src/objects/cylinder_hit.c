@@ -52,10 +52,11 @@ static t_hit	intersect_cylinder_body(t_ray ray, t_cylinder *cy)
 	disc = coef[1] * coef[1] - 4.0 * coef[0] * coef[2];
 	if (disc < 0)
 		return (hit_new());
-	coef[0] = (-coef[1] - sqrt(disc)) / (2.0 * coef[0]);
-	if (coef[0] < EPSILON)
-		coef[0] = (-coef[1] + sqrt(disc)) / (2.0 * coef[0]);
-	return (build_body_hit(ray, cy, coef[0]));
+	disc = sqrt(disc);
+	coef[2] = (-coef[1] - disc) / (2.0 * coef[0]);
+	if (coef[2] < EPSILON)
+		coef[2] = (-coef[1] + disc) / (2.0 * coef[0]);
+	return (build_body_hit(ray, cy, coef[2]));
 }
 
 static t_hit	intersect_cylinder_caps(t_ray ray, t_cylinder *cy)
