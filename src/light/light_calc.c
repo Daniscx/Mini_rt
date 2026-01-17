@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/15 13:37:23 by dmaestro          #+#    #+#             */
-/*   Updated: 2025/12/24 01:20:16 by ravazque         ###   ########.fr       */
+/*   Updated: 2026/01/17 14:22:49 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,7 @@ t_vec3	apply_checkerboard(t_hit *hit)
 	return (dark);
 }
 
-bool	is_in_shadow(t_vec3 pt, t_vec3 n, t_vec3 l_dir, double l_dist,
-		t_scene *scene)
+static bool	is_in_shadow(t_vec3 pt, t_vec3 n, t_vec3 l_dir, t_scene *scene)
 {
 	t_ray	shadow_ray;
 	t_hit	hit;
@@ -36,7 +35,7 @@ bool	is_in_shadow(t_vec3 pt, t_vec3 n, t_vec3 l_dir, double l_dist,
 	shadow_ray.origin = vec3_add(pt, vec3_scale(n, EPSILON * 10));
 	shadow_ray.direction = l_dir;
 	hit = find_closest_hit(shadow_ray, scene);
-	if (hit.hit && hit.t < l_dist)
+	if (hit.hit && hit.t < l_dir.ldt_norminette)
 		return (true);
 	return (false);
 }
@@ -71,9 +70,11 @@ static t_vec3	calculate_diffuse(t_hit hit, t_light *light, t_scene *scene)
 	t_vec3	diffuse;
 
 	light_dir = vec3_sub(light->position, hit.point);
-	light_dist = vec3_length(light_dir);
+	light_dir.ldt_norminette = vec3_length(light_dir);
+	light_dist = light_dir.ldt_norminette;
 	light_dir = vec3_normalize(light_dir);
-	if (is_in_shadow(hit.point, hit.normal, light_dir, light_dist, scene))
+	light_dir.ldt_norminette = light_dist;
+	if (is_in_shadow(hit.point, hit.normal, light_dir, scene))
 		return (vec3_new(0, 0, 0));
 	diff = vec3_dot(hit.normal, light_dir);
 	if (diff < 0)

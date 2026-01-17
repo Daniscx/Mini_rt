@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/15 12:27:23 by dmaestro          #+#    #+#             */
-/*   Updated: 2025/12/23 03:24:07 by ravazque         ###   ########.fr       */
+/*   Updated: 2026/01/17 14:22:49 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,17 @@
 
 /* =[ 3D Vector ]=========================================================== */
 // Represents a 3D point or direction with x, y, z components
+// ldt_norminette is the distance light in the calc of an object's shadow.
+
+// It was necessary to add this variable to the struct that was NOT directly
+// related to "x", "y" and "z" directly to pass the norminette. 
 
 typedef struct s_vec3
 {
 	double	x;
 	double	y;
 	double	z;
+	double	ldt_norminette;
 }	t_vec3;
 
 /* =[ Vector Constructor ]=================================================== */
