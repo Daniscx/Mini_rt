@@ -10,30 +10,15 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/parser_internal.h"
 #include "../../includes/minirt.h"
+#include "../../includes/parser_internal.h"
 
 static int	parse_cyl_float(char *str, t_list **res, int l, t_error_list *e)
 {
-	int		i;
-	float	*actual_float;
+	t_float_ctx	ctx;
 
-	i = 0;
-	if (str[i] == '-')
-		i++;
-	while (str[i])
-	{
-		if (ft_isdigit(str[i]) == 0 && str[i] != '.')
-		{
-			error_list_add(e, l, "Invalid numeric.", "diam/height");
-			return (-1);
-		}
-		i++;
-	}
-	actual_float = ft_calloc(1, sizeof(float));
-	*actual_float = ft_atof(str);
-	ft_lstadd_back(res, ft_lstnew(actual_float));
-	return (0);
+	ctx = (t_float_ctx){0, 0, false, l, e, "diam/height"};
+	return (add_float_value(res, str, &ctx));
 }
 
 static int	parse_cyl_vectors(char **elem, t_list **res, int l, t_error_list *e)

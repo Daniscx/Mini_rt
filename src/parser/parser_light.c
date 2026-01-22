@@ -6,39 +6,24 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 12:30:00 by dmaestro          #+#    #+#             */
-/*   Updated: 2025/12/23 17:14:48 by ravazque         ###   ########.fr       */
+/*   Updated: 2026/01/22 16:50:04 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/parser_internal.h"
 #include "../../includes/minirt.h"
+#include "../../includes/parser_internal.h"
 
 static int	parse_light_brightness(char **elem, t_list **new_l, int l,
 		t_error_list *e)
 {
-	int		i;
-	float	*actual_float;
+	t_float_ctx	ctx;
 
-	i = 0;
-	while (elem[2][i])
+	ctx = (t_float_ctx){1, 0, true, l, e, "brightness"};
+	if (add_float_value(new_l, elem[2], &ctx) == -1)
 	{
-		if (ft_isdigit(elem[2][i]) == 0 && elem[2][i] != '.')
-		{
-			error_list_add(e, l, "Invalid numeric.", "brightness");
-			free_primitive_light(new_l);
-			return (-1);
-		}
-		i++;
-	}
-	actual_float = ft_calloc(1, sizeof(float));
-	*actual_float = ft_atof(elem[2]);
-	if (if_betwen_values(*actual_float, 0, 1) == false)
-	{
-		free(actual_float);
 		free_primitive_light(new_l);
-		return (error_list_add(e, l, "Brightness 0-1.", "brightness"), -1);
+		return (-1);
 	}
-	ft_lstadd_back(new_l, ft_lstnew(actual_float));
 	return (0);
 }
 

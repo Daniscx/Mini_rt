@@ -10,28 +10,16 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/parser_internal.h"
 #include "../../includes/minirt.h"
+#include "../../includes/parser_internal.h"
 
 static int	parse_sphere_diameter(char **elem, t_list **res, int l,
 		t_error_list *e)
 {
-	int		i;
-	float	*actual_float;
+	t_float_ctx	ctx;
 
-	i = 0;
-	if (elem[2][i] == '-')
-		i++;
-	while (elem[2][i])
-	{
-		if (ft_isdigit(elem[2][i]) == 0 && elem[2][i] != '.')
-			return (error_list_add(e, l, "Invalid num.", "diameter"), -1);
-		i++;
-	}
-	actual_float = ft_calloc(1, sizeof(float));
-	*actual_float = ft_atof(elem[2]);
-	ft_lstadd_back(res, ft_lstnew(actual_float));
-	return (0);
+	ctx = (t_float_ctx){0, 0, false, l, e, "diameter"};
+	return (add_float_value(res, elem[2], &ctx));
 }
 
 static int	parse_sphere_textures(char **elem, t_list **res, int l,

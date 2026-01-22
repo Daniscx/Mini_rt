@@ -84,6 +84,7 @@ int					ft_ispace(char c);
 /* =[ Float List Parsing ]================================================== */
 
 t_list				**list_of_float_checker(char **split, t_float_ctx *ctx);
+int					add_float_value(t_list **res, char *str, t_float_ctx *ctx);
 
 /* =[ Element Parsers ]===================================================== */
 

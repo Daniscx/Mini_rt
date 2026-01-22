@@ -10,26 +10,43 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/parser_internal.h"
 #include "../../includes/minirt.h"
+#include "../../includes/parser_internal.h"
+
+static void	error_bool_check(bool result, t_float_ctx *ctx);
 
 static bool	check_float_str(char *str, t_float_ctx *ctx)
 {
-	int	i;
+	int		i;
+	bool	result;
 
+	result = true;
 	i = 0;
 	if (str[i] == '-')
 		i++;
 	while (str[i])
 	{
 		if (ft_isdigit(str[i]) == 0 && str[i] != '.')
-		{
-			error_list_add(ctx->errors, ctx->line, "Invalid num.", ctx->param);
-			return (false);
-		}
+			result = false;
+		i++;
+		if (str[i - 1] == '.')
+			break ;
+	}
+	if (!str[i])
+		return (error_bool_check(result, ctx), result);
+	while (str[i] && result == true)
+	{
+		if (ft_isdigit(str[i]) == 0)
+			result = false;
 		i++;
 	}
-	return (true);
+	return (error_bool_check(result, ctx), result);
+}
+
+static void	error_bool_check(bool result, t_float_ctx *ctx)
+{
+	if (result == false)
+		error_list_add(ctx->errors, ctx->line, "Invalid num.", ctx->param);
 }
 
 static t_list	**init_float_list(char **split, t_float_ctx *ctx)
@@ -42,7 +59,7 @@ static t_list	**init_float_list(char **split, t_float_ctx *ctx)
 	return (ft_calloc(1, sizeof(t_list *)));
 }
 
-static int	add_float_value(t_list **res, char *str, t_float_ctx *ctx)
+int	add_float_value(t_list **res, char *str, t_float_ctx *ctx)
 {
 	float	*val;
 
