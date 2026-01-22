@@ -3,46 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   parser_elements.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: dmaestro <dmaestro@student.42madrid.con    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/22 12:30:00 by dmaestro          #+#    #+#             */
-/*   Updated: 2025/12/23 17:14:48 by ravazque         ###   ########.fr       */
+/*   Updated: 2026/01/22 17:00:04 by dmaestro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/parser_internal.h"
 #include "../../includes/minirt.h"
-
-static int	check_ratio_numeric(char *str)
-{
-	int	i;
-
-	i = 1;
-	while (str[i])
-	{
-		if (ft_isdigit(str[i]) == 0 && str[i] != '.')
-			return (-1);
-		i++;
-	}
-	return (0);
-}
+#include "../../includes/parser_internal.h"
 
 static int	parse_al_ratio(char **elem, t_list **list, int line,
 		t_error_list *e)
 {
-	float		*actual_float;
 	char		**rgb;
 	t_list		**list_float;
 	t_float_ctx	ctx;
 
-	if (check_ratio_numeric(elem[1]) == -1)
-		return (error_list_add(e, line, "Invalid num.", "ratio"), -1);
-	actual_float = ft_calloc(1, sizeof(float));
-	*actual_float = ft_atof(elem[1]);
-	if (if_betwen_values(*actual_float, 0, 1) == false)
-		return (free(actual_float), error_list_add(e, line,
-				"Value 0.0-1.0.", "ratio"), -1);
-	ft_lstadd_back(list, ft_lstnew(actual_float));
+	ctx = (t_float_ctx){1, 0, true, line, e, "ratio"};
+	if (add_float_value(list, elem[1], &ctx) == -1)
+		return (-1);
 	rgb = ft_split(elem[2], ',');
 	ctx = (t_float_ctx){255, 0, true, line, e, "color"};
 	list_float = list_of_float_checker(rgb, &ctx);

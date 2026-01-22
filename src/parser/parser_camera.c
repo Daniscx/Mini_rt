@@ -10,26 +10,17 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/parser_internal.h"
 #include "../../includes/minirt.h"
+#include "../../includes/parser_internal.h"
 
 static int	parse_cam_fov(char **elem, t_list **list, int line, t_error_list *e)
 {
-	int		i;
-	float	*fov;
+	t_float_ctx	ctx;
 
-	i = 0;
-	if (elem[3][i] == '-')
-		i++;
-	while (elem[3][i] && (ft_isdigit(elem[3][i]) || elem[3][i] == '.'))
-		i++;
-	if (elem[3][i])
-		return (error_list_add(e, line, "Invalid num.", "FOV"), -1);
-	fov = ft_calloc(1, sizeof(float));
-	*fov = ft_atof(elem[3]);
-	if (if_betwen_values(*fov, 0, 180) == false)
-		return (free(fov), error_list_add(e, line, "FOV 0-180.", "FOV"), -1);
-	return (ft_lstadd_back(list, ft_lstnew(fov)), 0);
+	ctx = (t_float_ctx){180, 0, true, line, e, "FOV"};
+	if (add_float_value(list, elem[3], &ctx) == -1)
+		return (-1);
+	return (0);
 }
 
 static int	parse_cam_vectors(char **elem, t_list **list, int line,
